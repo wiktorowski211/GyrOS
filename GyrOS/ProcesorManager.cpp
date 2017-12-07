@@ -6,8 +6,8 @@ using namespace std;
 class Process {
 public:
 	Process(const string& name, int burst) : _name(name) { _burst = burst; }
-	bool running() const { cout << "Running " << this->_name << endl; return true; }
-	bool ending() const { cout << "Ending " << this->_name << endl; return true; }
+	bool Running() const { cout << "Running " << this->_name << endl; return true; }
+	bool Ending() const { cout << "Ending " << this->_name << endl; return true; }
 	int _burst;
 
 private:
@@ -18,18 +18,18 @@ class Scheduler {
 public:
 	Scheduler() {};
 	Process* _process;
-	void addProcess(const string& name, int burst) { _processes.push(new Process(name, burst)); }
-	void run()
+	void AddProcess(const string& name, int burst) { _processes.push(new Process(name, burst)); }
+	void Run()
 	{
-		while (_processes.size() >0) {
-			singleProcessRun();
+		while (_processes.size() > 0 ) {
+			SingleProcessRun();
 		}
 	}
 private:
-	void singleProcessRun()
+	void SingleProcessRun()
 	{
 		_process = _processes.front();
-		_process->running();
+		_process->Running();
 		int tmpQuantum = quantum;
 		while (tmpQuantum >0 && _process->_burst > 0) {
 			cout << _process->_burst << endl;
@@ -43,7 +43,7 @@ private:
 		}
 		else
 		{
-			_process->ending();
+			_process->Ending();
 		}
 	}
 private:
