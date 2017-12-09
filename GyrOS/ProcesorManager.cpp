@@ -20,7 +20,7 @@ public:
 	Process* _process;
 	void addProcess(const string& name, int burst) { _processes.push(new Process(name, burst)); }
 	void run()
-	{
+	{ 
 		while (_processes.size() >0) {
 			singleProcessRun();
 		}
