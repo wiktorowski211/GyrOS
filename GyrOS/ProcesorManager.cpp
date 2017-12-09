@@ -22,7 +22,7 @@ public:
 	void Run()
 	{
 		while (_processes.size() > 0 ) {
-			SingleProcessRun();
+			SingleProcessRun(); 
 		}
 	}
 private:
