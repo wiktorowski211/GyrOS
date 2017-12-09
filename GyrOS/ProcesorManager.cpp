@@ -2,6 +2,10 @@
 #include <string>
 #include <iostream>
 #include <queue>
+
+//zmiany
+//koniec zmian
+
 using namespace std;
 class Process {
 public:
