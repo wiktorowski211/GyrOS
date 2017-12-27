@@ -21,7 +21,7 @@ public:
 	void AddProcess(const string& name, int burst) { _processes.push(new Process(name, burst)); }
 	void Run()
 	{
-		while (_processes.size() > 0 ) {
+		while (_processes.size() > 0 ) { 
 			SingleProcessRun(); 
 		}
 	}
