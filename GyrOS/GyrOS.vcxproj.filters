@@ -30,9 +30,6 @@
     <ClCompile Include="ProcessManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Internet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Dysk\dysk.cpp">
       <Filter>Source Files\Dysk</Filter>
     </ClCompile>
