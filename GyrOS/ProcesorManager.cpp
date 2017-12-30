@@ -7,7 +7,7 @@
 //koniec zmian
 
 using namespace std;
-class Process {
+class Process { //klasa pomocnicza, to ma zrobiæ Filip 
 public:
 	Process(const string& name, int burst) : _name(name) { _burst = burst; }
 	bool Running() const { cout << "Running " << this->_name << endl; return true; }
@@ -21,36 +21,36 @@ private:
 class Scheduler {
 public:
 	Scheduler() {};
-	Process* _process;
-	void AddProcess(const string& name, int burst) { _processes.push(new Process(name, burst)); }
+	Process* process;
+	void AddProcess(const string& name, int burst) { processes.push(new Process(name, burst)); }
 	void Run()
 	{
-		while (_processes.size() > 0 ) {
-			SingleProcessRun();
+		while (processes.size() > 0 ) { 
+			SingleProcessRun(); 
 		}
 	}
 private:
 	void SingleProcessRun()
 	{
-		_process = _processes.front();
-		_process->Running();
+		process = processes.front();
+		process->Running();
 		int tmpQuantum = quantum;
-		while (tmpQuantum >0 && _process->_burst > 0) {
-			cout << _process->_burst << endl;
+		while (tmpQuantum >0 && process->_burst > 0) {
+			cout << process->_burst << endl;
 			tmpQuantum--;
-			_process->_burst--;
+			process->_burst--;
 		}
-		_processes.pop();
-		if (_process->_burst > 0)
+		processes.pop();
+		if (process->_burst > 0)
 		{
-			_processes.push(_process);
+			processes.push(process);
 		}
 		else
 		{
-			_process->Ending();
+			process->Ending();
 		}
 	}
 private:
-	queue<Process*> _processes;
+	queue<Process*> processes;
 	const int quantum = 10;
 };
