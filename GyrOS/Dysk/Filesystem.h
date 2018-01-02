@@ -17,7 +17,12 @@ public:
 	bool createFile(const std::string& name);
 	bool deleteFile(const std::string& name);
 
-	std::string print_directory();
+	bool writeFile(const std::string& name, const std::string& tresc);
+	// coming soon, reszta tych funkcji juz dziala
+	bool appendFile(const std::string& name, const std::string& tresc);
+	std::string readFile(const std::string& name) const;
+	std::string print_directory() const;
+	std::string statistics() const;
 
 	static const int inodeCount = Dysk::blockCount;
 private:
@@ -33,7 +38,9 @@ private:
 	inode wezly[inodeCount];
 
 	void free_block(int block);
-	void free_index_block(int block);
+	int allocate_block();
+	int create_index_block();
+	bool resize(inode& node, int size);
 };
 
 template <int num>
