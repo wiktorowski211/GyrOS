@@ -2,43 +2,23 @@
 #include <string>
 #include <iostream>
 #include <queue>
+#include "ProcesorManager.h"
 
 using namespace std;
-class Process { //klasa pomocnicza, to ma zrobiæ Filip 
-public:
-	Process(const string& name, int burst) : _name(name) { _burst = burst; }
-	bool Running() const { cout << "Running " << this->_name << endl; return true; }
-	bool Ending() const { cout << "Ending " << this->_name << endl; return true; }
-	int _burst;
 
-private:
-	const string _name;
-};
-
-class Scheduler {
-public:
-	Scheduler() {};
-	Process* process;
-	void AddProcess(const string& name, int burst) { processes.push(new Process(name, burst)); }
-	void Run()
-	{
-		while (processes.size() > 0 ) { 
-			SingleProcessRun(); 
-		}
-	}
-private:
-	void SingleProcessRun()
-	{
+void Scheduler::AddProcess(Process* proc) { processes.push(proc); }
+void Scheduler::Run()
+{
+	while (processes.size() > 0) {
 		process = processes.front();
-		process->Running();
 		int tmpQuantum = quantum;
-		while (tmpQuantum >0 && process->_burst > 0) {
-			cout << process->_burst << endl;
+		process->processState = 2;
+		while (tmpQuantum > 0 && process->processState == 2) {
+			//wywo³aj interpeter
 			tmpQuantum--;
-			process->_burst--;
 		}
-		processes.pop();
-		if (process->_burst > 0)
+		process.
+		if (process->processState == )
 		{
 			processes.push(process);
 		}
@@ -47,7 +27,4 @@ private:
 			process->Ending();
 		}
 	}
-private:
-	queue<Process*> processes;
-	const int quantum = 10;
-};
+}
