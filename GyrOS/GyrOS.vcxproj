@@ -119,8 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dysk\dysk.h" />
-    <ClInclude Include="ProcesorManager.h" />
-    <ClInclude Include="Shell.h" />
+    <ClInclude Include="ProcessManagement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
