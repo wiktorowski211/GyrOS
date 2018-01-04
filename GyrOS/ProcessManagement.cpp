@@ -3,7 +3,6 @@
 Process::Process(int ID, Process* father, std::string processName, std::string commands) //konstruktor procesu;
 {
 	processState = 0;
-	processBlocked = false;
 	PID = ID;
 	parent = father;
 	//ram->WriteToMemory(ID, commands);
@@ -77,4 +76,3 @@ void ProcessManagement::PrintAllProcesses()
 {
 
 }
-

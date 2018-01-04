@@ -22,7 +22,6 @@ public:
 
 	int programCounter = 0; //wskazuje nastêpn¹ instrukcjê do wykonania
 	int programPosition;
-	bool processBlocked;
 
 	int GetPID() { return PID; }
 	int GetProcessState() { return processState; }
