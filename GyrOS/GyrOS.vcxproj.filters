@@ -33,10 +33,16 @@
     <ClCompile Include="Dysk\dysk.cpp">
       <Filter>Source Files\Dysk</Filter>
     </ClCompile>
+    <ClCompile Include="Shell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dysk\dysk.h">
       <Filter>Header Files\Dysk</Filter>
+    </ClInclude>
+    <ClInclude Include="Shell.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
