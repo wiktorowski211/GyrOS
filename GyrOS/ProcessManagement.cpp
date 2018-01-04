@@ -38,9 +38,9 @@ int ProcessManagement::FindID()
 	return freeID;
 }
 
-void ProcessManagement::AddProcess(std::string processName, std::string txt, int parentID = 0)
+void ProcessManagement::AddProcess(std::string processName, std::string commands, int parentID)
 {
-	Process* virgin = new Process(freeID, FindProcess(parentID, init), processName, txt); //tworzenie procesu
+	Process* virgin = new Process(FindID(), FindProcess(parentID, init), processName, commands); //tworzenie procesu
 	freeID++;
 	FindProcess(parentID, init)->children.push_back(virgin); //dodawanie do listy potomków dla rodzimego procesu
 }

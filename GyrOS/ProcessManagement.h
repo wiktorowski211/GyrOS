@@ -66,7 +66,7 @@ public:
 	int FindID(); //wybieranie wolnego ID
 	
 
-	void AddProcess(std::string processName, std::string txt, int parentID = 0);
+	void AddProcess(std::string processName, std::string commands, int parentID = 0);
 
 	void KillProcess(int ID);
 
