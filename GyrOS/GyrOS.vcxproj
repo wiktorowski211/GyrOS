@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClInclude Include="Dysk\dysk.h" />
     <ClInclude Include="ProcessManagement.h" />
+    <ClInclude Include="Shell.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

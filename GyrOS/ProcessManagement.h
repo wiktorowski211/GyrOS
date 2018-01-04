@@ -4,12 +4,6 @@
 #include <string>
 #include "ProcessManagement.h"
 
-struct Ram
-{
-	void WriteToMemory(int PID, std::string txt); //wywo³ywanie pamiêci
-};
-
-Ram* ram;
 
 struct Process
 {
@@ -58,7 +52,10 @@ public:
 
 	int freeID = 0; //nastepny wolny numer ID do wykorzystania
 
-	ProcessManagement();
+	ProcessManagement() {
+		init = new Process(freeID, nullptr, "init", NULL);
+		freeID++;
+	};
 
 	Process* FindProcess(int ID, Process* init); //funkcja przeszukuj¹ca drzewo procesów 
 

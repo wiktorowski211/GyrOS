@@ -6,14 +6,8 @@ Process::Process(int ID, Process* father, std::string processName, std::string c
 	processBlocked = false;
 	PID = ID;
 	parent = father;
-	ram->WriteToMemory(ID, commands);
+	//ram->WriteToMemory(ID, commands);
 	name = processName;
-}
-
-ProcessManagement::ProcessManagement()
-{
-	init = new Process(freeID, nullptr, "init", NULL);
-	freeID++;
 }
 
 Process* ProcessManagement::FindProcess(int ID, Process* init)
