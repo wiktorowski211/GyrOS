@@ -14,3 +14,4 @@ echo TASKKILL	Zamyka wskazany proces.
 echo TASKLIST	Wyswietla liste procesow.
 echo REG		Umozliwia edycje rejestru systemowego.
 echo GO		Wywoluje obsluge pojedynczego rozkazu asemblerowego.
+echo CHECK    Wyswietla biezacy stan systemu.
