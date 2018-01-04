@@ -14,5 +14,4 @@ public:
 	void Run();
 private:
 	queue<Process*> processes;
-	const int quantum = 10;
 };

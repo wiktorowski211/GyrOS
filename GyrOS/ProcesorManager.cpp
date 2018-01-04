@@ -6,25 +6,24 @@
 
 using namespace std;
 
-void Scheduler::AddProcess(Process* proc) { processes.push(proc); }
+void Scheduler::AddProcess(Process* proc)
+{
+	processes.push(proc);
+}
 void Scheduler::Run()
 {
 	while (processes.size() > 0) {
 		process = processes.front();
-		int tmpQuantum = quantum;
+		int quantum = 5;
 		process->processState = 2;
-		while (tmpQuantum > 0 && process->processState == 2) {
-			//wywo³aj interpeter
-			tmpQuantum--;
+		while (quantum > 0 && process->processState == 2) {
+			//wywo³aj jedna linie kodu
+			quantum--;
 		}
-		process.
-		if (process->processState == )
+		processes.pop();
+		if (process->processState == 1)
 		{
 			processes.push(process);
-		}
-		else
-		{
-			process->Ending();
 		}
 	}
 }
