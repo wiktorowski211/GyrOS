@@ -6,7 +6,7 @@
 
 struct Ram
 {
-	void WriteToMemory(int PID, int lenght, std::string txt); //wywo³ywanie pamiêci
+	void WriteToMemory(int PID, std::string txt); //wywo³ywanie pamiêci
 };
 
 Ram* ram;
