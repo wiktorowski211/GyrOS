@@ -1,19 +1,9 @@
+#pragma once
 #include <vector>
 #include <string>
 #include <iostream>
 #include <queue>
-
 using namespace std;
-class Process { //klasa pomocnicza, to ma zrobiæ Filip 
-public:
-	Process(const string& name, int burst) : _name(name) { _burst = burst; }
-	bool Running() const { cout << "Running " << this->_name << endl; return true; }
-	bool Ending() const { cout << "Ending " << this->_name << endl; return true; }
-	int _burst;
-
-private:
-	const string _name;
-};
 
 class Scheduler {
 public:
@@ -22,8 +12,8 @@ public:
 	void AddProcess(const string& name, int burst) { processes.push(new Process(name, burst)); }
 	void Run()
 	{
-		while (processes.size() > 0 ) { 
-			SingleProcessRun(); 
+		while (processes.size() > 0) {
+			SingleProcessRun();
 		}
 	}
 private:

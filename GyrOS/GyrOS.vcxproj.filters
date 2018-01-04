@@ -44,5 +44,8 @@
     <ClInclude Include="Shell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ProcesorManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
