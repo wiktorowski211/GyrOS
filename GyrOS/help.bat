@@ -13,5 +13,5 @@ echo START		Uruchamia proces o wskazanych parametrach.
 echo TASKKILL	Zamyka wskazany proces.
 echo TASKLIST	Wyswietla liste procesow.
 echo REG		Umozliwia edycje rejestru systemowego.
-echo GO		Wywoluje obsluge pojedynczego rozkazu asemblerowego.
-echo CHECK    Wyswietla biezacy stan systemu.
+echo GO		Wywoluje kolejny 'krok' systemu (jeden rozkaz asemblerowy).
+echo CHECK		Wyswietla biezacy stan systemu.
