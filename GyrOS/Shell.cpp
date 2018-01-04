@@ -1,5 +1,6 @@
+#include "stdafx.h"
 #include "Shell.h"
-#define test true ////////do testów
+#define test true ////////do testÃ³w
 #define separator '~'
 using namespace std;
 
@@ -15,7 +16,8 @@ void Shell::wydziel_rozkaz(string &kom) {
 		else
 		{
 			rozkaz = namale(kom.substr(0, pos + 1));
-			if (rozkaz == "echo" || rozkaz == "go")
+
+			if(rozkaz=="echo"||rozkaz=="go")
 				parametry = kom.substr(pos + 2, kom.size() - pos);
 			else
 				parametry = end(standard(begin(kom.substr(pos + 2, kom.size() - pos))));
@@ -27,12 +29,12 @@ void Shell::wydziel_rozkaz(string &kom) {
 	}
 	if (pom)
 	{
-		rozkaz = kom;
+		rozkaz = end(standard(namale(kom)));
 		parametry = "";
 		rozpoznaj_rozkaz(rozkaz, parametry);
-	}/*
-	cout << "\nKomenda: " << rozkaz;
-	cout << "\nParametry: " << parametry;*/
+	}
+	/*cout << "\nKomenda: \"" << rozkaz << "\"";
+	cout << "\nParametry: \"" << parametry << "\"";*/
 }
 void Shell::rozpoznaj_rozkaz(string s1, string s2) {
 	switch (rozkaz[s1])
@@ -126,7 +128,7 @@ void Shell::nadpisz(string &s, string &p)
 	}
 	else
 	{
-		cout << "\nBlad tworzwenia pliku" << endl;
+		cout << "\nBlad tworzwenia pliku"  << endl;
 	}
 }
 void Shell::dopisz(string &s, string &p)
@@ -141,7 +143,7 @@ void Shell::dopisz(string &s, string &p)
 		cout << "\nBlad otwarcia pliku" << endl;
 	}
 }
-void Shell::cls() {
+void Shell::cls(){
 	system("cls");
 }
 void Shell::del(string &s)
@@ -156,7 +158,7 @@ void Shell::del(string &s)
 		cout << "\nNie udalo sie usunac pliku: " << s << endl;
 	}
 }
-void Shell::ext() {
+void Shell::ext(){
 	kropki("Zamykanie systemu");
 	work = false;
 }
@@ -199,12 +201,12 @@ void Shell::rename(string &s)
 	else
 		cout << "Nie udalo sie zmienic nazwy pliku: " << stara;
 }
-void Shell::start(string &s)//usprawnij t¹ funkcjê o b³êdy w wyniku z³ego zapisania
+void Shell::start(string &s)//usprawnij tÄ… funkcjÄ™ o bÅ‚Ä™dy w wyniku zÅ‚ego zapisania
 {
-	string nazwa = "", kod = "", roz = "";
+	string nazwa = "", kod="", roz="";
 	bool ok = true;
-	int rozmiar, e = 0;
-	for (int i = 0; i < s.size(); i++)
+	int rozmiar, e=0;
+	for(int i = 0; i < s.size(); i++)
 	{
 		if (s[i] == separator)
 		{
@@ -217,7 +219,7 @@ void Shell::start(string &s)//usprawnij t¹ funkcjê o b³êdy w wyniku z³ego zapisa
 		}
 		if (e == 1)
 		{
-			if (nazwa != "")
+			if(nazwa!="")
 				roz += s[i];
 			else
 			{
@@ -227,7 +229,7 @@ void Shell::start(string &s)//usprawnij t¹ funkcjê o b³êdy w wyniku z³ego zapisa
 		}
 		if (e == 2)
 		{
-			if (roz != "")
+			if(roz!="")
 				kod += s[i];
 			else
 			{
@@ -255,7 +257,7 @@ void Shell::start(string &s)//usprawnij t¹ funkcjê o b³êdy w wyniku z³ego zapisa
 	{
 		cout << "\tNiepoprawna komenda.\n";
 	}
-
+	
 	//AddProcess(s);
 }
 void Shell::taskkill(string &s)
@@ -337,6 +339,7 @@ string Shell::standard(string &s)
 			s2 += separator;
 		}
 	}
+	//cout << endl << "Standard: \"" << s2 << "\"";
 	return s2;
 }
 string Shell::begin(string &s)
@@ -359,35 +362,41 @@ string Shell::begin(string &s)
 	}
 	else
 		kom = s;
-
+	
+	//cout << endl << "BEGIN: \"" << kom << "\"";
 	return kom;
 }
 string Shell::end(string &s)
 {
 	string kom = "";
 	bool pom = true;
-	if (s[s.size() - 1] == separator)
+	int z = s.size();
+	if ((z-1) > 0)
 	{
-		for (int i = s.size() - 1; i >= 0; i--)
+		if (s[s.size() - 1] == separator)
 		{
-			if (s[i] != separator)
+			for (int i = s.size() - 1; i >= 0; i--)
 			{
-				pom = false;
-			}
-			if (!pom)
-			{
-				kom = s[i] + kom;
+				if (s[i] != separator)
+				{
+					pom = false;
+				}
+				if (!pom)
+				{
+					kom = s[i] + kom;
+				}
 			}
 		}
+		else
+			kom = s;
+		/*cout << endl << "END: \"" << kom << "\"";*/
 	}
-	else
-		kom = s;
-
+	
 	return kom;
 }
 void Shell::kropki(string s)
 {
-	int pom = 0, i = 15;
+	int pom = 0, i=15;
 	while (i)
 	{
 		pom++;
