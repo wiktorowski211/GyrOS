@@ -38,5 +38,8 @@
     <ClInclude Include="Dysk\dysk.h">
       <Filter>Header Files\Dysk</Filter>
     </ClInclude>
+    <ClInclude Include="ProcessManagement.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
