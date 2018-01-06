@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Shell.h"
 #define test true ////////do testów
 #define separator '~'
@@ -16,7 +17,7 @@ void Shell::wydziel_rozkaz(string &kom) {
 		{
 			rozkaz = namale(kom.substr(0, pos + 1));
 
-			if(rozkaz=="echo"||rozkaz=="go")
+			if(rozkaz=="echo")
 				parametry = kom.substr(pos + 2, kom.size() - pos);
 			else
 				parametry = end(standard(begin(kom.substr(pos + 2, kom.size() - pos))));
@@ -48,7 +49,7 @@ void Shell::rozpoznaj_rozkaz(string s1, string s2) {
 	case 8: {start(s2); }; break;
 	case 9: {taskkill(s2); }; break;
 	case 10: {tasklist(); }; break;
-	case 11: {go(s2); }; break;
+	case 11: {go(); }; break;
 	case 12: {check(); }; break;
 	default: {
 		if (s1.size()>4 && s1[s1.size() - 4] == '.' && s1[s1.size() - 3] == 'b' && s1[s1.size() - 2] == 'a' && s1[s1.size() - 1] == 't')
@@ -70,28 +71,42 @@ void Shell::echo(string &s) {
 	if (echo_przekaz(s))
 		cout << s << endl;
 }
-bool Shell::echo_przekaz(string &s) {
+bool Shell::echo_przekaz(string &s) //trzeba co nieco usprawnić
+{
 	bool tn = true;
 	string txt = "", plik = "";
 	int pos;
 	for (int i = 0; i < s.size(); i++)
 	{
-		if (s[i] == '\'' || s[i] == '\"')
+		/*if (s[i] == '\'' || s[i] == '\"')
+		{
 			continue;
+		}
 		if (s[i] != '>')
-			txt += s[i];
+			txt += s[i];*/
+		if (s[0] == '\"')
+		{
+			txt = cudzy(s);
+		}
 		else
+		{
+			if (s[i] != '>')
+			{
+				txt += s[i];
+			}
+		}
+		if(s[i]=='>')
 		{
 			pos = i;
 			tn = false;
 			if (s[i + 1] == '>')
 			{
-				if (s[i + 2] == '\"' || s[i + 2] == '\'')
+				if (s[i + 2] == '\"')
 					tn = true;
 			}
 			else
 			{
-				if (s[i + 1] == '\"' || s[i + 1] == '\'')
+				if (s[i + 1] == '\"')
 					tn = true;
 			}
 			break;
@@ -250,7 +265,11 @@ void Shell::start(string &s)//usprawnij tą funkcję o błędy w wyniku złego z
 	if (ok)
 	{
 		rozmiar = stoi(roz);
-		cout << "Komenda start.\nStworzono proces: " << nazwa << " o rozmiarze : " << rozmiar << " i kodzie zrodlowym z pliku: " << kod;
+		/*W tym miejcu wstaw funkcję od procesów*/
+		if (test)
+			cout << "Komenda start.\nStworzono proces: " << nazwa << " o rozmiarze : " << rozmiar << " i kodzie zrodlowym z pliku: " << kod;
+		else
+			cout << "Blad przy tworzeniu procesu!";
 	}
 	else
 	{
@@ -275,7 +294,7 @@ void Shell::tasklist()
 	cout << "Komenda tasklist";
 	//PrintAllProcess();
 }
-void Shell::go(string &s)
+void Shell::go()
 {
 	cout << "Komenda go";
 }
@@ -395,7 +414,7 @@ string Shell::end(string &s)
 }
 void Shell::kropki(string s)
 {
-	int pom = 0, i=15;
+	int pom = 0, i=12;
 	while (i)
 	{
 		pom++;
@@ -419,4 +438,28 @@ void Shell::kropki(string s)
 		}
 		i--;
 	}
+}
+string Shell::cudzy(string &s)
+{
+	string s1 = "";
+	int licz = 0;
+	bool pole = false;
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (s[i] == '\"')
+		{
+			licz++;
+			pole = true;
+			continue;
+		}
+		if (s[i] == '\"')
+		{
+			pole = false;
+		}
+		if (licz == 1 && pole)
+		{
+			s1 += s[i];
+		}
+	}
+	return s1;
 }
