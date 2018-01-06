@@ -10,6 +10,7 @@ void Scheduler::AddProcess(Process* proc)
 {
 	processes.push(proc);
 }
+
 void Scheduler::Run()
 {
 	while (processes.size() > 0) {
