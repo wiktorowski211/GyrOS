@@ -20,7 +20,7 @@ public:
 	bool writeFile(const std::string& name, const std::string& tresc);
 	// coming soon, reszta tych funkcji juz dziala
 	bool appendFile(const std::string& name, const std::string& tresc);
-	std::string readFile(const std::string& name) const;
+	bool readFile(const std::string& name, std::string& output) const;
 	std::string print_directory() const;
 	std::string statistics() const;
 

@@ -11,7 +11,7 @@ int find_free(std::bitset<num>& b)
 bool Filesystem::resize(inode& node, int size)
 {
 	int reqBlocks = (int)ceil((double)size / (double)Dysk::blockSize);
-
+//	printf_s("Req blocks: %d\n", reqBlocks);
 	// jesli mamy za duzo blokow zwolnij kilka
 	if (node.blocks > reqBlocks)
 	{
@@ -155,7 +155,7 @@ bool Filesystem::deleteFile(const std::string& name)
 
 bool Filesystem::writeFile(const std::string& name, const std::string& tresc)
 {
-	// plik nie jestnieje wiec jest to niepoprawna operacja
+	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
 		return false;
 	// maksymalny przyjety rozmiar pliku to 1 blok w inode i 10 blokow w bloku indeksowym
@@ -164,6 +164,7 @@ bool Filesystem::writeFile(const std::string& name, const std::string& tresc)
 
 	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
 
+	// jesli brak miejsca na dysku
 	if(!resize(wezly[katalog[name]], (int)tresc.size()))
 		return false;
 
@@ -213,20 +214,118 @@ bool Filesystem::writeFile(const std::string& name, const std::string& tresc)
 	return true;
 }
 
-bool appendFile(const std::string& name, const std::string& tresc)
+bool Filesystem::appendFile(const std::string& name, const std::string& tresc)
 {
-	return false;
+
+	// plik nie istnieje wiec jest to niepoprawna operacja
+	if (!katalog.count(name))
+		return false;
+
+	// jesli plik jest pusty wykonaj procedure writeFile
+	if (wezly[katalog[name]].size == 0)
+		return writeFile(name, tresc);
+
+	// maksymalny przyjety rozmiar pliku to 1 blok w inode i 10 blokow w bloku indeksowym
+	if (wezly[katalog[name]].size + tresc.length() > inode::maxBlocks * Dysk::blockSize)
+		return false;
+
+	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
+
+	auto& node = wezly[katalog[name]];
+	// od ktorego bloku
+	int oldlastBlock = node.blocks;
+	// od kiedy
+	int oldlastBlockSpace;
+	if ((node.size  % Dysk::blockSize) == 0)
+		oldlastBlockSpace = Dysk::blockSize;
+	else
+		oldlastBlockSpace = node.size%Dysk::blockSize;
+	//node.blocks
+
+	// jesli brak miejsca na dysku
+	if (!resize(wezly[katalog[name]], wezly[katalog[name]].size + (int)tresc.size()))
+		return false;
+	
+	// przepisz dane
+	int lastBlockSpace;
+//	auto& node = wezly[katalog[name]];
+
+	if ((node.size  % Dysk::blockSize) == 0)
+		lastBlockSpace = Dysk::blockSize;
+	else
+		lastBlockSpace = node.size%Dysk::blockSize;
+
+	int trescLoc = 0;
+	if (node.blocks == 0)
+		return true;
+	if (node.blocks == 1)
+	{
+		for (int i = oldlastBlockSpace; i < lastBlockSpace; ++i)
+		{
+			dysk.block(node.block1)[i] = tresc[trescLoc];
+			++trescLoc;
+		}
+	}
+	else
+	{
+		if (oldlastBlock == node.blocks)
+		{
+			for (int i = oldlastBlockSpace; i < lastBlockSpace; ++i)
+			{
+				dysk.block(dysk.block(node.indexblock)[oldlastBlock - 2])[i] = tresc[trescLoc];
+				++trescLoc;
+			}
+		}
+		else {
+			if (oldlastBlock == 1)
+			{
+				for (int i = oldlastBlockSpace; i < Dysk::blockSize; ++i)
+				{
+					dysk.block(node.block1)[i] = tresc[trescLoc];
+					++trescLoc;
+				}
+			}
+			else
+			{
+				for (int i = oldlastBlockSpace; i < Dysk::blockSize; ++i)
+				{
+					dysk.block(dysk.block(node.indexblock)[oldlastBlock - 2])[i] = tresc[trescLoc];
+					++trescLoc;
+
+				}
+			}
+			// wypelnilismy poprzedni ostatni blok i zaczynamy od kolejnego "czystego" bloku
+			++oldlastBlock;
+			for (int n = oldlastBlock; n < node.blocks; ++n)
+			{
+				for (int i = 0; i < Dysk::blockSize; ++i)
+				{
+					dysk.block(dysk.block(node.indexblock)[n - 2])[i] = tresc[trescLoc];
+					++trescLoc;
+				}
+			}
+			for (int i = 0; i < lastBlockSpace; ++i)
+			{
+				// node.blocks -1 (liczymy od 0) - 1 (blok bezposrednio w iwezle)
+				dysk.block(dysk.block(node.indexblock)[node.blocks - 2])[i] = tresc[trescLoc];
+				++trescLoc;
+			}
+		}
+	}
+
+	return true;
 }
 
-std::string Filesystem::readFile(const std::string& name) const
+bool Filesystem::readFile(const std::string& name, std::string& output) const
 {
-	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc pusty
+	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc false
 	
 	auto it = katalog.find(name);
 	if (it == katalog.end())
-		return "";
+		return false;
+	output.clear();
 	int inode = it->second;
-	std::string s;
+	std::string& s = output;
 	auto& node = wezly[inode];
 
 	int lastBlockSpace;
@@ -236,7 +335,7 @@ std::string Filesystem::readFile(const std::string& name) const
 		lastBlockSpace = node.size%Dysk::blockSize;
 
 	if (node.blocks == 0)
-		return s;
+		return true;
 	if (node.blocks == 1)
 	{
 		for (int i = 0; i < lastBlockSpace; ++i)
@@ -256,7 +355,7 @@ std::string Filesystem::readFile(const std::string& name) const
 			s += dysk.block(dysk.block(node.indexblock)[node.blocks - 2])[i];
 	}
 
-	return s;
+	return true;
 }
 
 std::string Filesystem::print_directory() const
