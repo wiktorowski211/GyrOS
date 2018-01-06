@@ -25,7 +25,7 @@ Process* ProcessManagement::FindProcess(int ID, Process* init)
 	}
 }
 
-int ProcessManagement::FindID()
+int ProcessManagement::FindFreeID()
 {
 	freeID++;
 	return freeID;
@@ -33,9 +33,10 @@ int ProcessManagement::FindID()
 
 void ProcessManagement::AddProcess(std::string processName, std::string commands, int parentID)
 {
-	Process* virgin = new Process(FindID(), FindProcess(parentID, init), processName, commands); //tworzenie procesu
+	Process* temp = FindProcess(parentID, init);
+	Process* virgin = new Process(FindFreeID(), temp, processName, commands); //tworzenie procesu
 	freeID++;
-	FindProcess(parentID, init)->children.push_back(virgin); //dodawanie do listy potomków dla rodzimego procesu
+	temp->children.push_back(virgin); //dodawanie do listy potomków dla rodzimego procesu
 }
 
 void ProcessManagement::KillProcess(int ID)
@@ -64,15 +65,19 @@ void ProcessManagement::ChangeState(int ID, int newstate)
 
 void ProcessManagement::PrintProcess(int ID)
 {
-	std::cout << "Process " << FindProcess(ID, init)->PID << ": with parent ID " << FindProcess(ID, init)->parent << std::endl;
-}
-
-void ProcessManagement::PrintCurrent(Process* p)
-{
-
+	Process* temp = FindProcess(ID, init);
+	std::cout << "Process " << temp->PID << ": with parent ID " << temp->parent << std::endl;
 }
 
 void ProcessManagement::PrintAllProcesses()
 {
+	for (int i = 0; i < freeID; i++)
+	{
+		Process* temp = FindProcess(i, init);
 
+		if (temp)
+		{
+			std::cout << "Process " << temp->PID << ": with parent ID " << temp->parent << std::endl;
+		}
+	}
 }

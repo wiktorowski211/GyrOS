@@ -59,8 +59,7 @@ public:
 	Process* FindProcess(int ID, Process* init); //funkcja przeszukuj¹ca drzewo procesów 
 
 
-	int FindID(); //wybieranie wolnego ID
-	
+	int FindFreeID(); //wybieranie wolnego ID
 
 	void AddProcess(std::string processName, std::string commands, int parentID = 0);
 
