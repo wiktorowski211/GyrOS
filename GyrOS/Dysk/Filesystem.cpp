@@ -141,6 +141,8 @@ bool Filesystem::deleteFile(const std::string& name)
 	if (!katalog.count(name))
 		return false;
 
+	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
+
 	int toFree = katalog[name];
 	--wezly[toFree].hardlinks;
 	if (wezly[toFree].hardlinks == 0)
@@ -150,6 +152,40 @@ bool Filesystem::deleteFile(const std::string& name)
 		resize(wezly[toFree], 0);
 	}
 	katalog.erase(name);
+	return true;
+}
+
+bool Filesystem::addFilename(const std::string& name, const std::string& name2)
+{
+	// plik nie istnieje wiec jest to niepoprawna operacja
+	if (!katalog.count(name))
+		return false;
+
+	// plik o nazwie ktora chcemy dodac juz istnieje wiec jest to niepoprawna operacja
+	if (katalog.count(name2))
+		return false;
+
+	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
+	auto value = katalog.find(name)->second;
+	katalog.emplace(name2, value);
+	++wezly[value].hardlinks;
+	return true;
+}
+bool Filesystem::changeFilename(const std::string& name, const std::string& newname)
+{
+	// plik nie istnieje wiec jest to niepoprawna operacja
+	if (!katalog.count(name))
+		return false;
+
+	// plik o docelowej nazwie istnieje wiec jest to niepoprawna operacja
+	if (katalog.count(newname))
+		return false;
+
+	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
+
+	auto value = katalog.find(name)->second;
+	katalog.erase(name);
+	katalog.emplace(newname, value);
 	return true;
 }
 
@@ -358,22 +394,40 @@ bool Filesystem::readFile(const std::string& name, std::string& output) const
 	return true;
 }
 
+#include <sstream>
+#include <iomanip>
 std::string Filesystem::print_directory() const
 {
+	std::stringstream stream{};
 	std::string s;
-	s += "Liczba wpisow: " + std::to_string(katalog.size()) + "\n";
-	s += "Nazwa:\t\tNumer i-wezla:\n";
+	stream << "Liczba wpisow: " << std::to_string(katalog.size()) + "\n"
+		<< std::setw(30) << std::left << "Nazwa:" 
+		<< std::setw(20) << std::left << "Numer i-wezla:"
+		<< std::setw(15) << std::left << "Bloki:"
+		<< std::setw(15) << std::left << "Rozmiar:"
+		<< std::setw(18) << std::left << "Dowiazania twarde:"
+		<< '\n';
+//	s += "Liczba wpisow: " + std::to_string(katalog.size()) + "\n";
+//	s += "Nazwa:\t\tNumer i-wezla:\n";
 	for (auto& x : katalog)
 	{
-		s += x.first + "\t\t" + std::to_string(x.second) + "\n";
+		stream
+			<< std::setw(30) << std::left << x.first
+			<< std::setw(20) << std::left << std::to_string(x.second)
+			<< std::setw(15) << std::left << std::to_string(wezly[x.second].blocks)
+			<< std::setw(15) << std::left << std::to_string(wezly[x.second].size)
+			<< std::setw(18) << std::left << std::to_string(wezly[x.second].hardlinks)
+			<< '\n';
+	//	s += x.first + "\t\t\t" + std::to_string(x.second) + "\n";
 	}
 
-	return s;
+	return stream.str();
 }
 
 std::string Filesystem::statistics() const
 {
 	std::string s;
-	s += "Miejsce (wolne/zajete): " + std::to_string(freeBlockCount) + "/" + std::to_string(Dysk::blockCount);
+	s += "Miejsce (wolne/max): " + std::to_string(freeBlockCount) + "/" + std::to_string(Dysk::blockCount) + '\n';
+	s += "Iwezly (wolne/max): " + std::to_string(freeInodeCount) + "/" + std::to_string(Filesystem::inodeCount);
 	return s;
 }
