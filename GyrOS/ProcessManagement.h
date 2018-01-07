@@ -69,8 +69,6 @@ public:
 
 	void PrintProcess(int ID);
 
-	void PrintCurrent(Process* p);
-
 	void PrintAllProcesses();
 };
 
