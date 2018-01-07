@@ -121,6 +121,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dysk\dysk.h" />
+    <ClInclude Include="Dysk\Filesystem.h" />
+    <ClInclude Include="Dysk\inode.h" />
     <ClInclude Include="ProcesorManager.h" />
     <ClInclude Include="ProcessManagement.h" />
     <ClInclude Include="Shell.h" />
