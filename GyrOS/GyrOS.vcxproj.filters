@@ -33,12 +33,24 @@
     <ClCompile Include="Dysk\dysk.cpp">
       <Filter>Source Files\Dysk</Filter>
     </ClCompile>
+    <ClCompile Include="Dysk\Filesystem.cpp">
+      <Filter>Source Files\Dysk</Filter>
+    </ClCompile>
+    <ClCompile Include="Dysk\inode.cpp">
+      <Filter>Source Files\Dysk</Filter>
+    </ClCompile>
     <ClCompile Include="Shell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dysk\dysk.h">
+      <Filter>Header Files\Dysk</Filter>
+    </ClInclude>
+    <ClInclude Include="Dysk\Filesystem.h">
+      <Filter>Header Files\Dysk</Filter>
+    </ClInclude>
+    <ClInclude Include="Dysk\inode.h">
       <Filter>Header Files\Dysk</Filter>
     </ClInclude>
     <ClInclude Include="ProcessManagement.h">
