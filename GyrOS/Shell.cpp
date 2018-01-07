@@ -50,6 +50,7 @@ void Shell::rozpoznaj_rozkaz(string s1, string s2) {
 	case 10: {tasklist(); }; break;
 	case 11: {go(); }; break;
 	case 12: {check(); }; break;
+	case 13: {mklink(s2); }; break;
 	default: {
 		if (s1.size()>4 && s1[s1.size() - 4] == '.' && s1[s1.size() - 3] == 'b' && s1[s1.size() - 2] == 'a' && s1[s1.size() - 1] == 't')
 		{
@@ -297,6 +298,37 @@ void Shell::go()
 {
 	cout << "Komenda go";
 }
+void Shell::mklink(string &s)
+{
+	string nazwa = "", alias = "";
+	bool n = false;
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (s[i] == separator)
+		{
+			n = true;
+			continue;
+		}
+		if (n)
+		{
+			nazwa += s[i];
+		}
+		if (!n)
+		{
+			alias += s[i];
+		}
+	}
+	if (compare(nazwa, alias))
+	{
+		/*funkcja*/
+		if (test)
+			cout << "Komenda mklink.\nDopisanie aliasa: " << alias << " do pliku: " << nazwa;
+		else
+			cout << "Nie udalo sie dopisac aliasa do pliku: " << nazwa;
+	}
+	else
+		cout << "Blad tworzenia Aliasa. Niezgodnosc formatow.";
+}
 void Shell::check()
 {
 	cout << "\nStan systemu: ";
@@ -461,4 +493,37 @@ string Shell::cudzy(string &s)
 		}
 	}
 	return s1;
+}
+bool Shell::compare(string &s1, string &s2)
+{
+	string r1 = "", r2 = "";
+	bool zwroc = false, pom=false;
+	for (int i = 0; i < s1.size(); i++)
+	{
+		if (s1[i] == '.')
+		{
+			pom = true;
+		}
+		if (pom)
+		{
+			r1 += s1[i];
+		}
+	}
+	pom = false;
+	for (int i = 0; i < s2.size(); i++)
+	{
+		if (s2[i] == '.')
+		{
+			pom = true;
+		}
+		if (pom)
+		{
+			r2 += s2[i];
+		}
+	}
+	/*cout << "\nr1: " << r1;
+	cout << "\nr2: " << r2;*/
+	if (r1.compare(r2) == 0)
+		zwroc = true;
+	return zwroc;
 }
