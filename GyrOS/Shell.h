@@ -10,6 +10,9 @@ using namespace std;
 
 class Shell {
 public:
+	/*
+	Deklaracje pozostałych modułów
+	*/
 	map<string, int> rozkaz;
 	bool work;
 	Shell() {
@@ -24,8 +27,12 @@ public:
 		rozkaz.insert(pair<string, int>("taskkill", 9));//kończy proces
 		rozkaz.insert(pair<string, int>("tasklist", 10));//lista procesów
 		rozkaz.insert(pair<string, int>("go", 11));//wykonuje rozkaz asemblerowy - krok systemu
-		rozkaz.insert(pair<string, int>("check", 12));//pokazuje stan systemu 
+		rozkaz.insert(pair<string, int>("check", 12));//pokazuje stan systemu
+		rozkaz.insert(pair<string, int>("mklink", 13));//dopisuje alias do wskazanego pliku
 		work = true;
+		/*
+		wywołanie konstruktorów dla pozostałych modułów
+		*/
 	}
 	void wydziel_rozkaz(string &kom);
 	string begin(string &s);
@@ -43,6 +50,7 @@ private:
 	void taskkill(string &s);
 	void tasklist();
 	void go();
+	void mklink(string &s);
 	void nadpisz(string &s, string &p);
 	void dopisz(string &s, string &p);
 	void czytaj_skrypt(string s);
@@ -52,4 +60,5 @@ private:
 	string end(string &s);
 	void kropki(string s);
 	string cudzy(string &s);
+	bool compare(string &s1, string &s2);
 };
