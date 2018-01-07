@@ -16,11 +16,14 @@ public:
 
 	bool createFile(const std::string& name);
 	bool deleteFile(const std::string& name);
+	bool addFilename(const std::string& name, const std::string& name2);
+	bool changeFilename(const std::string& name, const std::string& newname);
 
 	bool writeFile(const std::string& name, const std::string& tresc);
 	// coming soon, reszta tych funkcji juz dziala
 	bool appendFile(const std::string& name, const std::string& tresc);
 	bool readFile(const std::string& name, std::string& output) const;
+
 	std::string print_directory() const;
 	std::string statistics() const;
 
