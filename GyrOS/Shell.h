@@ -1,10 +1,13 @@
 #pragma once
 
+#include "stdafx.h"
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <map>
 #include <Windows.h>
+#include "Filesystem.h"
+#include "ProcessManagement.h"
 using namespace std;
 
 class Shell {
@@ -12,6 +15,8 @@ public:
 	/*
 	Deklaracje pozostałych modułów
 	*/
+	Filesystem dysk;
+	ProcessManagement procesy;
 	map<string, int> rozkaz;
 	bool work;
 	Shell() {
@@ -29,6 +34,8 @@ public:
 		rozkaz.insert(pair<string, int>("check", 12));//pokazuje stan systemu
 		rozkaz.insert(pair<string, int>("mklink", 13));//dopisuje alias do wskazanego pliku
 		work = true;
+		dysk = Filesystem();
+		procesy = ProcessManagement();
 		/*
 		wywołanie konstruktorów dla pozostałych modułów
 		*/
