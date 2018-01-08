@@ -25,7 +25,6 @@ public:
 
 	int GetPID() { return PID; }
 	int GetProcessState() { return processState; }
-	int GetPid() { return PID; }
 
 	Process(int ID, Process* father, std::string processName, std::string txt); //konstruktor procesu;
 	
