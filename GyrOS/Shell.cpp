@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Shell.h"
 #define test true ////////do testów
 #define separator '~'
@@ -65,7 +66,8 @@ void Shell::rozpoznaj_rozkaz(string s1, string s2) {
 }
 void Shell::help()
 {
-	czytaj_skrypt("help.bat");
+	//czytaj_skrypt("help.bat");
+	cout << "\nHELP\t\tWyswietla na ekranie wszystkie dostepne komendy.\nCLS\t\tCzysci bufor ekranu.\nDEL\t\tUsuwa plik o wskazanej nazwie.\nECHO\t\tPrzekzuje na ekran wpisany tekst.\n \t\tEcho z parametrem '>' umozliwia przekazanie(nadpisanie) tekstu\n \t\tdo wskazanego pliku.\n \t\tEcho z parametrem '>>' umozliwia dopisanie tekstu na\n \t\tkoniec wskazanego pliku.\nEXIT\t\tZamyka system.\nTYPE\t\tWyswietla zawartosc wskazanego pliku.\nRENAME\t\tZmienia nazwe wskazanego pliku.\nSTART\t\tUruchamia proces o wskazanych parametrach.\nTASKKILL\tZamyka wskazany proces.\nTASKLIST\tWyswietla liste procesow.\nMKLINK\t\tTworzy Alias do wskazanego pliku.\nGO\t\tWywoluje kolejny 'krok' systemu (jeden rozkaz asemblerowy).\nCHECK\t\tWyswietla biezacy stan systemu.\n";
 }
 void Shell::echo(string &s) {
 	if (echo_przekaz(s))
@@ -135,22 +137,22 @@ bool Shell::echo_przekaz(string &s) //trzeba co nieco usprawnić
 }
 void Shell::nadpisz(string &s, string &p)
 {
-	cout << "Komenda nadpisz";
-	if (test/*writeFile(s, p)*/)
+	if (!test /*dysk.plikexist(p)*/)
 	{
-		cout << "\nUtworzono plik: " << p << endl;
+		dysk.writeFile(p,s);
 	}
 	else
 	{
-		cout << "\nBlad tworzwenia pliku"  << endl;
+		dysk.createFile(p);
+		dysk.writeFile(p, s);
 	}
+
 }
 void Shell::dopisz(string &s, string &p)
 {
-	cout << "Komenda dopisz";
-	if (test/*appendFile(s, p)*/)
+	if (dysk.appendFile(p, s))
 	{
-		cout << "\nDopisano: " << s << " do pliku: " << p << endl;
+		//cout << "\nDopisano: " << s << " do pliku: " << p << endl;
 	}
 	else
 	{
@@ -162,8 +164,7 @@ void Shell::cls(){
 }
 void Shell::del(string &s)
 {
-	cout << "Komenda del";
-	if (test)
+	if (dysk.deleteFile(s))
 	{
 		cout << "\nPlik: " << s << " usunieto" << endl;
 	}
@@ -178,15 +179,14 @@ void Shell::ext(){
 }
 void Shell::type(string &s)
 {
-	string plik = "";
+	string plik = "", tresc;
 	for (int i = 0; i < s.size(); i++)
 	{
 		if (s[i] != separator)
 			plik += s[i];
 	}
-	cout << "Komenda type";
-	if (test)
-		cout << "\nZawartosc pliku " << plik << ": ";
+	if (dysk.readFile(s, tresc))
+		cout << "\nZawartosc pliku " << plik << ": " << tresc;
 	else
 		cout << "\nBlad otwarcia pliku" << endl;
 }
@@ -210,8 +210,8 @@ void Shell::rename(string &s)
 			nowa += s[i];
 		}
 	}
-	if (test)
-		cout << "Komenda rename.\nZmiana nazwy pliku: " << stara << " na: " << nowa;
+	if (dysk.changeFilename(stara,nowa))
+		cout << "Zmiana nazwy pliku: " << stara << " na: " << nowa;
 	else
 		cout << "Nie udalo sie zmienic nazwy pliku: " << stara;
 }
@@ -267,7 +267,10 @@ void Shell::start(string &s)//usprawnij tą funkcję o błędy w wyniku złego z
 		rozmiar = stoi(roz);
 		/*W tym miejcu wstaw funkcję od procesów*/
 		if (test)
-			cout << "Komenda start.\nStworzono proces: " << nazwa << " o rozmiarze : " << rozmiar << " i kodzie zrodlowym z pliku: " << kod;
+		{
+			procesy.AddProcess(nazwa, kod, 0);
+			cout << "Stworzono proces: " << nazwa << " o rozmiarze : " << rozmiar << " i kodzie zrodlowym z pliku: " << kod;
+		}
 		else
 			cout << "Blad przy tworzeniu procesu!";
 	}
@@ -286,12 +289,13 @@ void Shell::taskkill(string &s)
 		if (s[i] != separator)
 			nazwa += s[i];
 	}
-	cout << "Komenda taskkill.\nZabicie procesu o nazwie: " << nazwa;
+	procesy.KillProcess(nazwa);
+	cout << "Zabicie procesu o nazwie: " << nazwa;
 	//KillProcess();
 }
 void Shell::tasklist()
 {
-	cout << "Komenda tasklist";
+	procesy.PrintAllProcesses();
 	//PrintAllProcess();
 }
 void Shell::go()
@@ -321,8 +325,8 @@ void Shell::mklink(string &s)
 	if (compare(nazwa, alias))
 	{
 		/*funkcja*/
-		if (test)
-			cout << "Komenda mklink.\nDopisanie aliasa: " << alias << " do pliku: " << nazwa;
+		if (dysk.addFilename(nazwa,alias))
+			cout << "Dopisanie aliasa: " << alias << " do pliku: " << nazwa;
 		else
 			cout << "Nie udalo sie dopisac aliasa do pliku: " << nazwa;
 	}
