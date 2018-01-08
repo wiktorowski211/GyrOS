@@ -50,7 +50,7 @@ public:
 	int freeID = 0; //nastepny wolny numer ID do wykorzystania
 
 	ProcessManagement() {
-		init = new Process(freeID, nullptr, "init", NULL);
+		init = new Process(freeID, nullptr, "init", "");//Zamieniłem NULL w konstuktorze na "" bez tego program sie wysypuje po probie zadeklarowania obiektu~Oskar
 		freeID++;
 	};
 
