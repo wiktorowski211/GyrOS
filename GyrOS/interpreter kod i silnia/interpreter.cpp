@@ -89,6 +89,23 @@ void readFile(string myArray[])
 	file.close();
 }
 
+void readFile(string myArray[], string fileName)
+{
+	using namespace std;
+
+	ifstream file(fileName);
+	if (file.is_open())
+	{
+
+		for (int i = 0; i < 30; ++i)
+		{
+			getline(file, myArray[i]);
+			//cout << myArray[i] << endl;
+		}
+	}
+	file.close();
+}
+
 string* split(string toSplit)
 {
 	string* splitted = new string[5];
