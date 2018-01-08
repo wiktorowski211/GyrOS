@@ -23,8 +23,8 @@ public:
 	int programCounter = 0; //wskazuje nastêpn¹ instrukcjê do wykonania
 	int programPosition;
 
-	int GetPID() { return PID; }
-	int GetProcessState() { return processState; }
+	int GetPID();
+	int GetProcessState();
 
 	Process(int ID, Process* father, std::string processName, std::string txt); //konstruktor procesu;
 	

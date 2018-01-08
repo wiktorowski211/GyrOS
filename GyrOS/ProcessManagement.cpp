@@ -9,6 +9,16 @@ Process::Process(int ID, Process* father, std::string processName, std::string c
 	name = processName;
 }
 
+int Process::GetPID() 
+{ 
+	return PID; 
+}
+
+int Process::GetProcessState() 
+{ 
+	return processState;
+}
+
 Process* ProcessManagement::FindProcess(int ID, Process* init)
 {
 	if (init->PID == ID) //je¿eli ID procesu siê zgadza z szukanym
@@ -45,6 +55,7 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 	}
 	else
 	{
+		//PROCES RODZIC SIE WSTRZMUJE (U MARCINA)
 		int id = FindFreeID();
 		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
 		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
@@ -89,7 +100,7 @@ void ProcessManagement::ChangeState(int ID, int newstate)
 void ProcessManagement::PrintProcess(int ID) 
 {
 	Process* temp = FindProcess(ID, init);
-	std::cout << "Process " << temp->PID << ": with parent ID " << temp->parent->PID << std::endl;
+	std::cout << "Process " << temp->PID << "\twith parent ID " << temp->parent->PID << std::endl;
 }
 
 void ProcessManagement::PrintAllProcesses() 
