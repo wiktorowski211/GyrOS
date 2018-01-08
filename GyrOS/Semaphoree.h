@@ -1,12 +1,32 @@
 #pragma once
-extern Scheduler procesorManager;//potrzebny globalnie zadeklarowany obiekt schedulera
-extern ProcessManagement processManager;//potrzebny globalnie zadeklarowany obiekt ProcessManagament
-class  Semaphore
+#include <queue>
+#include "ProcessManagement.h"
+#include "ProcesorManager.h"
+using namespace std;
+
+class Semaphore
 {
 public:
-	Semaphore(int k) {};
-	void Signal();
+	int value;
+	queue<int> que;
+	Scheduler *ProcesorM;
+	ProcessManagement *ProcessM;
 	void Wait();
-
+	void Signal();
+	Semaphore(int k,Scheduler *procek, ProcessManagement *procesik)
+	{
+		value = k;
+		ProcessM = procesik;
+		procek = ProcesorM;
+	}
 };
-
+struct SemaphoreFactory {
+	Scheduler *ProcesorM;
+	ProcessManagement *ProcessM;
+	Semaphore CreateSemaphore(int k);
+	SemaphoreFactory(Scheduler *p, ProcessManagement *h)
+	{
+		ProcesorM = p;
+		ProcessM = h;
+	}
+};
