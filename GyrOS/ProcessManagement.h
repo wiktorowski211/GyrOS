@@ -67,7 +67,7 @@ public:
 
 	void ChangeState(int ID, int newstate);
 
-	void PrintProcess(int ID);
+	void PrintProcess(std::string name);
 
 	void PrintAllProcesses();
 };

@@ -41,7 +41,7 @@ Process* ProcessManagement::FindProcess(int ID, Process* init)
 
 Process* ProcessManagement::FindProcess(std::string name, Process* init)
 {
-	if (init->name == name) //je¿eli nazwa procesu siê zgadza z szukana
+	if (init->name == name) //je¿eli ID procesu siê zgadza z szukanym
 	{
 		return init; //koniec rekurencji, zwraca znaleziony proces w postaci wskaŸnika
 	}
@@ -67,6 +67,8 @@ int ProcessManagement::FindFreeID()
 	return a;
 }
 
+
+
 void ProcessManagement::AddProcess(std::string processName, std::string commands, int parentID)
 {
 	Process* temp = FindProcess(parentID, init);
@@ -77,18 +79,22 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 	else
 	{
 		//PROCES RODZIC SIE WSTRZMUJE (U MARCINA SIE USUWA Z KOLEJKI)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 		int id = FindFreeID();
 		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
 		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
 	}
 }
 
+
 void ProcessManagement::KillProcess(std::string name)
 {
-	Process* temp = FindProcess(name, init); // if nullptr
+	Process* temp = FindProcess(name, init); 
 	if (!temp)
-		std::cout << "Deleting process uncomplited.\n";
-	int i = 0;
+	{
+		std::cout << "Can't find that process\n";
+		return;
+	}
 
 	for each (Process* process in temp->children)
 	{
@@ -104,7 +110,7 @@ void ProcessManagement::KillProcess(std::string name)
 			return;
 		}
 	}
-	std::cout << "Theres no that process!\n";
+	std::cout << "There's no that process!\n";
 }
 
 void ProcessManagement::ChangeState(int ID, int newstate)
@@ -117,10 +123,10 @@ void ProcessManagement::ChangeState(int ID, int newstate)
 	}
 }
 
-void ProcessManagement::PrintProcess(int ID)
+void ProcessManagement::PrintProcess(std::string name)
 {
-	Process* temp = FindProcess(ID, init);
-	std::cout << "Process " << temp->PID << " twith parent ID " << temp->parent->PID << std::endl;
+	Process* temp = FindProcess(name, init);
+	std::cout << "Process " << temp->PID << ": with parent ID " << temp->parent->PID << std::endl;
 }
 
 void ProcessManagement::PrintAllProcesses()
@@ -133,11 +139,11 @@ void ProcessManagement::PrintAllProcesses()
 		{
 			if (temp->parent == nullptr)
 			{
-				std::cout << "Process " << temp->name << " id ID " << temp->PID << std::endl;
+				std::cout << "Process " << temp->name << "with ID " << temp->PID << std::endl;
 			}
 			else
 			{
-				std::cout << "Process " << temp->name << " id ID " << temp->PID << " with parent ID " << temp->parent->PID << std::endl;
+				std::cout << "Process " << temp->name << "with ID " << temp->PID << " and parent ID " << temp->parent->PID << std::endl;
 			}
 		}
 	}
