@@ -19,38 +19,62 @@ Process* ProcessManagement::FindProcess(int ID, Process* init)
 	{
 		for each (Process* process in init->children)
 		{
-			return FindProcess(ID, process); //wykonaj rekurencje
+			Process* notnullptr = FindProcess(ID, process); //wykonaj rekurencje
+			if (notnullptr)
+			{
+				return notnullptr;
+			}
 		}
 		return nullptr;
 	}
-}
+} //funkcja przeszukuj¹ca drzewo procesów 
 
 int ProcessManagement::FindFreeID()
 {
+	int a = freeID;
 	freeID++;
-	return freeID;
+	return a;
 }
 
 void ProcessManagement::AddProcess(std::string processName, std::string commands, int parentID)
 {
 	Process* temp = FindProcess(parentID, init);
-	Process* virgin = new Process(FindFreeID(), temp, processName, commands); //tworzenie procesu
-	freeID++;
-	temp->children.push_back(virgin); //dodawanie do listy potomków dla rodzimego procesu
+	if (temp == nullptr)
+	{
+		std::cout << "Wrong parent ID" << std::endl;
+	}
+	else
+	{
+		int id = FindFreeID();
+		//	Process* virgin = new Process(id, temp, processName, commands); //tworzenie procesu
+		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
+		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
+	}
 }
 
 void ProcessManagement::KillProcess(int ID)
 {
-	Process* temp = FindProcess(ID, init);
+	Process* temp = FindProcess(ID, init); // if nullptr
+	if (!temp)
+		std::cout << "Kill process no temp idioto\n";
 	int i = 0;
-	if (temp->children[i])
+
+	for each (Process* process in temp->children)
 	{
-		for each (Process* process in temp->children)
+		process->parent = init;
+		init->children.push_back(process);
+	}
+	// na iteratorach i temp->parent-children.erase(iterator), jesli iterator == .end() to blad w kodzie
+	auto it = temp->parent->children.begin();
+	for (auto it = temp->parent->children.begin(); it != temp->parent->children.end(); it++)
+	{
+		if ((*it)->PID == ID)
 		{
-			process->parent = init;
+			temp->parent->children.erase(it);
+			return;
 		}
 	}
-	delete temp;
+	std::cout << "Theres no that process!\n";
 }
 
 void ProcessManagement::ChangeState(int ID, int newstate)
@@ -63,13 +87,13 @@ void ProcessManagement::ChangeState(int ID, int newstate)
 	}
 }
 
-void ProcessManagement::PrintProcess(int ID)
+void ProcessManagement::PrintProcess(int ID) 
 {
 	Process* temp = FindProcess(ID, init);
-	std::cout << "Process " << temp->PID << ": with parent ID " << temp->parent << std::endl;
+	std::cout << "Process " << temp->PID << ": with parent ID " << temp->parent->PID << std::endl;
 }
 
-void ProcessManagement::PrintAllProcesses()
+void ProcessManagement::PrintAllProcesses() 
 {
 	for (int i = 0; i < freeID; i++)
 	{
@@ -77,7 +101,14 @@ void ProcessManagement::PrintAllProcesses()
 
 		if (temp)
 		{
-			std::cout << "Process " << temp->PID << ": with parent ID " << temp->parent << std::endl;
+			if (temp->parent == nullptr)
+			{
+				std::cout << "Process " << temp->name << "| id ID " << temp->PID << std::endl;
+			}
+			else
+			{
+				std::cout << "Process " << temp->name << "| id ID " << temp->PID << " with parent ID " << temp->parent->PID << std::endl;
+			}
 		}
 	}
 }
