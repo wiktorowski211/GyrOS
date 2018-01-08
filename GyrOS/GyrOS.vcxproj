@@ -117,6 +117,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ProcesorManager.cpp" />
     <ClCompile Include="ProcessManagement.cpp" />
+    <ClCompile Include="Semaphoree.cpp" />
     <ClCompile Include="Shell.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +126,7 @@
     <ClInclude Include="Dysk\inode.h" />
     <ClInclude Include="ProcesorManager.h" />
     <ClInclude Include="ProcessManagement.h" />
+    <ClInclude Include="Semaphoree.h" />
     <ClInclude Include="Shell.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
