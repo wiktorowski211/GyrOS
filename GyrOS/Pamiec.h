@@ -5,6 +5,9 @@
 #include<string>
 #include<list>
 #include<algorithm>
+#include<fstream>
+//#include "Semaphoree.h"
+//#include "ProcesorManager.h"
 using namespace std;
 
 
@@ -32,8 +35,15 @@ public:
 	int wolne = 128;
 	list<proces> l_procesow;
 	list<wolne_miejsca> l_wolne;
-
-
+	/*Semaphore FullMemmory;
+	Semaphore FSBEM;
+	ProcessManagement * p;
+	Pamiec(ProcessManagement *h)
+	{
+		p = h;
+		FullMemmory.SetArg(1, h);
+		FSBEM.SetArg(1, h);
+	}*/
 private:
 	int ostatni = 0;
 
@@ -43,7 +53,7 @@ public:
 	spełnia wymagań, zachodzi fragmentacja pamięci a wraz z nią łączenie nowo powstałych bloków wolnej pamięci. Jeśli 'wolne' jest mniejsze od wielkości procesu,
 	wtedy proces nie może zostać dołączony do pamięci.*/
 	//void dodaj(int PID, int w, string commands);
-	void dodaj(int PID, string commands);
+	void dodaj(int PID, string FileName);
 	/*Usuwa proces z listy procesów po czym tworzy blok wolnej pamięci w miejscu usuniętego procesu. Po tym zabiegu następuje łączenie wolnych bloków pamięci w całość.*/
 	void usun(int pid);
 	
@@ -51,5 +61,4 @@ public:
 	void laczenie();
 	void fragmentacja();
 	void odczyt(int PID);
-
 };
