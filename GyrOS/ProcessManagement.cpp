@@ -1,24 +1,5 @@
 #include "ProcessManagement.h"
 
-Process::Process(int ID, Process* father, std::string processName, std::string commands) //konstruktor procesu;
-{
-	processState = 0;
-	PID = ID;
-	parent = father;
-	//ram->WriteToMemory(ID, commands);
-	name = processName;
-}
-
-int Process::GetPID() 
-{ 
-	return PID; 
-}
-
-int Process::GetProcessState() 
-{ 
-	return processState;
-}
-
 Process* ProcessManagement::FindProcess(int ID, Process* init)
 {
 	if (init->PID == ID) //je¿eli ID procesu siê zgadza z szukanym
@@ -66,8 +47,7 @@ int ProcessManagement::FindFreeID()
 	freeID++;
 	return a;
 }
-
-
+//wybieranie wolnego ID
 
 void ProcessManagement::AddProcess(std::string processName, std::string commands, int parentID)
 {
@@ -78,9 +58,8 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 	}
 	else
 	{
-		//PROCES RODZIC SIE WSTRZMUJE (U MARCINA SIE USUWA Z KOLEJKI)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 		int id = FindFreeID();
+		//	Process* virgin = new Process(id, temp, processName, commands); //tworzenie procesu
 		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
 		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
 	}
@@ -89,7 +68,7 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 
 void ProcessManagement::KillProcess(std::string name)
 {
-	Process* temp = FindProcess(name, init); 
+	Process* temp = FindProcess(name, init);
 	if (!temp)
 	{
 		std::cout << "Can't find that process\n";
@@ -113,9 +92,9 @@ void ProcessManagement::KillProcess(std::string name)
 	std::cout << "There's no that process!\n";
 }
 
-void ProcessManagement::ChangeState(int ID, int newstate)
+void ProcessManagement::ChangeState(std::string name, int newstate)
 {
-	Process* temp = FindProcess(ID, init);
+	Process* temp = FindProcess(name, init);
 	temp->processState = newstate; //szukanie w drzewie procesu i zmiana jego stanu
 	if (newstate == 1) //je¿eli stan procesu ustawiany jest na ready to:
 	{
@@ -139,13 +118,12 @@ void ProcessManagement::PrintAllProcesses()
 		{
 			if (temp->parent == nullptr)
 			{
-				std::cout << "Process " << temp->name << "with ID " << temp->PID << std::endl;
+				std::cout << "Process " << temp->name << "| id ID " << temp->PID << std::endl;
 			}
 			else
 			{
-				std::cout << "Process " << temp->name << "with ID " << temp->PID << " and parent ID " << temp->parent->PID << std::endl;
+				std::cout << "Process " << temp->name << "| id ID " << temp->PID << " with parent ID " << temp->parent->PID << std::endl;
 			}
 		}
 	}
 }
-
