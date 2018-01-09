@@ -9,7 +9,6 @@ public:
 	Scheduler() { ResetQuantum(); };
 	void AddProcess(Process* proc);
 	void DeleteProcess();
-	void DeleteProcess();
 	Process* GetProcess();
 	void Step(int steps);
 	int quantum;
