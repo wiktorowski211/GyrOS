@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Pamiec.h"
+#include<fstream>
 using namespace std;
 
 /// Predykat wykorzystywany podczas ustawiania kolejno bloków wolnej pamięci; ułatwia łączenie sąsiednich bloków w całość 
@@ -9,18 +10,42 @@ bool comp(const wolne_miejsca &a, const wolne_miejsca &b)
 }
 
 //void Pamiec::dodaj(int PID, int w, string commands)
-void Pamiec::dodaj(int PID, string commands)
+void Pamiec::dodaj(int PID, string FileName)
 {
+
+	fstream plik;
+	string commands, pom;
+	plik.open(FileName);
+
+	int w = 0;
+
+	if (plik.is_open())
+	{
+		while (plik.good())
+		{
+			getline(plik, pom);
+			
+			for (int i = 0; i <= pom.length(); i++)
+			{
+				if(pom[i]!='\n')
+				w++;
+			}
+			commands += pom;
+		}
+	}
+
+
 	//FSBEM.WAIT();
-	int linie = 1;
+	/*int linie = 1;
 	for (int i = 0; i < commands.length(); i++)
 	{
 		if (commands[i] == '\n')
 		{
 			linie++;
 		}
-	}
-	int w = linie;
+	}*/
+	//int w = linie; 
+	//w = linie;
 	
 
 
@@ -147,7 +172,7 @@ void Pamiec::usun(int pid)
 		wolne += it->wielkosc;
 		s = it->wielkosc;
 		int sp = it->start;
-		cout << "\nUsunieto proces:  " << pid << endl;
+	//	cout << "\nUsunieto proces:  " << pid << endl;
 
 		wolne_miejsca pom;
 		pom.poczatek = sp;
@@ -331,7 +356,7 @@ void Pamiec::odczyt(int PID)
 			{
 				if (it->commands[i] == '\n')
 				{
-					linie++;
+				linie++;
 				}
 			}
 
