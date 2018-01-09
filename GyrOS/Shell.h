@@ -1,12 +1,11 @@
 #pragma once
 
-#include "stdafx.h"
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <map>
 #include <Windows.h>
-#include "Filesystem.h"
+#include "Dysk/Filesystem.h"
 #include "ProcessManagement.h"
 using namespace std;
 
