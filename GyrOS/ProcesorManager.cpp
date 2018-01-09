@@ -4,14 +4,24 @@ using namespace std;
 
 void Scheduler::AddProcess(Process* proc)
 {
-	processes.push(proc);
+	processes.push_back(proc);
 }
 
-void Scheduler::DeleteProcess()//wywolac jesli proces zmieni stan z running na waiting/terminated
+void Scheduler::DeleteProcess()
 {
-	processes.pop();
+	processes.pop_front();
 	ResetQuantum();
 	process = processes.front();
+}
+
+void Scheduler::DeleteProcess(Process* proc)//wywolac jesli proces zmieni stan na terminated
+{
+	if (proc == process) {
+		DeleteProcess();
+	}
+	else {
+		processes.erase(std::remove(processes.begin(), processes.end(), proc), processes.end()); // TRZEBA PRZESTOWAC
+	}
 }
 
 Process* Scheduler::GetProcess() 
@@ -19,12 +29,10 @@ Process* Scheduler::GetProcess()
 	return process;
 }
 
-
 void Scheduler::ResetQuantum() 
 {
 	quantum = 5;
 }
-
 
 void Scheduler::Step(int steps)
 {
@@ -47,7 +55,7 @@ void Scheduler::Step(int steps)
 				DeleteProcess();
 
 				process->processState = 1;
-				processes.push(process);
+				processes.push_back(process);
 
 				process = processes.front();
 			}

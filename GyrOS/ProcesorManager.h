@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
-#include <queue>
+#include <deque>
+#include <algorithm>
 #include "Process.h"
 using namespace std;
 
@@ -9,11 +10,12 @@ public:
 	Scheduler() { ResetQuantum(); };
 	void AddProcess(Process* proc);
 	void DeleteProcess();
+	void DeleteProcess(Process* proc);
 	Process* GetProcess();
 	void Step(int steps);
 	int quantum;
 private:
-	queue<Process*> processes;
+	deque<Process*> processes;
 	void ResetQuantum();
 	Process* process;
 };
