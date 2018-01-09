@@ -14,8 +14,8 @@ public:
 	/*
 	Deklaracje pozostałych modułów
 	*/
-	Filesystem dysk;
 	ProcessManagement procesy;
+	Filesystem dysk;
 	map<string, int> rozkaz;
 	bool work;
 	Shell() {
@@ -32,9 +32,10 @@ public:
 		rozkaz.insert(pair<string, int>("go", 11));//wykonuje rozkaz asemblerowy - krok systemu
 		rozkaz.insert(pair<string, int>("check", 12));//pokazuje stan systemu
 		rozkaz.insert(pair<string, int>("mklink", 13));//dopisuje alias do wskazanego pliku
+		rozkaz.insert(pair<string, int>("dir", 14));//wyswietla liste plikow
 		work = true;
-		dysk = Filesystem();
 		procesy = ProcessManagement();
+		dysk = Filesystem();
 		/*
 		wywołanie konstruktorów dla pozostałych modułów
 		*/
@@ -60,6 +61,7 @@ private:
 	void dopisz(string &s, string &p);
 	void czytaj_skrypt(string s);
 	void check();
+	void dir();
 	string standard(string &s);
 	string namale(string &s);
 	string end(string &s);
