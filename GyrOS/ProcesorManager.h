@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <queue>
-#include "ProcessManagement.h"
+#include "Process.h"
 using namespace std;
 
 class Scheduler {

@@ -11,7 +11,6 @@ struct ProcessManagement
 public:
 	Scheduler* scheduler;
 
-
 	Process* init; //proces, który wytwarza się przy startowaniu systemu
 	int freeID = 0; //nastepny wolny numer ID do wykorzystania
 
