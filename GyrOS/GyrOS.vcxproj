@@ -82,7 +82,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PrecompiledHeaderFile />
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -115,6 +114,7 @@
     <ClCompile Include="dysk.cpp" />
     <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Pamiec.cpp" />
     <ClCompile Include="ProcesorManager.cpp" />
     <ClCompile Include="ProcessManagement.cpp" />
     <ClCompile Include="Semaphoree.cpp" />
@@ -124,6 +124,7 @@
     <ClInclude Include="dysk.h" />
     <ClInclude Include="Filesystem.h" />
     <ClInclude Include="inode.h" />
+    <ClInclude Include="Pamiec.h" />
     <ClInclude Include="ProcesorManager.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="ProcessManagement.h" />

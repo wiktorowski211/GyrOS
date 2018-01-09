@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6036afdc5e5c6669642c446bdfcefba6d1b44bf6
 #include "Pamiec.h"
 #include<fstream>
 using namespace std;
@@ -11,7 +15,7 @@ bool comp(const wolne_miejsca &a, const wolne_miejsca &b)
 //void Pamiec::dodaj(int PID, int w, string commands)
 void Pamiec::dodaj(int PID, string FileName)
 {
-
+	Mem.Wait();
 	fstream plik;
 	string commands, pom;
 	plik.open(FileName);
@@ -23,11 +27,11 @@ void Pamiec::dodaj(int PID, string FileName)
 		while (plik.good())
 		{
 			getline(plik, pom);
-			
+
 			for (int i = 0; i <= pom.length(); i++)
 			{
-				if(pom[i]!='\n')
-				w++;
+				if (pom[i] != '\n')
+					w++;
 			}
 			commands += pom;
 		}
@@ -38,20 +42,20 @@ void Pamiec::dodaj(int PID, string FileName)
 	/*int linie = 1;
 	for (int i = 0; i < commands.length(); i++)
 	{
-		if (commands[i] == '\n')
-		{
-			linie++;
-		}
+	if (commands[i] == '\n')
+	{
+	linie++;
+	}
 	}*/
 	//int w = linie; 
 	//w = linie;
-	
+
 
 
 	bool szukaj_miejsca = false, po_fragmentacji = false;
 
 	try {
-		if (wolne < w || wolne <=2)
+		if (wolne < w || wolne <= 2)
 		{
 			//MemSem.Wait();
 			throw 0;
@@ -115,8 +119,8 @@ void Pamiec::dodaj(int PID, string FileName)
 							wm.k = 128;
 						}
 						wm.wielkosc = wm.k - wm.poczatek;
-						if(wm.wielkosc>0)
-						l_wolne.emplace_front(wm);
+						if (wm.wielkosc>0)
+							l_wolne.emplace_front(wm);
 
 						l_wolne.erase(itw);
 					}
@@ -149,7 +153,7 @@ void Pamiec::dodaj(int PID, string FileName)
 		}
 	}
 	catch (int) { cout << "\n\tBrak pamieci!" << endl; };
-	//FSBSEM.SIGNAL();
+	Mem.Signal();
 }
 void Pamiec::usun(int pid)
 {
@@ -171,7 +175,7 @@ void Pamiec::usun(int pid)
 		wolne += it->wielkosc;
 		s = it->wielkosc;
 		int sp = it->start;
-	//	cout << "\nUsunieto proces:  " << pid << endl;
+		//	cout << "\nUsunieto proces:  " << pid << endl;
 
 		wolne_miejsca pom;
 		pom.poczatek = sp;
@@ -198,7 +202,7 @@ void Pamiec::zawartosc()
 	}
 	if (i == 0)
 		cout << "Brak procesow w pamieci" << endl;
-	cout << ">>>>>>>>>>>>>\nPozostalo wolnej pamieci:  "<< endl;
+	cout << ">>>>>>>>>>>>>\nPozostalo wolnej pamieci:  " << endl;
 	for (auto e : l_wolne)
 	{
 		cout << "\tPUSTE: " << e.poczatek << " --> K: " << e.k << "  =  W: " << e.wielkosc << endl;
@@ -350,12 +354,12 @@ void Pamiec::odczyt(int PID)
 		if (it->PID == PID)
 		{
 			komendy = it->commands;
-			int licz = 0, i, linie=1;
+			int licz = 0, i, linie = 1;
 			for (i = 0; i < it->commands.length(); i++)
 			{
 				if (it->commands[i] == '\n')
 				{
-				linie++;
+					linie++;
 				}
 			}
 
@@ -372,7 +376,7 @@ void Pamiec::odczyt(int PID)
 			if (it->commands[i] == '\n')
 				i++;
 
-			
+
 			int kwant = 5, petla = 0;
 			for (int j = i; j <= it->commands.length(); j++)
 			{
@@ -391,7 +395,7 @@ void Pamiec::odczyt(int PID)
 				}
 				else break;
 			}
-			if (it->processCounter == linie-1)
+			if (it->processCounter == linie - 1)
 				it->processCounter = 0;
 		}
 	}
