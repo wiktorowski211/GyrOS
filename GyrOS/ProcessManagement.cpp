@@ -90,8 +90,8 @@ void ProcessManagement::KillProcess(std::string name)
 	{
 		if ((*it)->name == name)
 		{
-			temp->parent->children.erase(it);
 			//scheduler->DeleteProcess(temp);// to dodaje marcin!!
+			temp->parent->children.erase(it);
 			return;
 		}
 	}
@@ -108,7 +108,7 @@ void ProcessManagement::ChangeState(std::string name, int newstate)
 	}
 	if (newstate == 4) //je¿eli stan procesu ustawiany jest na ready to:
 	{
-		scheduler->DeleteProcess(); //dodawanie procesu do kolejki gotowych procesów
+		KillProcess(name);
 	}
 	if (newstate = 3)
 	{
