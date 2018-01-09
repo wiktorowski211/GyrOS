@@ -1,7 +1,3 @@
-#include <vector>
-#include <string>
-#include <iostream>
-#include <queue>
 #include "ProcesorManager.h"
 
 using namespace std;
@@ -18,18 +14,30 @@ void Scheduler::DeleteProcess()//wywolac jesli proces zmieni stan z running na w
 	process = processes.front();
 }
 
-void Scheduler::ResetQuantum() {
+Process* Scheduler::GetProcess() 
+{
+	return process;
+}
+
+
+void Scheduler::ResetQuantum() 
+{
 	quantum = 5;
 }
+
 
 void Scheduler::Step(int steps)
 {
 	for (int i = 0; i < steps; i++)
 	{
-		if (processes.size > 0) {
-			if (quantum > 0 && process->processState == 1) {
+		if (processes.size > 0) 
+		{
+			if (quantum > 0 && process->processState == 1) 
+			{
 				process->processState = 2;
+
 				//wywo³aj jedna linie kodu;
+
 				//std::cout << "Actual process: " << process->name<<" ID: "<<process->GetPID()<<endl;	//to wrzucimy w interpreterze
 				quantum--;
 			}
@@ -44,6 +52,5 @@ void Scheduler::Step(int steps)
 				process = processes.front();
 			}
 		}
-	}
 	}
 }
