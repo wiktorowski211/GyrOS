@@ -22,7 +22,7 @@ Process* ProcessManagement::FindProcess(int ID, Process* init)
 
 Process* ProcessManagement::FindProcess(std::string name, Process* init)
 {
-	if (init->name == name) //je¿eli ID procesu siê zgadza z szukanym
+	if (init->name == name) //je¿eli nazwa procesu siê zgadza z szukanym
 	{
 		return init; //koniec rekurencji, zwraca znaleziony proces w postaci wskaŸnika
 	}
@@ -59,7 +59,12 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 	else
 	{
 		int id = FindFreeID();
-		//	Process* virgin = new Process(id, temp, processName, commands); //tworzenie procesu
+		Process* p = FindProcess(processName, init);
+		while (FindProcess(processName, init))
+		{
+			processName = processName + "_" + std::to_string(id);
+		}
+
 		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
 		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
 	}
@@ -118,11 +123,11 @@ void ProcessManagement::PrintAllProcesses()
 		{
 			if (temp->parent == nullptr)
 			{
-				std::cout << "Process " << temp->name << "| id ID " << temp->PID << std::endl;
+				std::cout << "Process " << temp->name << " id ID " << temp->PID << std::endl;
 			}
 			else
 			{
-				std::cout << "Process " << temp->name << "| id ID " << temp->PID << " with parent ID " << temp->parent->PID << std::endl;
+				std::cout << "Process " << temp->name << " id ID " << temp->PID << " with parent ID " << temp->parent->PID << " has a state: " << temp->processState << std::endl;
 			}
 		}
 	}
