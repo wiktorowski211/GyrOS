@@ -1,33 +1,26 @@
 #pragma once
-#include <queue>
 #include "ProcessManagement.h"
-#include "ProcesorManager.h"
+#include <queue>
 #include <string>
 using namespace std;
+
 
 class Semaphore
 {
 public:
 	int value;
 	queue<string> que;
-	Scheduler *ProcesorM;
 	ProcessManagement *ProcessM;
 	void Wait();
 	void Signal();
-	Semaphore(int k,Scheduler *procek, ProcessManagement *procesik)
+	Semaphore(int k, ProcessManagement *procesik)
 	{
 		value = k;
 		ProcessM = procesik;
-		procek = ProcesorM;
 	}
-};
-struct SemaphoreFactory {
-	Scheduler *ProcesorM;
-	ProcessManagement *ProcessM;
-	Semaphore CreateSemaphore(int k);
-	SemaphoreFactory(Scheduler *p, ProcessManagement *h)
+	Semaphore()
 	{
-		ProcesorM = p;
-		ProcessM = h;
+		value = 1;
+		ProcessM = nullptr;
 	}
 };
