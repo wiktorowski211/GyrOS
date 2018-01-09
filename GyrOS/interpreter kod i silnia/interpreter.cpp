@@ -388,6 +388,10 @@ void runCommand(string command, Registry &reg)
 		reg.set_counter(92);
 		cout << "Koniec programu ";
 	}
+	else if (commandLine[0] == "OF")
+	{
+		//otworzplik(commandLine[1]);
+	}
 }
 
 void runProgram(string program[], Registry &reg)
