@@ -119,13 +119,19 @@ bool Filesystem::createFile(const std::string& name)
 {
 	// brak wolnych i wezlow
 	if (!freeInodeCount)
+	{
+		printf_s("Brak wolnego i-wezla na stworzenie pliku %s.\n", name.data());
 		return false;
+	}
 	int newInode = find_free(freeInodeList);
 	if (newInode == -1)
 		throw std::logic_error("createFile: find_free returned -1 when it shouldn't\n");
 	// plik o danej nazwie istnieje w katalogu glownym
 	if (katalog.count(name))
+	{
+		printf_s("Plik o nazwie %s juz istnieje.\n", name.data());
 		return false;
+	}
 
 	wezly[newInode].hardlinks = 1;
 	freeInodeList[newInode] = true;
@@ -139,7 +145,10 @@ bool Filesystem::deleteFile(const std::string& name)
 {
 	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
+	{
+		printf_s("Nie mozna usunac nieistniejacego pliku %s.\n", name.data());
 		return false;
+	}
 
 	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
 
@@ -159,11 +168,17 @@ bool Filesystem::addFilename(const std::string& name, const std::string& name2)
 {
 	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
+	{
+		printf_s("Nie mozna stworzyc aliasu dla nieistniejacego pliku %s.\n", name.data());
 		return false;
+	}
 
 	// plik o nazwie ktora chcemy dodac juz istnieje wiec jest to niepoprawna operacja
 	if (katalog.count(name2))
+	{
+		printf_s("Plik o nazwie %s juz istnieje.\n", name2.data());
 		return false;
+	}
 
 	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
 	auto value = katalog.find(name)->second;
@@ -193,16 +208,25 @@ bool Filesystem::writeFile(const std::string& name, const std::string& tresc)
 {
 	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
+	{
+		printf_s("Plik o nazwie %s nie istnieje.\n", name.data());
 		return false;
+	}
 	// maksymalny przyjety rozmiar pliku to 1 blok w inode i 10 blokow w bloku indeksowym
 	if (tresc.length() > inode::maxBlocks * Dysk::blockSize)
+	{
+		printf_s("Plik %s przekracza maksymalny przyjety rozmiar %d.\n", name.data(), inode::maxBlocks*Dysk::blockSize);
 		return false;
+	}
 
 	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
 
 	// jesli brak miejsca na dysku
-	if(!resize(wezly[katalog[name]], (int)tresc.size()))
+	if (!resize(wezly[katalog[name]], (int)tresc.size()))
+	{
+		printf_s("Brak bloków dyskowych na pisanie do pliku %s.\n", name.data());
 		return false;
+	}
 
 	// przepisz dane
 	int lastBlockSpace;
@@ -255,7 +279,10 @@ bool Filesystem::appendFile(const std::string& name, const std::string& tresc)
 
 	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
+	{
+		printf_s("Plik o nazwie %s nie istnieje.\n", name.data());
 		return false;
+	}
 
 	// jesli plik jest pusty wykonaj procedure writeFile
 	if (wezly[katalog[name]].size == 0)
@@ -263,7 +290,10 @@ bool Filesystem::appendFile(const std::string& name, const std::string& tresc)
 
 	// maksymalny przyjety rozmiar pliku to 1 blok w inode i 10 blokow w bloku indeksowym
 	if (wezly[katalog[name]].size + tresc.length() > inode::maxBlocks * Dysk::blockSize)
+	{
+		printf_s("Plik %s przekracza maksymalny przyjety rozmiar %d.\n", name.data(), inode::maxBlocks*Dysk::blockSize);
 		return false;
+	}
 
 	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
 
@@ -280,7 +310,10 @@ bool Filesystem::appendFile(const std::string& name, const std::string& tresc)
 
 	// jesli brak miejsca na dysku
 	if (!resize(wezly[katalog[name]], wezly[katalog[name]].size + (int)tresc.size()))
+	{
+		printf_s("Brak bloków dyskowych na dopisanie do pliku %s.\n", name.data());
 		return false;
+	}
 	
 	// przepisz dane
 	int lastBlockSpace;
@@ -352,13 +385,27 @@ bool Filesystem::appendFile(const std::string& name, const std::string& tresc)
 	return true;
 }
 
+bool Filesystem::exists(const std::string& name)
+{
+	// plik nie istnieje wiec jest to niepoprawna operacja
+	if (!katalog.count(name))
+	{
+		printf_s("Plik %s nie istnieje.\n", name.data());
+		return false;
+	}
+	return true;
+}
+
 bool Filesystem::readFile(const std::string& name, std::string& output) const
 {
 	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc false
 	
 	auto it = katalog.find(name);
 	if (it == katalog.end())
+	{
+		printf_s("Brak pliku o nazwie %s w katalogu.\n", name.data());
 		return false;
+	}
 	output.clear();
 	int inode = it->second;
 	std::string& s = output;
@@ -396,7 +443,7 @@ bool Filesystem::readFile(const std::string& name, std::string& output) const
 
 #include <sstream>
 #include <iomanip>
-std::string Filesystem::print_directory() const
+void Filesystem::print_directory() const
 {
 	std::stringstream stream{};
 	std::string s;
@@ -420,14 +467,15 @@ std::string Filesystem::print_directory() const
 			<< '\n';
 	//	s += x.first + "\t\t\t" + std::to_string(x.second) + "\n";
 	}
-
-	return stream.str();
+	printf_s("%s\n", s.data());
+	//return stream.str();
 }
 
-std::string Filesystem::statistics() const
+void Filesystem::statistics() const
 {
 	std::string s;
 	s += "Miejsce (wolne/max): " + std::to_string(freeBlockCount) + "/" + std::to_string(Dysk::blockCount) + '\n';
 	s += "Iwezly (wolne/max): " + std::to_string(freeInodeCount) + "/" + std::to_string(Filesystem::inodeCount);
-	return s;
+	printf_s("%s\n", s.data());
+	//return s;
 }

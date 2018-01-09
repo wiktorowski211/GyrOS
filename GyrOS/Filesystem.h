@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <iostream>
 
 #include "dysk.h"
 #include "inode.h"
@@ -13,19 +14,26 @@ class Filesystem
 {
 public:
 	Filesystem();
-
+	// stworz plik name
 	bool createFile(const std::string& name);
+	// usun plik name
 	bool deleteFile(const std::string& name);
+	// dodaj alias name2 do pliku name
 	bool addFilename(const std::string& name, const std::string& name2);
+	// zmien nazwe pliku z name na newname
 	bool changeFilename(const std::string& name, const std::string& newname);
-
+	// zapisz tresc do pliku o naziwe name ACHTUNG! Czysci to co bylo wczesniej napisane
 	bool writeFile(const std::string& name, const std::string& tresc);
-	// coming soon, reszta tych funkcji juz dziala
+	// dopisz tresc do pliku o nazwie name
 	bool appendFile(const std::string& name, const std::string& tresc);
+	// wczytaj plik o nazwie name do std::stringa output
 	bool readFile(const std::string& name, std::string& output) const;
-
-	std::string print_directory() const;
-	std::string statistics() const;
+	// czy plik o nazwie name istnieje, true = tak, false = nie
+	bool exists(const std::string& name);
+	// wyswietla pliki w katalogu i ich rozmiar
+	void print_directory() const;
+	// wyswietla zajete miejsce na dysku i ilosc iwezlow
+	void statistics() const;
 
 	static const int inodeCount = Dysk::blockCount;
 private:

@@ -422,12 +422,12 @@ string Shell::end(string &s)
 {
 	string kom = "";
 	bool pom = true;
-	int z = s.size();
+	size_t z = s.size();
 	if ((z-1) > 0)
 	{
 		if (s[s.size() - 1] == separator)
 		{
-			for (int i = s.size() - 1; i >= 0; i--)
+			for (size_t i = s.size() - 1; i >= 0; i--)
 			{
 				if (s[i] != separator)
 				{
