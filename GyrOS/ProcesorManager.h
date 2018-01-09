@@ -8,10 +8,13 @@ using namespace std;
 
 class Scheduler {
 public:
-	Scheduler() {};
+	Scheduler() { ResetQuantum(); };
 	Process* process;
 	void AddProcess(Process* proc);
-	void Run();
+	void DeleteProcess();
+	void Step(int steps);
+	int quantum;
 private:
 	queue<Process*> processes;
+	void ResetQuantum();
 };

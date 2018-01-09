@@ -11,20 +11,34 @@ void Scheduler::AddProcess(Process* proc)
 	processes.push(proc);
 }
 
-void Scheduler::Run()
+void Scheduler::DeleteProcess()//wywolac jesli proces zmieni stan z running na waiting/terminated
 {
-	while (processes.size() > 0) {
-		process = processes.front();
-		int quantum = 5;
-		process->processState = 2;
-		while (quantum > 0 && process->processState == 2) {
-			//wywo³aj jedna linie kodu
+	processes.pop();
+	ResetQuantum();
+}
+
+void Scheduler::ResetQuantum() {
+	quantum = 5;
+}
+
+void Scheduler::Step(int steps)
+{
+	for (int i = 0; i < steps; i++)
+	{
+		if (quantum >= 0 && process->processState == 1) {
+			process->processState = 2;
+			//wywo³aj jedna linie kodu;
 			quantum--;
 		}
-		processes.pop();
-		if (process->processState == 1)
+
+		if (quantum <= 0 && process->processState == 2)
 		{
+			DeleteProcess();
+
+			process->processState = 1;
 			processes.push(process);
+
+			process = processes.front();
 		}
 	}
 }
