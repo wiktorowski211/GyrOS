@@ -6,7 +6,7 @@
 #include<list>
 #include<algorithm>
 #include<fstream>
-//#include "Semaphoree.h"
+#include "Semaphoree.h"
 //#include "ProcesorManager.h"
 using namespace std;
 
