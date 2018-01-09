@@ -377,7 +377,7 @@ void runCommand(string command, Registry &reg)
 	}
 	else if (commandLine[0] == "SE")
 	{
-		//komunikacja miedzy procesowa
+		//.sendCom(commandLine[1],commandLine[2]);
 	}
 	else if (commandLine[0] == "KL")
 	{
