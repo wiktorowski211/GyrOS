@@ -30,6 +30,7 @@ void Scheduler::Step(int steps)
 			if (quantum > 0 && process->processState == 1) {
 				process->processState = 2;
 				//wywo³aj jedna linie kodu;
+				//std::cout << "Actual process: " << process->name<<" ID: "<<process->GetPID()<<endl;	//to wrzucimy w interpreterze
 				quantum--;
 			}
 
