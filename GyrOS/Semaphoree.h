@@ -2,13 +2,14 @@
 #include <queue>
 #include "ProcessManagement.h"
 #include "ProcesorManager.h"
+#include <string>
 using namespace std;
 
 class Semaphore
 {
 public:
 	int value;
-	queue<int> que;
+	queue<string> que;
 	Scheduler *ProcesorM;
 	ProcessManagement *ProcessM;
 	void Wait();

@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Shell.h"
 #define test true ////////do testów
 #define separator '~'
