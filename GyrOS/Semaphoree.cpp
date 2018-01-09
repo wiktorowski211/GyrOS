@@ -15,7 +15,7 @@ bool Semaphore::Wait()
 		string aktualny_proces = ProcessM->scheduler->GetProcess()->name;
 		que.push(aktualny_proces);
 		ProcessM->ChangeState(aktualny_proces, 3);
-		ProcessM->scheduler->GetProcess()->programCounter++;
+		//ProcessM->scheduler->GetProcess()->programCounter++;
 		return false;//nie wszedł
 	}
 }
