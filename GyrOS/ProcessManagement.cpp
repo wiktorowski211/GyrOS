@@ -1,13 +1,6 @@
 #include "ProcessManagement.h"
 #include "Pamiec.h"
 
-
-ProcessManagement::ProcessManagement()
-{
-		c->Mem.ProcessM = this;
-		init = new Process(FindFreeID(), nullptr, "init", "comm");
-}
-
 Process* ProcessManagement::FindProcess(int ID, Process* init)
 {
 	if (init->PID == ID) //je¿eli ID procesu siê zgadza z szukanym
@@ -74,6 +67,7 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 		}
 
 		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
+		P.dodaj(id, commands);
 		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
 	}
 }
@@ -100,6 +94,7 @@ void ProcessManagement::KillProcess(std::string name)
 		{
 			//scheduler->DeleteProcess(temp);// to dodaje marcin!!
 			temp->parent->children.erase(it);
+			P.usun(temp->PID);
 			return;
 		}
 	}
@@ -148,5 +143,6 @@ void ProcessManagement::PrintAllProcesses()
 			}
 		}
 	}
+	P.zawartosc();
 }
 
