@@ -1,42 +1,31 @@
-#include <iostream>
-#include <queue>
-#include "ProcessManagement.h"
-#include "ProcesorManager.h"
+#include "stdafx.h"
 #include "Semaphoree.h"
-using namespace std;
 
-class Semaphore//Semafor pracuje na ID procesow
+void Semaphore::Wait()
 {
-	int value;
-	queue<int> que;//Kolejka FIFO
-	void Wait()
+	if (value > 0)
+		value = value - 1;
+	else
 	{
-		if (value > 0)
-			value -= 1;
-		else
-		
-		{
-			int aktualny_proces = procesorManager.process->PID;
-			que.push(aktualny_proces);
-			processManager.ChangeState(aktualny_proces, 3);
-			
-		}
+		int aktualny_proces = ProcesorM->process->PID;
+		que.push(aktualny_proces);
+		ProcessM->ChangeState(aktualny_proces, 3);
 	}
-	void Signal()
+}
+void Semaphore::Signal()
+{
+	if (que.empty() == false)
 	{
-		if (que.empty() == false)
-		{
-			int procesID = que.front();
-			processManager.ChangeState(procesID, 1);
-			que.pop();
-		}
-		else
-		{
-			value++;
-		}
+		int procesID = que.front();
+		ProcessM->ChangeState(procesID, 1);
+		que.pop();
 	}
-	Semaphore(int k)
+	else
 	{
-		value = k;
+		value++;
 	}
-};
+}
+Semaphore SemaphoreFactory::CreateSemaphore(int k)
+{
+		return Semaphore{ k, ProcesorM,ProcessM };	
+}
