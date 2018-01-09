@@ -1,4 +1,6 @@
+#include "stdafx.h"
 #include "Semaphoree.h"
+
 
 void Semaphore::Wait()
 {
@@ -6,7 +8,7 @@ void Semaphore::Wait()
 		value = value - 1;
 	else
 	{
-		int aktualny_proces = ProcesorM->process->PID;
+		string aktualny_proces = ProcesorM->process->name;
 		que.push(aktualny_proces);
 		ProcessM->ChangeState(aktualny_proces, 3);
 	}
@@ -15,8 +17,8 @@ void Semaphore::Signal()
 {
 	if (que.empty() == false)
 	{
-		int procesID = que.front();
-		ProcessM->ChangeState(procesID, 1);
+		string procesName = que.front();
+		ProcessM->ChangeState(procesName, 1);
 		que.pop();
 	}
 	else
