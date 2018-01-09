@@ -15,6 +15,7 @@ void Scheduler::DeleteProcess()//wywolac jesli proces zmieni stan z running na w
 {
 	processes.pop();
 	ResetQuantum();
+	process = processes.front();
 }
 
 void Scheduler::ResetQuantum() {
@@ -25,20 +26,23 @@ void Scheduler::Step(int steps)
 {
 	for (int i = 0; i < steps; i++)
 	{
-		if (quantum > 0 && process->processState == 1) {
-			process->processState = 2;
-			//wywo³aj jedna linie kodu;
-			quantum--;
+		if (processes.size > 0) {
+			if (quantum > 0 && process->processState == 1) {
+				process->processState = 2;
+				//wywo³aj jedna linie kodu;
+				quantum--;
+			}
+
+			if (quantum <= 0 && process->processState == 2)
+			{
+				DeleteProcess();
+
+				process->processState = 1;
+				processes.push(process);
+
+				process = processes.front();
+			}
 		}
-
-		if (quantum <= 0 && process->processState == 2)
-		{
-			DeleteProcess();
-
-			process->processState = 1;
-			processes.push(process);
-
-			process = processes.front();
-		}
+	}
 	}
 }
