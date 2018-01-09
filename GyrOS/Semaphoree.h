@@ -11,7 +11,7 @@ public:
 	int value;
 	queue<string> que;
 	ProcessManagement *ProcessM;
-	void Wait();
+	bool Wait();
 	void Signal();
 	Semaphore(int k, ProcessManagement *procesik)
 	{
@@ -24,3 +24,4 @@ public:
 		ProcessM = nullptr;
 	}
 };
+
