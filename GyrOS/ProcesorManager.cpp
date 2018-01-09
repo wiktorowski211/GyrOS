@@ -30,7 +30,7 @@ void Scheduler::Step(int steps)
 {
 	for (int i = 0; i < steps; i++)
 	{
-		if (processes.size > 0) 
+		if (processes.size() > 0) 
 		{
 			if (quantum > 0 && process->processState == 1) 
 			{
