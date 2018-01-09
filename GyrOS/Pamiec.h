@@ -35,6 +35,7 @@ public:
 	int wolne = 128;
 	list<proces> l_procesow;
 	list<wolne_miejsca> l_wolne;
+	Semaphore Mem;
 	/*Semaphore FullMemmory;
 	Semaphore FSBEM;
 	ProcessManagement * p;
