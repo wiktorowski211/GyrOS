@@ -91,6 +91,7 @@ void ProcessManagement::KillProcess(std::string name)
 		if ((*it)->name == name)
 		{
 			temp->parent->children.erase(it);
+			scheduler->DeleteProcess(temp);
 			return;
 		}
 	}
@@ -103,7 +104,15 @@ void ProcessManagement::ChangeState(std::string name, int newstate)
 	temp->processState = newstate; //szukanie w drzewie procesu i zmiana jego stanu
 	if (newstate == 1) //je¿eli stan procesu ustawiany jest na ready to:
 	{
-		readyProcesses.push_back(temp); //dodawanie procesu do kolejki gotowych procesów
+		scheduler->AddProcess(temp); //dodawanie procesu do kolejki gotowych procesów
+	}
+	if (newstate == 4) //je¿eli stan procesu ustawiany jest na ready to:
+	{
+		scheduler->DeleteProcess(); //dodawanie procesu do kolejki gotowych procesów
+	}
+	if (newstate = 3)
+	{
+		scheduler->DeleteProcess();
 	}
 }
 

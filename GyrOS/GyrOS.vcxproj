@@ -125,6 +125,7 @@
     <ClInclude Include="Dysk\Filesystem.h" />
     <ClInclude Include="Dysk\inode.h" />
     <ClInclude Include="ProcesorManager.h" />
+    <ClInclude Include="Process.h" />
     <ClInclude Include="ProcessManagement.h" />
     <ClInclude Include="Semaphoree.h" />
     <ClInclude Include="Shell.h" />
