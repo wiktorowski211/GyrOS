@@ -25,7 +25,7 @@ void Scheduler::Step(int steps)
 {
 	for (int i = 0; i < steps; i++)
 	{
-		if (quantum >= 0 && process->processState == 1) {
+		if (quantum > 0 && process->processState == 1) {
 			process->processState = 2;
 			//wywo³aj jedna linie kodu;
 			quantum--;
