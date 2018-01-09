@@ -91,7 +91,7 @@ void ProcessManagement::KillProcess(std::string name)
 		if ((*it)->name == name)
 		{
 			temp->parent->children.erase(it);
-			scheduler->DeleteProcess(temp);
+			//scheduler->DeleteProcess(temp);// to dodaje marcin!!
 			return;
 		}
 	}
