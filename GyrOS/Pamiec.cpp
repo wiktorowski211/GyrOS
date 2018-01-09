@@ -1,4 +1,3 @@
-
 #include "Pamiec.h"
 #include<fstream>
 using namespace std;
