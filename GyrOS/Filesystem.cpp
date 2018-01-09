@@ -446,7 +446,7 @@ bool Filesystem::readFile(const std::string& name, std::string& output) const
 void Filesystem::print_directory() const
 {
 	std::stringstream stream{};
-	stream << "Liczba wpisow: " << std::to_string(katalog.size()) + "\n"
+	stream << "Liczba wpisow w katalogu: " << std::to_string(katalog.size()) + "\n"
 		<< std::setw(30) << std::left << "Nazwa:" 
 		<< std::setw(20) << std::left << "Numer i-wezla:"
 		<< std::setw(15) << std::left << "Bloki:"
@@ -463,7 +463,7 @@ void Filesystem::print_directory() const
 			<< std::setw(18) << std::left << std::to_string(wezly[x.second].hardlinks)
 			<< '\n';
 	}
-	printf_s("%s\n", stream.str().data());
+	printf_s("%s", stream.str().data());
 	//return stream.str();
 }
 

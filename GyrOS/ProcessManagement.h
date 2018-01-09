@@ -4,19 +4,22 @@
 #include <vector>
 #include <string>
 #include "ProcesorManager.h"
-#include "Pamiec.h"
+//#include "Pamiec.h"
+
+class Pamiec;
 
 struct ProcessManagement
 {
 public:
 	Scheduler* scheduler;
-	Pamiec P;
+	Pamiec* MemoryManagement = nullptr;
 
 
 	Process* init; //proces, który wytwarza się przy startowaniu systemu
 	int freeID = 0; //nastepny wolny numer ID do wykorzystania
 
-	ProcessManagement() {
+	// prosze nie tworzyc innych konstruktorow!!!
+	ProcessManagement(Pamiec* P) : MemoryManagement{ P } {
 		init = new Process(FindFreeID(), nullptr, "init", "comm");
 		
 	}
