@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Pamiec.h"
 using namespace std;
 
