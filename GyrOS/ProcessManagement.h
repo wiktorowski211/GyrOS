@@ -3,20 +3,18 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
 #include "ProcesorManager.h"
 
+class Pamiec;
 struct ProcessManagement
 {
 public:
 	Scheduler* scheduler;
-
+	Pamiec *c;
 	Process* init; //proces, który wytwarza się przy startowaniu systemu
 	int freeID = 0; //nastepny wolny numer ID do wykorzystania
 
-	ProcessManagement() {
-		init = new Process(FindFreeID(), nullptr, "init", "comm");
-	}
+	ProcessManagement();
 
 	std::vector<Process*> readyProcesses;
 

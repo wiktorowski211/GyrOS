@@ -1,10 +1,18 @@
 #include "ProcessManagement.h"
+#include "Pamiec.h"
+
+
+ProcessManagement::ProcessManagement()
+{
+		c->Mem.ProcessM = this;
+		init = new Process(FindFreeID(), nullptr, "init", "comm");
+}
 
 Process* ProcessManagement::FindProcess(int ID, Process* init)
 {
-	if (init->PID == ID) //je¿eli ID procesu siê zgadza z szukanym
+	if (init->PID == ID) //jeÂ¿eli ID procesu siÃª zgadza z szukanym
 	{
-		return init; //koniec rekurencji, zwraca znaleziony proces w postaci wskaŸnika
+		return init; //koniec rekurencji, zwraca znaleziony proces w postaci wskaÅ¸nika
 	}
 	else
 	{
@@ -18,13 +26,13 @@ Process* ProcessManagement::FindProcess(int ID, Process* init)
 		}
 		return nullptr;
 	}
-} //funkcja przeszukuj¹ca drzewo procesów 
+} //funkcja przeszukujÂ¹ca drzewo procesÃ³w 
 
 Process* ProcessManagement::FindProcess(std::string name, Process* init)
 {
-	if (init->name == name) //je¿eli nazwa procesu siê zgadza z szukanym
+	if (init->name == name) //jeÂ¿eli nazwa procesu siÃª zgadza z szukanym
 	{
-		return init; //koniec rekurencji, zwraca znaleziony proces w postaci wskaŸnika
+		return init; //koniec rekurencji, zwraca znaleziony proces w postaci wskaÅ¸nika
 	}
 	else
 	{
@@ -38,7 +46,7 @@ Process* ProcessManagement::FindProcess(std::string name, Process* init)
 		}
 		return nullptr;
 	}
-} //funkcja przeszukuj¹ca drzewo procesów 
+} //funkcja przeszukujÂ¹ca drzewo procesÃ³w 
 
 
 int ProcessManagement::FindFreeID()
@@ -66,7 +74,7 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 		}
 
 		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
-		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
+		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomkÃ³w dla rodzimego procesu
 	}
 }
 
@@ -102,11 +110,11 @@ void ProcessManagement::ChangeState(std::string name, int newstate)
 {
 	Process* temp = FindProcess(name, init);
 	temp->processState = newstate; //szukanie w drzewie procesu i zmiana jego stanu
-	if (newstate == 1) //je¿eli stan procesu ustawiany jest na ready to:
+	if (newstate == 1) //jeÂ¿eli stan procesu ustawiany jest na ready to:
 	{
-		scheduler->AddProcess(temp); //dodawanie procesu do kolejki gotowych procesów
+		scheduler->AddProcess(temp); //dodawanie procesu do kolejki gotowych procesÃ³w
 	}
-	if (newstate == 4) //je¿eli stan procesu ustawiany jest na ready to:
+	if (newstate == 4) //jeÂ¿eli stan procesu ustawiany jest na ready to:
 	{
 		KillProcess(name);
 	}
