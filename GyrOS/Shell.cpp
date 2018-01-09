@@ -1,6 +1,6 @@
 #include "Shell.h"
 #define test true ////////do testów
-#define separator '~'
+#define separator '~' //hm?
 using namespace std;
 
 void Shell::wydziel_rozkaz(string &kom) {
