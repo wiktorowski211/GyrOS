@@ -5,11 +5,11 @@
 
 struct Process
 {
-protected:
+public:
 	int PID;
 	int processState; //0=virgin, 1=ready, 2=running, 3=waiting, 4=terminated;
 	std::string name;
-public:
+
 	Process* parent; //procesy przedstawiają drzewo, gdzie rodzic jest procesem macierzystym
 	std::vector<Process*> children; //a dzieci jego procesami potomnymi
 
@@ -17,16 +17,13 @@ public:
 	int regB;
 	int regC;
 	int regD;
-protected:
+
 	int programCounter = 0; //wskazuje następną instrukcję do wykonania
 	int programPosition;
-public:
+
 	int GetPID() { return PID; }
 	int GetProcessState() { return processState; }
 	int GetPid() { return PID; }
-	int processState() { return processState; }
-	int programCounter() { return programCounter; }
-	int programPosition() {return programPosition;}
 
 	Process(int ID, Process* father, std::string processName, std::string txt)
 	{

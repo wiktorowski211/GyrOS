@@ -132,3 +132,27 @@ void ProcessManagement::PrintAllProcesses()
 		}
 	}
 }
+
+int main()
+{
+	ProcessManagement p;
+	p.AddProcess("p1", "comm", 0);
+	p.AddProcess("p2", "commm", 1);
+	p.AddProcess("p3", "commmm", 2);
+	p.AddProcess("p2", "comm", 0);
+	p.PrintAllProcesses();
+
+	std::cout << "\n";
+	std::cout << "\n";
+	p.PrintProcess("p2");
+	std::cout << "\n";
+	std::cout << "\n";
+	std::cout << "\n";
+	p.KillProcess("p2");
+	p.PrintAllProcesses();
+	std::cin.ignore(2);
+
+
+
+	return 0;
+}
