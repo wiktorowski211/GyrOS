@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> 6036afdc5e5c6669642c446bdfcefba6d1b44bf6
 #include "Pamiec.h"
 #include<fstream>
 using namespace std;
