@@ -435,6 +435,7 @@ void Shell::czytaj_skrypt(string s)
 	else {
 		cout << "\n\tNie znaleziono wskazanego pliku";
 	}
+	plik.close();
 }
 //////////////////////////////////////////
 string Shell::namale(string &s)
