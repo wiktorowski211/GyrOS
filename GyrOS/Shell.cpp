@@ -1,5 +1,4 @@
 #include "Shell.h"
-#define test true ////////do testów
 #define separator '~'
 using namespace std;
 
@@ -49,9 +48,10 @@ void Shell::rozpoznaj_rozkaz(string s1, string s2) {
 	case 9: {taskkill(s2); }; break;
 	case 10: {tasklist(); }; break;
 	case 11: {go(); }; break;
-	case 12: {check(); }; break;
+	case 12: {check(s2); }; break;
 	case 13: {mklink(s2); }; break;
 	case 14: {dir(); }; break;
+	case 15: {reg(); }; break;
 	default: {
 		if (s1.size()>4 && s1[s1.size() - 4] == '.' && s1[s1.size() - 3] == 'b' && s1[s1.size() - 2] == 'a' && s1[s1.size() - 1] == 't')
 		{
@@ -81,7 +81,8 @@ void Shell::help()
 	cout << "\nTASKLIST				Wyswietla liste procesow.";
 	cout << "\nMKLINK nazwa_pliku alias_pliku		Tworzy Alias do wskazanego pliku.";
 	cout << "\nGO					Wywoluje kolejny 'krok' systemu (jeden rozkaz asemblerowy).";
-	cout << "\nCHECK					Wyswietla biezacy stan systemu.\n";
+	cout << "\nCHECK					Wyswietla biezacy stan dysku/ramu.";
+	cout << "\nREG					Podglad rejestrow biezacego procesu.\n";
 }
 void Shell::echo(string &s) {
 	if (echo_przekaz(s))
@@ -171,10 +172,15 @@ void Shell::cls() {
 }
 void Shell::del(string &s)
 {
-	if (dysk.deleteFile(s))
+	if (ilsep(s) == 0)
 	{
-		cout << "\nPlik: " << s << " usunieto" << endl;
+		if (dysk.deleteFile(s))
+		{
+			cout << "\nPlik: " << s << " usunieto" << endl;
+		}
 	}
+	else
+		cout << "\tNiepoprawna komenda.\n";
 }
 void Shell::ext() {
 	kropki("Zamykanie systemu");
@@ -182,123 +188,143 @@ void Shell::ext() {
 }
 void Shell::type(string &s)
 {
-	if (s.size() != 0)
+	if (ilsep(s) == 0)
 	{
-		string plik = "", tresc;
-		for (int i = 0; i < s.size(); i++)
+		if (s.size() != 0)
 		{
-			if (s[i] != separator)
-				plik += s[i];
+			string plik = "", tresc;
+			for (int i = 0; i < s.size(); i++)
+			{
+				if (s[i] != separator)
+					plik += s[i];
+			}
+			if (dysk.readFile(s, tresc))
+				cout << "\nZawartosc pliku " << plik << ":\n" << tresc << endl;
 		}
-		if (dysk.readFile(s, tresc))
-			cout << "\nZawartosc pliku " << plik << ":\n" << tresc << endl;
+		else
+			cout << "\tNiepoprawna komenda.\n";
 	}
 	else
 		cout << "\tNiepoprawna komenda.\n";
 }
 void Shell::rename(string &s)
 {
-	if (s.size() != 0)
+	if (ilsep(s) == 1)
 	{
-		string stara = "", nowa = "";
-		bool n = false;
-		for (int i = 0; i < s.size(); i++)
+		if (s.size() != 0)
 		{
-			if (s[i] == separator)
+			string stara = "", nowa = "";
+			bool n = false;
+			for (int i = 0; i < s.size(); i++)
 			{
-				n = true;
-				continue;
+				if (s[i] == separator)
+				{
+					n = true;
+					continue;
+				}
+				if (!n)
+				{
+					stara += s[i];
+				}
+				if (n)
+				{
+					nowa += s[i];
+				}
 			}
-			if (!n)
-			{
-				stara += s[i];
-			}
-			if (n)
-			{
-				nowa += s[i];
-			}
+			if (dysk.changeFilename(stara, nowa))
+				cout << "\nZmiana nazwy pliku: " << stara << " na: " << nowa << endl;
 		}
-		if (dysk.changeFilename(stara, nowa))
-			cout << "\nZmiana nazwy pliku: " << stara << " na: " << nowa << endl;
+		else
+			cout << "\n\tNiepoprawna komenda.\n";
 	}
 	else
-		cout << "\n\tNiepoprawna komenda.\n";
+		cout << "\tNiepoprawna komenda.\n";
 }
 void Shell::start(string &s)
 {
-	if (s.size() != 0)
+	if (ilsep(s) == 1)
 	{
-		string nazwa = "", kod = ""; // roz = "";
-		bool ok = true;
-		int /*rozmiar,*/ e = 0;
-		for (int i = 0; i < s.size(); i++)
+		if (s.size() != 0)
 		{
-			if (s[i] == separator)
+			string nazwa = "", kod = ""; // roz = "";
+			bool ok = true;
+			int /*rozmiar,*/ e = 0;
+			for (int i = 0; i < s.size(); i++)
 			{
-				e++;
-				continue;
+				if (s[i] == separator)
+				{
+					e++;
+					continue;
+				}
+				if (e == 0)
+				{
+					nazwa += s[i];
+				}
+				/*if (e == 1)
+				{
+				if(nazwa!="")
+				roz += s[i];
+				else
+				{
+				ok = false;
+				break;
+				}
+				}*/
+				if (e == 1)//bylo 2
+				{
+					if (nazwa != "")//byl roz
+						kod += s[i];
+					else
+					{
+						ok = false;
+						break;
+					}
+				}
 			}
-			if (e == 0)
+			if (kod == "")
+				ok = false;
+			/*for (int j = 0; j < roz.size(); j++)
 			{
-				nazwa += s[i];
-			}
-			/*if (e == 1)
-			{
-			if(nazwa!="")
-			roz += s[i];
-			else
+			if (int(roz[j])< 48 || int(roz[j])>57)
 			{
 			ok = false;
 			break;
 			}
 			}*/
-			if (e == 1)//bylo 2
+			if (ok)
 			{
-				if (nazwa != "")//byl roz
-					kod += s[i];
-				else
-				{
-					ok = false;
-					break;
-				}
+				//rozmiar = stoi(roz);
+				procesy.AddProcess(nazwa, kod, 0);
+				cout << "Stworzono proces: " << nazwa << " o kodzie zrodlowym z pliku: " << kod;
+			}
+			else
+			{
+				cout << "\tNiepoprawna komenda.\n";
 			}
 		}
-		if (kod == "")
-			ok = false;
-		/*for (int j = 0; j < roz.size(); j++)
-		{
-		if (int(roz[j])< 48 || int(roz[j])>57)
-		{
-		ok = false;
-		break;
-		}
-		}*/
-		if (ok)
-		{
-			//rozmiar = stoi(roz);
-			procesy.AddProcess(nazwa, kod, 0);
-			cout << "Stworzono proces: " << nazwa << " o kodzie zrodlowym z pliku: " << kod;
-		}
 		else
-		{
 			cout << "\tNiepoprawna komenda.\n";
-		}
 	}
 	else
 		cout << "\tNiepoprawna komenda.\n";
 }
 void Shell::taskkill(string &s)
 {
-	if (s.size() != 0)
+	if (ilsep(s) == 0)
 	{
-		string nazwa = "";
-		for (int i = 0; i < s.size(); i++)
+		if (s.size() != 0)
 		{
-			if (s[i] != separator)
-				nazwa += s[i];
+			string nazwa = "";
+			for (int i = 0; i < s.size(); i++)
+			{
+				if (s[i] != separator)
+					nazwa += s[i];
+			}
+			procesy.KillProcess(nazwa);
+			cout << "Zabicie procesu o nazwie: " << nazwa;
 		}
-		procesy.KillProcess(nazwa);
-		cout << "Zabicie procesu o nazwie: " << nazwa;
+		else
+			cout << "\tNiepoprawna komenda.\n";
 	}
 	else
 		cout << "\tNiepoprawna komenda.\n";
@@ -312,39 +338,59 @@ void Shell::go()
 {
 	procesy.scheduler->Step(1);
 }
+void Shell::reg()
+{
+	//funkcja od rejestrow
+}
 void Shell::mklink(string &s)
 {
-	if (s.size() != 0)
+	if (ilsep(s) == 1)
 	{
-		string nazwa = "", alias = "";
-		bool n = false;
-		for (int i = 0; i < s.size(); i++)
+		if (s.size() != 0)
 		{
-			if (s[i] == separator)
+			string nazwa = "", alias = "";
+			bool n = false;
+			for (int i = 0; i < s.size(); i++)
 			{
-				n = true;
-				continue;
+				if (s[i] == separator)
+				{
+					n = true;
+					continue;
+				}
+				if (n)
+				{
+					nazwa += s[i];
+				}
+				if (!n)
+				{
+					alias += s[i];
+				}
 			}
-			if (n)
-			{
-				nazwa += s[i];
-			}
-			if (!n)
-			{
-				alias += s[i];
-			}
+			if (dysk.addFilename(nazwa, alias))
+				cout << "\nDopisanie aliasa: " << alias << " do pliku: " << nazwa << endl;
+			else
+				cout << "\nNie udalo sie dopisac aliasa do pliku: " << nazwa << endl;
 		}
-		if (dysk.addFilename(nazwa, alias))
-			cout << "\nDopisanie aliasa: " << alias << " do pliku: " << nazwa << endl;
 		else
-			cout << "\nNie udalo sie dopisac aliasa do pliku: " << nazwa << endl;
+			cout << "\n\tNiepoprawna komenda.\n";
 	}
 	else
-		cout << "\n\tNiepoprawna komenda.\n";
+		cout << "\tNiepoprawna komenda.\n";
 }
-void Shell::check()
+void Shell::check(string &s)
 {
-	cout << "\nStan systemu: ";
+	if (ilsep(s) == 0)
+	{
+		string s1 = namale(s);
+		switch (chk[s1])
+		{
+		case 1: {dysk.statistics(); }; break;
+		case 2: {/*funkcja od ramu*/}; break;
+		default: cout << "\tNiepoprawna komenda.\n"; break;
+		}
+	}
+	else
+		cout << "\tNiepoprawna komenda.\n";
 }
 void Shell::dir()
 {
@@ -515,4 +561,16 @@ string Shell::cudzy(string &s)
 		}
 	}
 	return s1;
+}
+int Shell::ilsep(string &s)
+{
+	int ile = 0;
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (s[i] == separator)
+		{
+			ile++;
+		}
+	}
+	return ile;
 }
