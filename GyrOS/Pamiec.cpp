@@ -11,25 +11,29 @@ bool comp(const wolne_miejsca &a, const wolne_miejsca &b)
 //void Pamiec::dodaj(int PID, int w, string commands)
 void Pamiec::dodaj(int PID, string FileName)
 {
-	//Mem.Wait();
+
 	fstream plik;
-	string commands, pom;
+	string commands, pom, com[128];
+
 	plik.open(FileName);
 
-	int w = 0;
+	int w = 0, licznik = 0;
 
 	if (plik.is_open())
 	{
 		while (plik.good())
 		{
 			getline(plik, pom);
-
+			com[licznik] = pom;
+			licznik++;
+			
 			for (int i = 0; i <= pom.length(); i++)
 			{
 				if (pom[i] != '\n')
 					w++;
 			}
 			commands += pom;
+			commands += '\n';
 		}
 	}
 
@@ -38,20 +42,20 @@ void Pamiec::dodaj(int PID, string FileName)
 	/*int linie = 1;
 	for (int i = 0; i < commands.length(); i++)
 	{
-	if (commands[i] == '\n')
-	{
-	linie++;
-	}
+		if (commands[i] == '\n')
+		{
+			linie++;
+		}
 	}*/
 	//int w = linie; 
 	//w = linie;
-
+	
 
 
 	bool szukaj_miejsca = false, po_fragmentacji = false;
 
 	try {
-		if (wolne < w || wolne <= 2)
+		if (wolne < w || wolne <=2)
 		{
 			//MemSem.Wait();
 			throw 0;
@@ -81,6 +85,7 @@ void Pamiec::dodaj(int PID, string FileName)
 
 					if (ostatni == 0)
 					{
+						l_wolne.pop_back();
 						wm.poczatek = w + 1;
 						ostatni = w + 1;
 						wm.k = 128;
@@ -115,8 +120,8 @@ void Pamiec::dodaj(int PID, string FileName)
 							wm.k = 128;
 						}
 						wm.wielkosc = wm.k - wm.poczatek;
-						if (wm.wielkosc>0)
-							l_wolne.emplace_front(wm);
+						if(wm.wielkosc>0)
+						l_wolne.emplace_front(wm);
 
 						l_wolne.erase(itw);
 					}
@@ -149,7 +154,7 @@ void Pamiec::dodaj(int PID, string FileName)
 		}
 	}
 	catch (int) { cout << "\n\tBrak pamieci!" << endl; };
-	//Mem.Signal();
+	//FSBSEM.SIGNAL();
 }
 void Pamiec::usun(int pid)
 {
@@ -340,22 +345,22 @@ void Pamiec::fragmentacja()
 	} while (!war);
 
 }
-void Pamiec::odczyt(int PID)
+string Pamiec::odczyt(int PID)
 {
 	cout << "Odczytywanie: " << endl;
 	list<proces>::iterator it;
-	string komendy;
+	string komendy, zwrot;
 	for (it = l_procesow.begin(); it != l_procesow.end(); it++)
 	{
 		if (it->PID == PID)
 		{
 			komendy = it->commands;
-			int licz = 0, i, linie = 1;
+			int licz = 0, i, linie=1;
 			for (i = 0; i < it->commands.length(); i++)
 			{
 				if (it->commands[i] == '\n')
 				{
-					linie++;
+				linie++;
 				}
 			}
 
@@ -372,7 +377,7 @@ void Pamiec::odczyt(int PID)
 			if (it->commands[i] == '\n')
 				i++;
 
-
+			
 			int kwant = 5, petla = 0;
 			for (int j = i; j <= it->commands.length(); j++)
 			{
@@ -386,14 +391,15 @@ void Pamiec::odczyt(int PID)
 						it->processCounter++;
 						petla++;
 					}
-					cout << komendy[j];
-
+					//cout << komendy[j];
+					zwrot += komendy[j];
 				}
 				else break;
 			}
-			if (it->processCounter == linie - 1)
+			if (it->processCounter == linie-1)
 				it->processCounter = 0;
 		}
 	}
 	cout << "\n\n";
+	return zwrot;
 }

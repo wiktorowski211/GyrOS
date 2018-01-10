@@ -190,11 +190,17 @@ bool Filesystem::changeFilename(const std::string& name, const std::string& newn
 {
 	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
+	{
+		printf_s("Plik o nazwie %s nie istnieje.\n", name.data());
 		return false;
+	}
 
 	// plik o docelowej nazwie istnieje wiec jest to niepoprawna operacja
 	if (katalog.count(newname))
+	{
+		printf_s("Plik o nazwie %s juz istnieje.\n", newname.data());
 		return false;
+	}
 
 	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
 
@@ -390,7 +396,7 @@ bool Filesystem::exists(const std::string& name)
 	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
 	{
-		printf_s("Plik %s nie istnieje.\n", name.data());
+		//printf_s("Plik %s nie istnieje.\n", name.data());
 		return false;
 	}
 	return true;

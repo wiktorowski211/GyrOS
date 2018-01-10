@@ -11,11 +11,12 @@ int main()
 	{
 		cout << "<GyrOS> ";
 		string komenda;
-		getline(cin, komenda);
+		do {
+			getline(cin, komenda);
+		} while (powloka.begin(komenda).size() == 0);
 		powloka.wydziel_rozkaz(powloka.begin(komenda));
 		cout << endl;
 	}
 	cout << "\nSystem zostal poprawnie zamkniety" << endl;
 	return 0;
 }
-
