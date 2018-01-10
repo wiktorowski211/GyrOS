@@ -19,6 +19,7 @@ public:
 	ProcessManagement procesy;
 	Filesystem dysk;
 	map<string, int> rozkaz;
+	map<string, int> chk;
 	bool work;
 	Shell() : ram{}, procesy{ &ram }, dysk{}
 	{
@@ -36,6 +37,10 @@ public:
 		rozkaz.insert(pair<string, int>("check", 12));//pokazuje stan systemu
 		rozkaz.insert(pair<string, int>("mklink", 13));//dopisuje alias do wskazanego pliku
 		rozkaz.insert(pair<string, int>("dir", 14));//wyswietla liste plikow
+		rozkaz.insert(pair<string, int>("reg", 15));//stan rejestrow aktualnego procesu
+		
+		chk.insert(pair<string, int>("disc", 1));
+		chk.insert(pair<string, int>("ram", 2));
 		work = true;
 	}
 	void wydziel_rozkaz(string &kom);
@@ -55,6 +60,7 @@ private:
 	void tasklist();
 	void go();
 	void mklink(string &s);
+	void reg();
 	void nadpisz(string &s, string &p);
 	void dopisz(string &s, string &p);
 	void czytaj_skrypt(string s);

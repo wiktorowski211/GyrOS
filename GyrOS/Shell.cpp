@@ -51,6 +51,7 @@ void Shell::rozpoznaj_rozkaz(string s1, string s2) {
 	case 12: {check(s2); }; break;
 	case 13: {mklink(s2); }; break;
 	case 14: {dir(); }; break;
+	case 15: {reg(); }; break;
 	default: {
 		if (s1.size()>4 && s1[s1.size() - 4] == '.' && s1[s1.size() - 3] == 'b' && s1[s1.size() - 2] == 'a' && s1[s1.size() - 1] == 't')
 		{
@@ -80,7 +81,8 @@ void Shell::help()
 	cout << "\nTASKLIST				Wyswietla liste procesow.";
 	cout << "\nMKLINK nazwa_pliku alias_pliku		Tworzy Alias do wskazanego pliku.";
 	cout << "\nGO					Wywoluje kolejny 'krok' systemu (jeden rozkaz asemblerowy).";
-	cout << "\nCHECK					Wyswietla biezacy stan systemu.\n";
+	cout << "\nCHECK					Wyswietla biezacy stan dysku/ramu.";
+	cout << "\nREG					Podglad rejestrow biezacego procesu.\n";
 }
 void Shell::echo(string &s) {
 	if (echo_przekaz(s))
@@ -336,6 +338,10 @@ void Shell::go()
 {
 	procesy.scheduler->Step(1);
 }
+void Shell::reg()
+{
+	//funkcja od rejestrow
+}
 void Shell::mklink(string &s)
 {
 	if (ilsep(s) == 1)
@@ -375,7 +381,13 @@ void Shell::check(string &s)
 {
 	if (ilsep(s) == 0)
 	{
-
+		string s1 = namale(s);
+		switch (chk[s1])
+		{
+		case 1: {dysk.statistics(); }; break;
+		case 2: {/*funkcja od ramu*/}; break;
+		default: cout << "\tNiepoprawna komenda.\n"; break;
+		}
 	}
 	else
 		cout << "\tNiepoprawna komenda.\n";
