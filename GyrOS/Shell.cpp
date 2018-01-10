@@ -158,8 +158,8 @@ void Shell::nadpisz(string &s, string &p)
 	}
 	else
 	{
-		dysk.createFile(p);
-		dysk.writeFile(p, s);
+		if(dysk.createFile(p))
+			dysk.writeFile(p, s);
 	}
 
 }

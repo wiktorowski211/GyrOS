@@ -34,7 +34,7 @@ public:
 		rozkaz.insert(pair<string, int>("taskkill", 9));//kończy proces
 		rozkaz.insert(pair<string, int>("tasklist", 10));//lista procesów
 		rozkaz.insert(pair<string, int>("go", 11));//wykonuje rozkaz asemblerowy - krok systemu
-		rozkaz.insert(pair<string, int>("check", 12));//pokazuje stan systemu
+		rozkaz.insert(pair<string, int>("check", 12));//pokazuje stan dysku/ramu
 		rozkaz.insert(pair<string, int>("mklink", 13));//dopisuje alias do wskazanego pliku
 		rozkaz.insert(pair<string, int>("dir", 14));//wyswietla liste plikow
 		rozkaz.insert(pair<string, int>("reg", 15));//stan rejestrow aktualnego procesu
