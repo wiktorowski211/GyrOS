@@ -9,11 +9,11 @@ class ProcessManagement;
 
 class Enterpreter {
 public:
-	Enterpreter(Pamiec* pam, ProcessManagement* processManager, Filesystem* dysk);
+	Enterpreter(Pamiec& pam, ProcessManagement& processManager, Filesystem& dysk);
 
-	Pamiec * memory = nullptr;
-	ProcessManagement*  processes = nullptr;
-	Filesystem* dysk = nullptr;
+	Pamiec& memory;
+	ProcessManagement&  processes;
+	Filesystem& dysk;
 
 	void InterpretLine(Process* proc);
 

@@ -25,7 +25,7 @@ public:
 	map<string, int> rozkaz;
 	map<string, int> chk;
 	bool work; //(Pamiec* pam, ProcessManagement* processManager, Filesystem* dysk)
-	Shell() : ram{}, procesy{ &ram, &interpreter}, dysk{}, interpreter{&ram, &procesy, &dysk}
+	Shell() : ram{}, procesy{ &ram, &interpreter}, dysk{}, interpreter{ram, procesy, dysk}
 	{
 		rozkaz.insert(pair<string, int>("help", 1)); //wyświetla dostępne komendy
 		rozkaz.insert(pair<string, int>("cls", 2)); //czyści konsole

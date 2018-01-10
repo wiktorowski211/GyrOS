@@ -4,15 +4,16 @@
 #include "Process.h"
 
 
-Enterpreter::Enterpreter(Pamiec* pam, ProcessManagement* processManager, Filesystem* dysk)
+Enterpreter::Enterpreter(Pamiec& pam, ProcessManagement& processManager, Filesystem& dysk):
+	memory{pam}, processes{processManager}, dysk{dysk}
 { 
-	this->memory = pam;
-	this->processes = processManager;
-	this->dysk = dysk;
+//	this->memory = pam;
+//	this->processes = processManager;
+	//this->dysk = dysk;
 }
 
 void Enterpreter::InterpretLine(Process* proc) {//counter jeszcze 
-	std::string currentCommand = memory->odczyt(proc->GetPID(), proc->get_counter());
+	std::string currentCommand = memory.odczyt(proc->GetPID(), proc->get_counter());
 	cout<< currentCommand <<endl;
 	proc->set_counter(proc->get_counter()+1);
 	runCommand(currentCommand, proc);
@@ -322,7 +323,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	else if (commandLine[0] == "EX")
 	{
 		std::cout << "Koniec programu z procesu " << reg.PID << std::endl;
-		processes->ChangeState(reg.name, TERMINATED);
+		processes.ChangeState(reg.name, TERMINATED);
 	}
 	// TODO Otwieranie pliku FO = FILE OPEN
 	else if (commandLine[0] == "FO")
@@ -346,7 +347,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 void Enterpreter::parseError(Process& p)
 {
 	std::cout << "Blad parsowania. Proces " << p.GetPID() << " zostal przerwany.\n";
-	processes->ChangeState(p.name, TERMINATED);
+	processes.ChangeState(p.name, TERMINATED);
 	return;
 
 }
