@@ -77,7 +77,7 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 			processName = processName + "_" + std::to_string(id);
 		}
 
-		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
+		std::cout << "New process with ID " << id << " and name " << processName << ".\n";
 		if (MemoryManagement->dodaj(id, commands) == false)
 		{
 			memory_is_available = false;
@@ -101,7 +101,7 @@ void ProcessManagement::KillProcess(std::string name)
 	}
 
 	if (temp == init) {
-		std::cout << "Nie mozna usunac procesu init" << std::endl;
+		std::cout << "You cannot delete init process!" << std::endl;
 		return;
 	}
 
@@ -126,7 +126,7 @@ void ProcessManagement::KillProcess(std::string name)
 			{
 				memory_is_available = true;
 			}
-			cout << "Zabicie procesu o nazwie: " << name<<endl;
+			std::cout << "Process " << name << " has been deleted!" << std::endl;
 			return;
 		}
 	}
@@ -137,7 +137,7 @@ void ProcessManagement::ChangeState(std::string name, int newstate)
 {
 	Process* temp = FindProcess(name, init);
 	if (!temp)
-		std::cout << "ChangeState: Brak procesu?\n";
+		std::cout << "ChangeState: There's no process like this.\n";
 	temp->processState = newstate; //szukanie w drzewie procesu i zmiana jego stanu
 	if (newstate == READY) //je¿eli stan procesu ustawiany jest na ready to:
 	{
