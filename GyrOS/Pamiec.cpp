@@ -345,61 +345,55 @@ void Pamiec::fragmentacja()
 	} while (!war);
 
 }
-string Pamiec::odczyt(int PID)
+string Pamiec::odczyt(int PID, int counter)
 {
-	cout << "Odczytywanie: " << endl;
+	//cout << "Odczytywanie: " << endl;
 	list<proces>::iterator it;
 	string komendy, zwrot;
 	for (it = l_procesow.begin(); it != l_procesow.end(); it++)
 	{
 		if (it->PID == PID)
 		{
-			komendy = it->commands;
-			int licz = 0, i, linie=1;
-			for (i = 0; i < it->commands.length(); i++)
+			int licz = 0, i, linie = 1;
+			/*for (i = 0; i < it->commands.length(); i++)
 			{
 				if (it->commands[i] == '\n')
 				{
-				linie++;
+					linie++;
 				}
-			}
-
+			}*/	
 			for (i = 0; i < it->commands.length(); i++)
 			{
 				if (it->commands[i] == '\n')
 				{
 					licz++;
 				}
-				if (licz == it->processCounter)
+				if (licz == counter)
 					break;
 			}
 
-			if (it->commands[i] == '\n')
+			if (it->commands[i] == ';')
 				i++;
 
-			
+
 			int kwant = 5, petla = 0;
 			for (int j = i; j <= it->commands.length(); j++)
 			{
 				if (j == it->commands.length())
 					break;
 
-				if (petla < kwant)
+				if (it->commands[j] != ';')
 				{
-					if (komendy[j] == '\n')
-					{
-						it->processCounter++;
-						petla++;
-					}
-					//cout << komendy[j];
-					zwrot += komendy[j];
+					it->processCounter++;
+					zwrot += it->commands[j];
 				}
-				else break;
+				else
+					break;
+
 			}
-			if (it->processCounter == linie-1)
+			if (it->processCounter == linie - 1)
 				it->processCounter = 0;
+			}
 		}
-	}
-	cout << "\n\n";
-	return zwrot;
+		return zwrot;
 }
