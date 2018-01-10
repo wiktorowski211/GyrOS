@@ -377,9 +377,9 @@ void Shell::go(string &s)
 }
 void Shell::reg(string &s)
 {
-	if(s.size()==0)
+	if(s.size()>0)
 	{ 
-		//funkcja od rejestrow
+		procesy.PrintProcess(s);
 	}
 	else
 		cout << "\tNiepoprawna komenda.\n";
