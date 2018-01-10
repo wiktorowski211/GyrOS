@@ -80,7 +80,7 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
 		MemoryManagement->dodaj(id, commands);
 		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
-		ChangeState(processName, 1);
+		ChangeState(processName, READY);
 	}
 }
 
@@ -119,17 +119,26 @@ void ProcessManagement::ChangeState(std::string name, int newstate)
 	if (!temp)
 		std::cout << "ChangeState: Brak procesu?\n";
 	temp->processState = newstate; //szukanie w drzewie procesu i zmiana jego stanu
-	if (newstate == 1) //je¿eli stan procesu ustawiany jest na ready to:
+	if (newstate == READY) //je¿eli stan procesu ustawiany jest na ready to:
 	{
 		scheduler->AddProcess(temp); //dodawanie procesu do kolejki gotowych procesów
 	}
-	else if (newstate == 4) //je¿eli stan procesu ustawiany jest na ready to:
+	else if (newstate == TERMINATED) //je¿eli stan procesu ustawiany jest na ready to:
 	{
 		KillProcess(name);
 	}
-	else if (newstate == 3)
+	else if (newstate == WAITING)
 	{
-		scheduler->DeleteProcess();
+		int counter = temp->get_counter();
+		if (counter == 0)
+		{
+			scheduler->DeleteProcess();
+		}
+		else
+		{
+			counter--;
+			temp->set_counter(counter);
+		}
 	}
 }
 

@@ -26,9 +26,8 @@ private:
 	int regB;
 	int regC;
 	int regD;
-
-public:
 	int programCounter = 0; //wskazuje nastêpn¹ instrukcjê do wykonania
+public:
 	int programPosition;
 
 	int GetPID() { return PID; }
@@ -48,7 +47,7 @@ public:
 	
 	Process(int ID, Process* father, std::string processName, std::string txt)
 	{
-		processState = 0;
+		processState = VIRGIN;
 		PID = ID;
 		parent = father;
 		//ram->WriteToMemory(ID, commands);
