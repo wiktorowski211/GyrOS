@@ -4,10 +4,9 @@
 
 class Enterpreter {
 public:
-	Enterpreter(Pamiec* pam) {
-		this->memory = pam;
-	}
+	Enterpreter(Pamiec* pam) {this->memory = pam;}
 
 	Pamiec * memory = nullptr;
+
 	void InterpretLine(Process* proc);
 };
