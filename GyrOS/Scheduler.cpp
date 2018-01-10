@@ -49,34 +49,32 @@ void Scheduler::Step(int steps)
 {
 	for (int i = 0; i < steps; i++)
 	{
-		/*if (processes.size() > 0 || process == init)
-		{*/
-			if (quantum > 0 && (process->processState == READY || process->processState == RUNNING))
-			{
-				process->processState = 2;
-				std::cout << "Actual process: " << process->name << " ID: " << process->GetPID() << " Quantum: " << quantum << endl;
-				quantum--;
-				interpreter->InterpretLine(process);
-			}
-			else if (process->processState != READY && process->processState != RUNNING) {
-				std::cout <<"Zly stan procesu!!! Actual process: " << process->name << " ID: " << process->GetPID() << endl;
-			}
+		if (quantum > 0 && (process->processState == READY || process->processState == RUNNING))
+		{
+			process->processState = 2;
+			std::cout << "Actual process: " << process->name << " ID: " << process->GetPID() << " Quantum: " << quantum << endl;
+			quantum--;
+			interpreter->InterpretLine(process);
+		}
+		else if (process->processState != READY && process->processState != RUNNING) {
+			std::cout << "Zly stan procesu!!! Actual process: " << process->name << " ID: " << process->GetPID() << endl;
+		}
 
-			if (quantum <= 0 && process->processState == 2)
-			{
-				if (processes.size() > 0) {
-					process->processState = 1;
-					processes.pop_front();
-					processes.push_back(process);
-					SetNext();
-				}
-				else if(process == init) {
-					ResetQuantum();
-				}
+		if (quantum <= 0 && process->processState == 2)
+		{
+			if (processes.size() > 0) {
+				process->processState = 1;
+				processes.pop_front();
+				processes.push_back(process);
+				SetNext();
 			}
-		/*}*/
+			else if (process == init) {
+				ResetQuantum();
+			}
+		}
 	}
 }
+
 void Scheduler::SetNext() {
 	ResetQuantum();
 	if (processes.size() > 0)
