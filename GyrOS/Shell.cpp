@@ -224,7 +224,7 @@ void Shell::rename(string &s)
 	else
 		cout << "\n\tNiepoprawna komenda.\n";
 }
-void Shell::start(string &s)//usprawnij tą funkcję o błędy w wyniku złego zapisania
+void Shell::start(string &s)
 {
 	if (s.size() != 0)
 	{
@@ -276,7 +276,6 @@ void Shell::start(string &s)//usprawnij tą funkcję o błędy w wyniku złego z
 		if (ok)
 		{
 			//rozmiar = stoi(roz);
-			/*W tym miejcu wstaw funkcję od procesów*/
 			procesy.AddProcess(nazwa, kod, 0);
 			cout << "Stworzono proces: " << nazwa << " o kodzie zrodlowym z pliku: " << kod;
 		}
