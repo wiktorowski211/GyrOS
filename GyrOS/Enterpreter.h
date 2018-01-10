@@ -4,7 +4,7 @@
 //
 
 class Pamiec;
-class Process;
+struct Process;
 class ProcessManagement;
 
 class Enterpreter {
