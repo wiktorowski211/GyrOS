@@ -277,13 +277,8 @@ void Shell::start(string &s)//usprawnij tą funkcję o błędy w wyniku złego z
 		{
 			//rozmiar = stoi(roz);
 			/*W tym miejcu wstaw funkcję od procesów*/
-			if (test)
-			{
-				procesy.AddProcess(nazwa, kod, 0);
-				cout << "Stworzono proces: " << nazwa << " o kodzie zrodlowym z pliku: " << kod;
-			}
-			else
-				cout << "Blad przy tworzeniu procesu!";
+			procesy.AddProcess(nazwa, kod, 0);
+			cout << "Stworzono proces: " << nazwa << " o kodzie zrodlowym z pliku: " << kod;
 		}
 		else
 		{
