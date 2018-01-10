@@ -34,6 +34,15 @@ public:
 	int wolne = 128;
 	list<proces> l_procesow;
 	list<wolne_miejsca> l_wolne;
+	
+	Pamiec()
+	{
+		wolne_miejsca wm;
+		wm.poczatek = 1;
+		wm.k = 128;
+		wm.wielkosc = wm.k - wm.poczatek;
+		l_wolne.push_back(wm);
+	}
 	//Semaphore Mem;
 	/*Semaphore FullMemmory;
 	Semaphore FSBEM;
