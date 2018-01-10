@@ -98,6 +98,11 @@ void ProcessManagement::KillProcess(std::string name)
 		return;
 	}
 
+	if (temp == init) {
+		std::cout << "Nie mozna usunac procesu init" << std::endl;
+		return;
+	}
+
 	for each (Process* process in temp->children)
 	{
 		process->parent = init;
@@ -119,6 +124,7 @@ void ProcessManagement::KillProcess(std::string name)
 			{
 				memory_is_available = true;
 			}
+			cout << "Zabicie procesu o nazwie: " << name;
 			return;
 		}
 	}
