@@ -141,12 +141,9 @@ void ProcessManagement::ChangeState(std::string name, int newstate)
 	}
 	else if (newstate == WAITING)
 	{
+		scheduler->DeleteProcess();
 		int counter = temp->get_counter();
-		if (counter == 0)
-		{
-			scheduler->DeleteProcess();
-		}
-		else
+		if (counter > 0)
 		{
 			counter--;
 			temp->set_counter(counter);
