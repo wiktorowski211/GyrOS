@@ -22,7 +22,7 @@ public:
 	// prosze nie tworzyc innych konstruktorow!!!
 	ProcessManagement(Pamiec* P) : MemoryManagement{ P } {
 		init = new Process(FindFreeID(), nullptr, "init", "comm");
-		
+		scheduler = new Scheduler();
 	}
 
 	std::vector<Process*> readyProcesses;

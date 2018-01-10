@@ -9,7 +9,7 @@ using namespace std;
 
 class Scheduler {
 public:
-	Scheduler() { ResetQuantum(); };
+	Scheduler();
 	void AddProcess(Process* proc);
 	void DeleteProcess();
 	void DeleteProcess(Process* proc);

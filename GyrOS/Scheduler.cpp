@@ -2,6 +2,10 @@
 
 using namespace std;
 
+Scheduler::Scheduler() {
+	ResetQuantum();
+};
+
 void Scheduler::AddProcess(Process* proc)
 {
 	processes.push_back(proc);
