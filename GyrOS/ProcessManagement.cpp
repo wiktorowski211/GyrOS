@@ -160,6 +160,11 @@ void ProcessManagement::ChangeState(std::string name, int newstate)
 void ProcessManagement::PrintProcess(std::string name)
 {
 	Process* temp = FindProcess(name, init);
+	if (!temp)
+	{
+		std::cout << "Can't find that process\n";
+		return;
+	}
 	std::cout << "Process " << temp->PID << ": with parent ID " << temp->parent->PID << ", state: "<< temp->GetProcessState() << ", with registers:\n";
 	std::cout << "Registery A: " << temp->get_A() << std::endl;
 	std::cout << "Registery B: " << temp->get_B() << std::endl;
