@@ -92,6 +92,7 @@ string Buffer::BufferRead(int msgSize)
 	for (int i = 0; i < msgSize; i++) {
 		msg = msg + tab[i];
 	}
+	return msg;
 
 }
 
@@ -111,11 +112,11 @@ void IPC::Send(Process sender, string msg)
 	int size;
 	size = msg.size();
 
-	if (SocketDomain[0].GetSockID == sender.PID) {
+	if (SocketDomain[0].GetSockID() == sender.PID) {
 		SocketDomain[1].SetMsgSize(size);
 		SocketDomain[1].Write(msg);
 	}
-	else if (SocketDomain[1].GetSockID == sender.PID) {
+	else if (SocketDomain[1].GetSockID() == sender.PID) {
 		SocketDomain[0].SetMsgSize(size);
 		SocketDomain[0].Write(msg);
 	}
@@ -127,16 +128,18 @@ void IPC::Send(Process sender, string msg)
 string IPC::Recv(Process receiver)
 {
 	string temp;
-
-	if (SocketDomain[0].GetSockID == receiver.PID) {
+	
+	if (SocketDomain[0].GetSockID() == receiver.PID) {
 		
 		temp=SocketDomain[1].Read();
 	}
-	else if (SocketDomain[1].GetSockID == receiver.PID) {
+	else if (SocketDomain[1].GetSockID() == receiver.PID) {
 		
 		temp=SocketDomain[0].Read();
 	}
 	else {
 		cout << "Process isn't connected with any socket" << endl;
 	}
+	return temp;
 }
+

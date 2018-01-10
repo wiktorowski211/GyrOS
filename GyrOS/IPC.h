@@ -9,6 +9,18 @@
 
 using namespace std;
 
+class Buffer {
+private:
+	char tab[32];
+
+public:
+
+	Buffer() {};
+	void BufferWrite(string msg);
+	string BufferRead(int msgSize);
+
+};
+
 class Socket {
 private: 
 	int SockID, ConnectedSock, BindFlag, ConnectionFlag, msgSize;
@@ -24,17 +36,6 @@ public:
 	void Write(string msg);
 	string Read();
 	~Socket() {};
-	
-};
-class Buffer {
-private:
-		 char tab[32];
-
-public:
-
-	Buffer() {};
-	void BufferWrite(string msg);
-	string BufferRead(int msgSize);
 	
 };
 
