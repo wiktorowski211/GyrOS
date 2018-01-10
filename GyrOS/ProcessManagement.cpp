@@ -125,7 +125,7 @@ void ProcessManagement::KillProcess(std::string name)
 			{
 				memory_is_available = true;
 			}
-			cout << "Zabicie procesu o nazwie: " << name;
+			cout << "Zabicie procesu o nazwie: " << name<<endl;
 			return;
 		}
 	}
