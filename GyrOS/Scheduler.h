@@ -13,6 +13,7 @@ public:
 	void AddProcess(Process* proc);
 	void DeleteProcess();
 	void DeleteProcess(Process* proc);
+	void SetNext();
 	Process* GetProcess();
 	void Step(int steps);
 	int quantum;

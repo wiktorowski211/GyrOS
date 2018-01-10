@@ -93,7 +93,7 @@ void ProcessManagement::KillProcess(std::string name)
 	{
 		if ((*it)->name == name)
 		{
-			//scheduler->DeleteProcess(temp);// to dodaje marcin!!
+			scheduler->DeleteProcess(temp);// to dodaje marcin!!
 			temp->parent->children.erase(it);
 			MemoryManagement->usun(temp->PID);
 			return;

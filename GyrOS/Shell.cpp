@@ -331,7 +331,7 @@ void Shell::tasklist()
 }
 void Shell::go()
 {
-	//procesor.Step(1);
+	procesy.scheduler->Step(1);
 }
 void Shell::mklink(string &s)
 {

@@ -9,13 +9,15 @@ Scheduler::Scheduler() {
 void Scheduler::AddProcess(Process* proc)
 {
 	processes.push_back(proc);
+	if (process == nullptr) {
+		process = processes.front();
+	}
 }
 
 void Scheduler::DeleteProcess()
 {
 	processes.pop_front();
-	ResetQuantum();
-	process = processes.front();
+	SetNext();
 }
 
 void Scheduler::DeleteProcess(Process* proc)//wywolac jesli proces zmieni stan na terminated
@@ -42,27 +44,35 @@ void Scheduler::Step(int steps)
 {
 	for (int i = 0; i < steps; i++)
 	{
-		if (processes.size() > 0) 
+		if (processes.size() > 0)
 		{
-			if (quantum > 0 && process->processState == 1) 
+			if (quantum > 0 && (process->processState == 1 || process->processState == 2))
 			{
 				process->processState = 2;
 
 				//wywo³aj jedna linie kodu;
 
-				//std::cout << "Actual process: " << process->name<<" ID: "<<process->GetPID()<<endl;	//to wrzucimy w interpreterze
+				std::cout << "Actual process: " << process->name << " ID: " << process->GetPID() << " Quantum: " << quantum << endl;	//to wrzucimy w interpreterze
 				quantum--;
+			}
+			else if (process->processState != 1 && process->processState != 2) {
+				std::cout <<"Zly stan procesu!!! Actual process: " << process->name << " ID: " << process->GetPID() << endl;
 			}
 
 			if (quantum <= 0 && process->processState == 2)
 			{
-				DeleteProcess();
-
 				process->processState = 1;
+				processes.pop_front();
 				processes.push_back(process);
-
-				process = processes.front();
+				SetNext();
 			}
 		}
 	}
+}
+void Scheduler::SetNext() {
+	ResetQuantum();
+	if (processes.size() > 0)
+		process = processes.front();
+	else
+		process = nullptr;
 }
