@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "ProcesorManager.h"
+#include "Scheduler.h"
 //#include "Pamiec.h"
 
 class Pamiec;

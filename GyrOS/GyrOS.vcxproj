@@ -117,7 +117,7 @@
     <ClCompile Include="IPC.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pamiec.cpp" />
-    <ClCompile Include="ProcesorManager.cpp" />
+    <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="ProcessManagement.cpp" />
     <ClCompile Include="Semaphoree.cpp" />
     <ClCompile Include="Shell.cpp" />
@@ -129,7 +129,7 @@
     <ClInclude Include="Interpreter.h" />
     <ClInclude Include="IPC.h" />
     <ClInclude Include="Pamiec.h" />
-    <ClInclude Include="ProcesorManager.h" />
+    <ClInclude Include="Scheduler.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="ProcessManagement.h" />
     <ClInclude Include="Semaphoree.h" />
