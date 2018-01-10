@@ -58,12 +58,12 @@ private:
 	void nadpisz(string &s, string &p);
 	void dopisz(string &s, string &p);
 	void czytaj_skrypt(string s);
-	void check();
+	void check(string &s);
 	void dir();
 	string standard(string &s);
 	string namale(string &s);
 	string end(string &s);
 	void kropki(string s);
 	string cudzy(string &s);
-	bool compare(string &s1, string &s2);
+	int ilsep(string &s);
 };
