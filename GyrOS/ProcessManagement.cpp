@@ -72,11 +72,12 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 	{
 		int id = FindFreeID();
 
-		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
 		while (FindProcess(processName, init))
 		{
 			processName = processName + "_" + std::to_string(id);
 		}
+		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
+
 		flag_writing_to_memory = MemoryManagement->dodaj(id, commands);
 		if (flag_writing_to_memory == 1)
 		{
@@ -131,14 +132,14 @@ void ProcessManagement::KillProcess(std::string name)
 		{
 			scheduler->DeleteProcess(temp);// to dodaje marcin!!
 			temp->parent->children.erase(it);
-			if (flag_writing_to_memory == true)
+			if (flag_writing_to_memory == 1 || flag_writing_to_memory == 2 || flag_writing_to_memory == 3)
 			{
 				
 				MemoryManagement->usun(temp->PID);
 			}
 			else
 			{
-				flag_writing_to_memory = true;
+				flag_writing_to_memory = 0;
 			}
 			std::cout << "Process " << name << " has been deleted!" << std::endl;
 			return;
