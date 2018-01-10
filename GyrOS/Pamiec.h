@@ -62,7 +62,7 @@ public:
 	spełnia wymagań, zachodzi fragmentacja pamięci a wraz z nią łączenie nowo powstałych bloków wolnej pamięci. Jeśli 'wolne' jest mniejsze od wielkości procesu,
 	wtedy proces nie może zostać dołączony do pamięci.*/
 	//void dodaj(int PID, int w, string commands);
-	bool dodaj(int PID, string FileName);
+	int dodaj(int PID, string FileName);
 	/*Usuwa proces z listy procesów po czym tworzy blok wolnej pamięci w miejscu usuniętego procesu. Po tym zabiegu następuje łączenie wolnych bloków pamięci w całość.*/
 	void usun(int pid);
 
