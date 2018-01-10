@@ -287,90 +287,36 @@ void Pamiec::laczenie()
 }
 void Pamiec::fragmentacja()
 {
-	cout << "Fragmentacja" << endl;
-	list<proces>::iterator it, it2;
+	list<proces>::iterator it;
 	list<wolne_miejsca>::iterator iwm;
-	int p = 0, startp = 0;
-	bool war = false;
-	do {
-		p = 0;
-		war = false;
-		for (it = l_procesow.begin(); it != l_procesow.end(); it++)
+	int petla = 0;
+	proces pp;
+
+	l_procesow.sort(comp2);
+
+	for (it = l_procesow.begin(); it != l_procesow.end(); ++it)
+	{
+		if (petla == 0)
 		{
-			if (p == 0)
-			{
-				if (it->start != 0)
-				{
-					proces np;
-
-					np.PID = it->PID;
-					np.wielkosc = it->wielkosc;
-					np.start = 1;
-					np.commands = it->commands;
-					startp = 1;
-					l_procesow.emplace(it, np);
-					war = true;
-
-
-					wolne_miejsca wm;
-					wm.poczatek = np.start + np.wielkosc;
-					wm.wielkosc = it->start - np.start;
-					wm.k = wm.poczatek + wm.wielkosc;
-					l_wolne.push_back(wm);
-					it->start = 1;
-				}
-
-			}
-
-			if (p >= 1)
-			{
-				proces np;
-				np.PID = it->PID;
-				np.wielkosc = it->wielkosc;
-				np.start = it2->start + it2->wielkosc + 1;
-				np.commands = it->commands;
-				l_procesow.emplace(it, np);
-				war = true;
-
-				wolne_miejsca wm;
-				wm.poczatek = np.start + np.wielkosc;
-				wm.wielkosc = it->start - np.start;
-				wm.k = wm.poczatek + wm.wielkosc;
-				l_wolne.push_back(wm);
-				it->start = np.start;
-
-			}
-			if (war)
-				break;
-			cout << "\t\t" << it->PID;
-			it2 = it;
-			p++;
+			it->start = 1;
 		}
-		if (war)
+		else
 		{
-			l_procesow.erase(it);
-			l_wolne.sort(comp);
-
-			bool ui = false;
-
-
-			for (iwm = l_wolne.begin(); iwm != l_wolne.end(); iwm++)
-			{
-				if (iwm->poczatek == startp)
-				{
-					ui = true;
-					break;
-				}
-			}
-
-			if (ui)
-				l_wolne.erase(iwm);
-
-			laczenie();
+			it->start = pp.start + pp.wielkosc + 1;
 		}
 
-	} while (!war);
+		pp = *it;
 
+		petla++;
+	}
+
+	l_wolne.clear();
+	wolne_miejsca wm;
+	wm.poczatek = pp.start + pp.wielkosc + 1;
+	wm.k = 128;
+	wm.wielkosc = wm.k - wm.poczatek;
+
+	l_wolne.push_back(wm);
 }
 string Pamiec::odczyt(int PID, int counter)
 {
