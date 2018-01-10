@@ -82,6 +82,7 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 		{
 			memory_is_available = false;
 			KillProcess(processName);
+			return;
 		}
 		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
 		ChangeState(processName, READY);
