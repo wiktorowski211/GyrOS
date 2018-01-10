@@ -1,0 +1,24 @@
+echo Zapisuje do pliku plik1.txt slowa 'Hello World'
+echo Hello World>plik1.txt
+echo Wyswietlam plik 'plik1.txt'
+type plik1.txt
+echo dopisuje do pliku slowa ' ITS ME!'
+echo  ITS ME!>>plik1.txt
+echo Wyswietlam plik 'plik1.txt'
+type plik1.txt
+echo Dodaje alias 'hello.txt' do 'plik1.txt'
+mklink hello.txt plik1.txt
+echo Wyswietlam plik 'hello.txt'
+type hello.txt
+echo Usuwam plik 'plik1.txt'
+del plik1.txt
+echo Wyswietlam plik 'hello.txt'
+type hello.txt
+echo Nadpisuje plik 'hello.txt' slowami 'Good Bye'
+echo Good Bye!>hello.txt
+echo Zmieniam nazwe 'hello.txt' na 'bye.txt'
+rename hello.txt bye.txt
+echo Wyswietlam plik 'bye.txt'
+type bye.txt
+echo Usuwam plik 'plik1.txt'
+del bye.txt
