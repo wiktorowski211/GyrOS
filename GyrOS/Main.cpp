@@ -20,4 +20,3 @@ int main()
 	cout << "\nSystem zostal poprawnie zamkniety" << endl;
 	return 0;
 }
-

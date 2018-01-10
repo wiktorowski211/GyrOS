@@ -395,7 +395,7 @@ void Shell::czytaj_skrypt(string s)
 		cout << "\n\tNie znaleziono wskazanego pliku";
 	}
 }
-
+//////////////////////////////////////////
 string Shell::namale(string &s)
 {
 	string male = "";
