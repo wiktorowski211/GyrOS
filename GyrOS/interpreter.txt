@@ -1,0 +1,27 @@
+Polecenia interpretera:
+MV rejestr rejestr		MOVE					Ustaw wartość rejestru na rejestr (<-)
+RD wyrzucic				
+MI rejestr int			MOVE INT				Ustaw wartość rejestru na liczbę
+AD rejestr/int			ADDITION				Dodaje liczbe lub wartosc rejestru do rejestru A
+SB rejestr/int			SUBTRACTION				Odejmuje liczbe lub wartosc rejestru od rejestru A
+MP rejestr/int			MNOZENIE				Pomnóż liczbę lub wartość rejestru razy rejestr A
+
+JC int					JUMP					Skocz do linii int jeśli rejestr C != 0
+JZ int 					JUMP ZERO				Skocz do linii int jeśli rejestr == 0
+JL int					JUMP LESS				Skocz do linii int jeśli rejestr < 0
+JM int					JUMP					Skocz do linii int jeśli rejestr > 0
+JP						JUMP					Skok bezwarunkowy
+
+PR rejestr				PRINT REGISTER			Wypisz wartosc rejestru
+CF nazwa				CREATE FILE				Stwórz plik o nazwie nazwa
+DF nazwa				DELETE FILE				Usuń plik o nazwie nazwa
+AA nazwa nazwa2			ANOTHER ALIAS			Tworzy wpis w katalogu dla pliku nazwa o nazwie nazwa2
+SF nazwa nazwa2			SWITCH FILENAME			Zmienia nazwę pliku nazwa na nazwa2
+WF nazwa tresc			WRITE FILE				Pisz do pliku o nazwie nazwa tekst tresc. Nadpisuje
+AF nazwa tresc			APPEND FILE				Pisz do pliku o nazwie nazwa tekst tresc. Dopisuje
+WR nazwa rejestr		WRITE  REGISTER			Pisz do pliku o nazwie nazwa wartosc rejestru. Nadpisuje
+AR nazwa rejestr		APPEND REGISTER			Pisz do pliku o nazwie nazwa wartosc rejestru. Dopisuje
+IC rejestr 				INCREMENT REGISTER		Inkrementuj rejestr
+DC rejestr				DECREMENT REGISTER		Dekrementuj rejestr
+
+nazwa lub "nazwa dluga"
