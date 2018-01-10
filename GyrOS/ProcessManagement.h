@@ -26,8 +26,6 @@ public:
 		scheduler = new Scheduler(interpreter);
 	}
 
-	std::vector<Process*> readyProcesses;
-
 	Process* FindProcess(int ID, Process* init);
 
 	Process* FindProcess(std::string name, Process* init);
