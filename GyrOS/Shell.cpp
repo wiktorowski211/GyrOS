@@ -340,19 +340,13 @@ void Shell::mklink(string &s)
 				alias += s[i];
 			}
 		}
-		if (compare(nazwa, alias))
-		{
-			if (dysk.addFilename(nazwa, alias))
-				cout << "\nDopisanie aliasa: " << alias << " do pliku: " << nazwa << endl;
-			else
-				cout << "\nNie udalo sie dopisac aliasa do pliku: " << nazwa << endl;
-		}
+		if (dysk.addFilename(nazwa, alias))
+			cout << "\nDopisanie aliasa: " << alias << " do pliku: " << nazwa << endl;
 		else
-			cout << "\nBlad tworzenia Aliasa. Niezgodnosc formatow.\n";
+			cout << "\nNie udalo sie dopisac aliasa do pliku: " << nazwa << endl;
 	}
 	else
 		cout << "\n\tNiepoprawna komenda.\n";
-
 }
 void Shell::check()
 {
@@ -527,37 +521,4 @@ string Shell::cudzy(string &s)
 		}
 	}
 	return s1;
-}
-bool Shell::compare(string &s1, string &s2)
-{
-	string r1 = "", r2 = "";
-	bool zwroc = false, pom = false;
-	for (int i = 0; i < s1.size(); i++)
-	{
-		if (s1[i] == '.')
-		{
-			pom = true;
-		}
-		if (pom)
-		{
-			r1 += s1[i];
-		}
-	}
-	pom = false;
-	for (int i = 0; i < s2.size(); i++)
-	{
-		if (s2[i] == '.')
-		{
-			pom = true;
-		}
-		if (pom)
-		{
-			r2 += s2[i];
-		}
-	}
-	/*cout << "\nr1: " << r1;
-	cout << "\nr2: " << r2;*/
-	if (r1.compare(r2) == 0)
-		zwroc = true;
-	return zwroc;
 }
