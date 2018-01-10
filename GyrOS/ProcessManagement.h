@@ -1,10 +1,11 @@
 #pragma once
 #include "Process.h"
+#include "Scheduler.h"
+#include "Pamiec.h"
+
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Scheduler.h"
-//#include "Pamiec.h"
 
 class Pamiec;
 

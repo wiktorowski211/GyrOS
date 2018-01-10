@@ -5,7 +5,7 @@
 #include<list>
 #include<algorithm>
 #include<fstream>
-#include "Semaphoree.h"
+//#include "Semaphoree.h"
 //#include "ProcesorManager.h"
 using namespace std;
 
@@ -34,7 +34,7 @@ public:
 	int wolne = 128;
 	list<proces> l_procesow;
 	list<wolne_miejsca> l_wolne;
-	Semaphore Mem;
+	//Semaphore Mem;
 	/*Semaphore FullMemmory;
 	Semaphore FSBEM;
 	ProcessManagement * p;

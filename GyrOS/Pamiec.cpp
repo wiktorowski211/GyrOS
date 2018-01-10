@@ -11,7 +11,7 @@ bool comp(const wolne_miejsca &a, const wolne_miejsca &b)
 //void Pamiec::dodaj(int PID, int w, string commands)
 void Pamiec::dodaj(int PID, string FileName)
 {
-	Mem.Wait();
+	//Mem.Wait();
 	fstream plik;
 	string commands, pom;
 	plik.open(FileName);
@@ -149,7 +149,7 @@ void Pamiec::dodaj(int PID, string FileName)
 		}
 	}
 	catch (int) { cout << "\n\tBrak pamieci!" << endl; };
-	Mem.Signal();
+	//Mem.Signal();
 }
 void Pamiec::usun(int pid)
 {
