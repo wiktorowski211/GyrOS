@@ -14,6 +14,7 @@ void Scheduler::AddProcess(Process* proc)
 	processes.push_back(proc);
 	if (process == init) {
 		process = processes.front();
+		ResetQuantum();
 	}
 }
 
