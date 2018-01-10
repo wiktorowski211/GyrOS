@@ -70,4 +70,5 @@ public:
 	void laczenie();
 	void fragmentacja();
 	string odczyt(int PID, int counter);
+	char odczytznaku(int PID, int place);
 };

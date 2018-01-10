@@ -401,3 +401,26 @@ string Pamiec::odczyt(int PID, int counter)
 		}
 		return zwrot;
 }
+char Pamiec::odczytznaku(int PID, int place)
+{
+	list<proces>::iterator it;
+	string komendy;
+	char znak;
+	for (it = l_procesow.begin(); it != l_procesow.end(); it++)
+	{
+		if (it->PID == PID)
+		{
+			komendy = it->commands;
+		}
+	}
+	int i;
+	for (i = 0; i <= komendy.length(); i++)
+	{
+		if (i == place)
+		{
+			break;
+		}
+			
+	}
+	return komendy[i];
+}
