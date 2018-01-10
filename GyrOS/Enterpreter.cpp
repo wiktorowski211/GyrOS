@@ -1,5 +1,14 @@
 #include "Enterpreter.h"
 #include "ProcessManagement.h"
+#include "Pamiec.h"
+#include "Process.h"
+
+
+Enterpreter::Enterpreter(Pamiec* pam, ProcessManagement* processManager)
+{ 
+	this->memory = pam;
+	this->processes = processManager;
+}
 
 void Enterpreter::InterpretLine(Process* proc) {//counter jeszcze 
 	std::string currentCommand = memory->odczyt(proc->GetPID(), proc->get_counter());
@@ -9,7 +18,7 @@ void Enterpreter::InterpretLine(Process* proc) {//counter jeszcze
 }
 
 #include <sstream>
-State Enterpreter::runCommand(const std::string& command, Process* proc)
+void Enterpreter::runCommand(const std::string& command, Process* proc)
 {
 	Process& reg = *proc;
 
@@ -22,7 +31,8 @@ State Enterpreter::runCommand(const std::string& command, Process* proc)
 		if (i == 6)
 		{
 			std::cout << "runCommand: Za dluga komenda.\n";
-			return parseError(reg);
+			parseError(reg);
+			return;
 		}
 	}
 	// przenies z rejestru drugiego do pierwszego
@@ -305,8 +315,8 @@ State Enterpreter::runCommand(const std::string& command, Process* proc)
 	// TODO Bezwarunkowy koniec programu, wymagane
 	else if (commandLine[0] == "EX")
 	{
-		reg.set_counter(92);
-		cout << "Koniec programu ";
+		std::cout << "Koniec programu z procesu " << reg.PID << std::endl;
+		processes->ChangeState(reg.name, TERMINATED);
 	}
 	// TODO Otwieranie pliku
 	else if (commandLine[0] == "OF")
@@ -316,17 +326,17 @@ State Enterpreter::runCommand(const std::string& command, Process* proc)
 	else {
 
 	}
-	return RUNNING;
+	return;
 }
 
 
 
 
-State Enterpreter::parseError(Process& p)
+void Enterpreter::parseError(Process& p)
 {
 	std:cout << "Blad parsowania. Proces " << p.GetPID() << " zostal przerwany.\n";
-
-	return TERMINATED;
+	processes->ChangeState(p.name, TERMINATED);
+	return;
 
 }
 

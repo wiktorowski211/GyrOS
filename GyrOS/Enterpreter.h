@@ -1,19 +1,23 @@
 #pragma once
-#include "Process.h"
-#include "Pamiec.h"
+#include <string>
+
 //
 
+class Pamiec;
+class Process;
+class ProcessManagement;
 
 class Enterpreter {
 public:
-	Enterpreter(Pamiec* pam) {this->memory = pam;}
+	Enterpreter(Pamiec* pam, ProcessManagement* processManager);
 
 	Pamiec * memory = nullptr;
+	ProcessManagement*  processes = nullptr;
 
 	void InterpretLine(Process* proc);
 
-	State runCommand(const std::string& command, Process* proc);
+	void runCommand(const std::string& command, Process* proc);
 private:
-	State parseError(Process& p);
+	void parseError(Process& p);
 
 };
