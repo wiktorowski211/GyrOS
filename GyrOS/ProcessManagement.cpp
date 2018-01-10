@@ -71,13 +71,12 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 	else
 	{
 		int id = FindFreeID();
-		Process* p = FindProcess(processName, init);
+
+		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
 		while (FindProcess(processName, init))
 		{
 			processName = processName + "_" + std::to_string(id);
 		}
-
-		std::cout << "New process with ID " << id << " and name " << processName << ".\n";
 		flag_writing_to_memory = MemoryManagement->dodaj(id, commands);
 		if (flag_writing_to_memory == 1)
 		{
@@ -100,7 +99,7 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 			std::cout << "There's no file like that " << processName << std::endl;
 			return;
 		}
-		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
+		std::cout << "New process with ID " << id << " and name " << processName << ".\n";
 		ChangeState(processName, READY);
 	}
 }

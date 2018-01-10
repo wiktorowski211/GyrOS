@@ -20,5 +20,9 @@ public:
 	void runCommand(const std::string& command, Process* proc);
 private:
 	void parseError(Process& p);
+	// str = rejestr, val = wartosc do wpisania
+	void setRegister(Process& p, const std::string& str, int val);
+	// str = rejestr
+	int Enterpreter::getRegister(Process& p, const std::string& str, bool& error);
 
 };

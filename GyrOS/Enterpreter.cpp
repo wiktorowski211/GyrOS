@@ -12,11 +12,40 @@ Enterpreter::Enterpreter(Pamiec& pam, ProcessManagement& processManager, Filesys
 	//this->dysk = dysk;
 }
 
-void Enterpreter::InterpretLine(Process* proc) {//counter jeszcze 
+void Enterpreter::InterpretLine(Process* proc) { 
 	std::string currentCommand = memory.odczyt(proc->GetPID(), proc->get_counter());
 	cout<< currentCommand <<endl;
 	proc->set_counter(proc->get_counter()+1);
 	runCommand(currentCommand, proc);
+}
+
+void Enterpreter::setRegister(Process& p, const std::string& str, int val)
+{
+	if (str == "A")
+		p.set_A(val);
+	else if (str == "B")
+		p.set_B(val);
+	else if (str == "C")
+		p.set_C(val);
+	else if (str == "D")
+		p.set_D(val);
+	else
+		parseError(p);
+}
+
+int Enterpreter::getRegister(Process& p, const std::string& str, bool& error)
+{
+	if (str == "A")
+		return p.get_A();
+	else if (str == "B")
+		return p.get_B();
+	else if (str == "C")
+		return p.get_C();
+	else if (str == "D")
+		return p.get_D();
+	else
+		parseError(p);
+	return -1;
 }
 
 #include <sstream>
@@ -29,6 +58,27 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	std::string temp;
 	for (int i = 0; com >> temp; ++i)
 	{
+		
+		if (temp[0] == '"')
+		{
+			temp.erase(temp.begin());
+			char ch1 = 0;
+			char ch2 = 0;
+			while (com.get(ch2))
+			{
+				if (ch2 == '"' && *(temp.end()-1) != '\\')
+				{
+					break;
+				}
+				if (ch2 == '"' && *(temp.end()-1)  == '\\')
+				{
+					temp.erase(temp.end() - 1);
+				}
+				ch1 = ch2;
+				temp += ch2;
+			}
+		}
+
 		commandLine[i] = temp;
 		if (i == 6)
 		{
@@ -40,6 +90,11 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	// przenies z rejestru drugiego do pierwszego
 	if (commandLine[0] == "MV")
 	{
+		bool test;
+		int num = getRegister(reg, commandLine[2], test);
+		if(test) 
+			setRegister(reg, commandLine[1], num);
+		/*
 		if (commandLine[1] == "A")
 		{
 			if (commandLine[2] == "B")
@@ -73,6 +128,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 				reg.set_C(reg.get_B());
 			}
 		}
+		*/
 	}
 	// wpisz wartosc do rejestru [1] (z konsoli) WYRZUCIC
 	else if (commandLine[0] == "RD")
@@ -102,6 +158,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	// wpisz wartosc do rejestru [1] z argumentu [2]
 	else if (commandLine[0] == "MI")
 	{
+		/*
 		if (commandLine[1] == "A")
 		{
 			reg.set_A(std::stoi(commandLine[2]));
@@ -114,8 +171,10 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		{
 			reg.set_C(std::stoi(commandLine[2]));
 		}
+		*/
+		setRegister(reg, commandLine[1], std::stoi(commandLine[2]));
 	}
-	// dodaj do wartosci z [1] wartosc z [2], jesli nie ma tam podanego rejestru to jest to liczba
+	// dodaj wartosc z [1] do rejestru A, jesli nie ma tam podanego rejestru to jest to liczba
 	else if (commandLine[0] == "AD")
 	{
 		if (commandLine[1] == "A")
@@ -124,18 +183,18 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		}
 		else if (commandLine[1] == "B")
 		{
-			reg.set_B(reg.get_A() + reg.get_B());
+			reg.set_A(reg.get_A() + reg.get_B());
 		}
 		else if (commandLine[1] == "C")
 		{
-			reg.set_C(reg.get_A() + reg.get_C());
+			reg.set_A(reg.get_A() + reg.get_C());
 		}
 		else
 		{
-			reg.set_A(reg.get_A() + std::stoi(commandLine[2]));
+			reg.set_A(reg.get_A() + std::stoi(commandLine[1]));
 		}
 	}
-	// dodaj do wartosci z [1] wartosc z [2], jesli nie ma tam podanego rejestru to jest to liczba
+	// odejmij wartosc z [1] od rejestru A, jesli nie ma tam podanego rejestru to jest to liczba
 	else if (commandLine[0] == "SB")
 	{
 		if (commandLine[1] == "A")
@@ -144,18 +203,18 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		}
 		else if (commandLine[1] == "B")
 		{
-			reg.set_B(reg.get_A() - reg.get_B());
+			reg.set_A(reg.get_A() - reg.get_B());
 		}
 		else if (commandLine[1] == "C")
 		{
-			reg.set_C(reg.get_A() - reg.get_C());
+			reg.set_A(reg.get_A() - reg.get_C());
 		}
 		else
 		{
-			reg.set_A(reg.get_A() - std::stoi(commandLine[2]));
+			reg.set_A(reg.get_A() - std::stoi(commandLine[1]));
 		}
 	}
-	// pomnoz wartosc z rejestru [1] wartosc z [2], jesli nie ma tam podanego rejestru to jest to liczba
+	// pomnoz wartosc z [1] razy rejestr A, jesli nie ma tam podanego rejestru to jest to liczba
 	else if (commandLine[0] == "MP")
 	{
 		if (commandLine[1] == "A")
@@ -172,7 +231,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		}
 		else
 		{
-			reg.set_A(reg.get_A() * std::stoi(commandLine[2]));
+			reg.set_A(reg.get_A() * std::stoi(commandLine[1]));
 		}
 	}
 	// jesli C nie jest zero skocz
@@ -207,6 +266,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	// wypisz rejestr [1]
 	else if (commandLine[0] == "PR")
 	{
+		/*
 		if (commandLine[1] == "A")
 		{
 			cout << reg.get_A();
@@ -219,20 +279,64 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		{
 			cout << reg.get_C();
 		}
+		*/
+		bool test;
+		int num = getRegister(reg, commandLine[1], test);
+		if (test)
+			std::cout << num;
+
 	}
 	// stworz plik - TODO: dodaj z dysku (createFile)
 	else if (commandLine[0] == "CF")
 	{
-		cout << "Tworzenie pliku wyjsciowego o nazwie: wynik.txt" << endl;
-		{
-			fstream plik;
-			plik.open("wynik.txt", ios::out);
-			plik.close();
-		}
+		if (!dysk.createFile(commandLine[1]))
+			parseError(reg);
 	}
-	// wypisz plik - TODO: dodaj z dysku (writeFile), to co teraz tu mamy bedzie APPEND
+	else if (commandLine[0] == "DF")
+	{
+		if (!dysk.deleteFile(commandLine[1]))
+			parseError(reg);
+	}
+	else if (commandLine[0] == "AA")
+	{
+		if (!dysk.addFilename(commandLine[1], commandLine[2]))
+			parseError(reg);
+	}
+	else if (commandLine[0] == "SF")
+	{
+		if (!dysk.changeFilename(commandLine[1], commandLine[2]))
+			parseError(reg);
+	}
+	else if (commandLine[0] == "WF")
+	{
+		if (!dysk.writeFile(commandLine[1], commandLine[2]))
+			parseError(reg);
+	}
+	else if (commandLine[0] == "AF")
+	{
+		if (!dysk.appendFile(commandLine[1], commandLine[2]))
+			parseError(reg);
+	}
+	// WR = WRITE REGISTER, napisz do pliku o nazwie [1] wartosc rejestru [2]
+	else if (commandLine[0] == "WR")
+	{
+		bool test;
+		int num = getRegister(reg, commandLine[2], test);
+		if (test)
+			dysk.writeFile(commandLine[1], std::to_string(num));
+	}
+	// AR = APPEND REGISTER, dopisz do pliku o nazwie [1] wartosc rejestru [2]
+	else if (commandLine[0] == "AR")
+	{
+		bool test;
+		int num = getRegister(reg, commandLine[2], test);
+		if (test)
+			dysk.appendFile(commandLine[1], std::to_string(num));
+	}
+	// wypisz plik - TODO: dodaj z dysku (printFile), to co teraz tu mamy bedzie APPEND
 	else if (commandLine[0] == "PF")
 	{
+		
 		if (commandLine[1] == "A")
 		{
 			fstream plik;
@@ -261,15 +365,12 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 			plik << (char)stoi(commandLine[1]);
 			plik.close();
 		}
-	}
-	// append file nazwa pliku, tresc
-	else if (commandLine[0] == "AF")
-	{
-
+		
 	}
 	// inkrementuj rejestr
 	else if (commandLine[0] == "IC")
 	{
+		/*
 		if (commandLine[1] == "A")
 		{
 			reg.set_A(reg.get_A() + 1);
@@ -281,11 +382,17 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		else if (commandLine[1] == "C")
 		{
 			reg.set_C(reg.get_A() + 1);
-		}
+		}*/
+		bool test;
+		int num = getRegister(reg, commandLine[1], test);
+		if (test)
+			setRegister(reg, commandLine[1], num + 1);
+
 	}
 	// dekrementuj rejestr
 	else if (commandLine[0] == "DC")
 	{
+		/*
 		if (commandLine[1] == "A")
 		{
 			reg.set_A(reg.get_A() - 1);
@@ -298,6 +405,11 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		{
 			reg.set_C(reg.get_C() - 1);
 		}
+		*/
+		bool test;
+		int num = getRegister(reg, commandLine[1], test);
+		if (test)
+			setRegister(reg, commandLine[1], num - 1);
 	}
 	// tworzy proces dziecko TODO
 	else if (commandLine[0] == "FK")
