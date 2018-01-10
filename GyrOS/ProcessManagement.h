@@ -22,8 +22,10 @@ public:
 	// prosze nie tworzyc innych konstruktorow!!!
 	ProcessManagement(Pamiec* P) : MemoryManagement{ P } {
 		init = new Process(FindFreeID(), nullptr, "init", "comm");
-		interpreter = new Enterpreter(MemoryManagement);
-		scheduler = new Scheduler(interpreter);
+		interpreter = new Enterpreter(MemoryManagement, this);
+		scheduler = new Scheduler(interpreter,init);
+		MemoryManagement->dodaj(0, "init.txt");
+		init->processState = READY;
 	}
 
 	Process* FindProcess(int ID, Process* init);

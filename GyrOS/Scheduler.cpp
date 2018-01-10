@@ -2,15 +2,17 @@
 
 using namespace std;
 
-Scheduler::Scheduler(Enterpreter* inter) {
+Scheduler::Scheduler(Enterpreter* inter, Process* init) {
 	this->interpreter = inter;
+	this->init = init;
+	process = init;
 	ResetQuantum();
 };
 
 void Scheduler::AddProcess(Process* proc)
 {
 	processes.push_back(proc);
-	if (process == nullptr) {
+	if (process == init) {
 		process = processes.front();
 	}
 }
@@ -23,6 +25,8 @@ void Scheduler::DeleteProcess()
 
 void Scheduler::DeleteProcess(Process* proc)//wywolac jesli proces zmieni stan na terminated
 {
+	if (proc == init)
+		return;
 	if (proc == process) {
 		DeleteProcess();
 	}
@@ -45,29 +49,32 @@ void Scheduler::Step(int steps)
 {
 	for (int i = 0; i < steps; i++)
 	{
-		if (processes.size() > 0)
-		{
-			if (quantum > 0 && (process->processState == 1 || process->processState == 2))
+		/*if (processes.size() > 0 || process == init)
+		{*/
+			if (quantum > 0 && (process->processState == READY || process->processState == RUNNING))
 			{
 				process->processState = 2;
-
-				interpreter->InterpretLine(process);
-
-				std::cout << "Actual process: " << process->name << " ID: " << process->GetPID() << " Quantum: " << quantum << endl;	//to wrzucimy w interpreterze
+				std::cout << "Actual process: " << process->name << " ID: " << process->GetPID() << " Quantum: " << quantum << endl;
 				quantum--;
+				interpreter->InterpretLine(process);
 			}
-			else if (process->processState != 1 && process->processState != 2) {
+			else if (process->processState != READY && process->processState != RUNNING) {
 				std::cout <<"Zly stan procesu!!! Actual process: " << process->name << " ID: " << process->GetPID() << endl;
 			}
 
 			if (quantum <= 0 && process->processState == 2)
 			{
-				process->processState = 1;
-				processes.pop_front();
-				processes.push_back(process);
-				SetNext();
+				if (processes.size() > 0) {
+					process->processState = 1;
+					processes.pop_front();
+					processes.push_back(process);
+					SetNext();
+				}
+				else if(process == init) {
+					ResetQuantum();
+				}
 			}
-		}
+		/*}*/
 	}
 }
 void Scheduler::SetNext() {
@@ -75,5 +82,5 @@ void Scheduler::SetNext() {
 	if (processes.size() > 0)
 		process = processes.front();
 	else
-		process = nullptr;
+		process = init;
 }

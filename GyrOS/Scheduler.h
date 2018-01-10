@@ -9,7 +9,7 @@ using namespace std;
 
 class Scheduler {
 public:
-	Scheduler(Enterpreter* inter);
+	Scheduler(Enterpreter* inter, Process* init);
 	void AddProcess(Process* proc);
 	void DeleteProcess();
 	void DeleteProcess(Process* proc);
@@ -22,4 +22,5 @@ private:
 	deque<Process*> processes;
 	void ResetQuantum();
 	Process* process;
+	Process* init; //process bezczynnosci
 };

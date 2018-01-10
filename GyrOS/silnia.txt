@@ -1,13 +1,13 @@
 CF;
 RD C;
-JL 6;
+JL 1;
 PF C;
 PF 33;
 PF 61;
 MI A 1;
-JZ 66;
+JZ 11;
 MP C;
 DC C;
-JP 42;
+JP 7;
 PF A;
 EX;
