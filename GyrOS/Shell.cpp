@@ -220,8 +220,6 @@ void Shell::rename(string &s)
 		}
 		if (dysk.changeFilename(stara, nowa))
 			cout << "\nZmiana nazwy pliku: " << stara << " na: " << nowa << endl;
-		else
-			cout << "\nNie udalo sie zmienic nazwy pliku: " << stara << endl;
 	}
 	else
 		cout << "\n\tNiepoprawna komenda.\n";

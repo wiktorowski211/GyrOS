@@ -198,7 +198,7 @@ bool Filesystem::changeFilename(const std::string& name, const std::string& newn
 	// plik o docelowej nazwie istnieje wiec jest to niepoprawna operacja
 	if (katalog.count(newname))
 	{
-		printf_s("Plik o nazwie %s istnieje.\n", newname.data());
+		printf_s("Plik o nazwie %s juz istnieje.\n", newname.data());
 		return false;
 	}
 
