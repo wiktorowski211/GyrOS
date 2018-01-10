@@ -113,6 +113,7 @@
   <ItemGroup>
     <ClCompile Include="dysk.cpp" />
     <ClCompile Include="Filesystem.cpp" />
+    <ClCompile Include="IPC.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pamiec.cpp" />
     <ClCompile Include="ProcesorManager.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="dysk.h" />
     <ClInclude Include="Filesystem.h" />
     <ClInclude Include="inode.h" />
+    <ClInclude Include="IPC.h" />
     <ClInclude Include="Pamiec.h" />
     <ClInclude Include="ProcesorManager.h" />
     <ClInclude Include="Process.h" />
