@@ -1,7 +1,11 @@
 #include "Semaphoree.h"
+#include "ProcessManagement.h"
 
-
-
+Semaphore::Semaphore(int k, ProcessManagement *procesik)
+{
+	value = k;
+	ProcessM = procesik;
+}
 bool Semaphore::Wait()
 {
 	if (value > 0)
