@@ -1,5 +1,4 @@
 #include "ProcessManagement.h"
-#include "Pamiec.h"
 
 Process* ProcessManagement::FindProcess(int ID, Process* init)
 {

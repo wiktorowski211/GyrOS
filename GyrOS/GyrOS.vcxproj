@@ -112,6 +112,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dysk.cpp" />
+    <ClCompile Include="Enterpreter.cpp" />
     <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="Interpreter.cpp" />
     <ClCompile Include="IPC.cpp" />
@@ -124,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dysk.h" />
+    <ClInclude Include="Enterpreter.h" />
     <ClInclude Include="Filesystem.h" />
     <ClInclude Include="inode.h" />
     <ClInclude Include="Interpreter.h" />

@@ -2,7 +2,8 @@
 
 using namespace std;
 
-Scheduler::Scheduler() {
+Scheduler::Scheduler(Enterpreter* inter) {
+	this->interpreter = inter;
 	ResetQuantum();
 };
 
@@ -26,7 +27,7 @@ void Scheduler::DeleteProcess(Process* proc)//wywolac jesli proces zmieni stan n
 		DeleteProcess();
 	}
 	else {
-		processes.erase(std::remove(processes.begin(), processes.end(), proc), processes.end()); // TRZEBA PRZESTOWAC
+		processes.erase(std::remove(processes.begin(), processes.end(), proc), processes.end());
 	}
 }
 
@@ -50,7 +51,7 @@ void Scheduler::Step(int steps)
 			{
 				process->processState = 2;
 
-				//wywo³aj jedna linie kodu;
+				interpreter->InterpretLine(process);
 
 				std::cout << "Actual process: " << process->name << " ID: " << process->GetPID() << " Quantum: " << quantum << endl;	//to wrzucimy w interpreterze
 				quantum--;
