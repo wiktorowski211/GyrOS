@@ -78,11 +78,26 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 		}
 
 		std::cout << "New process with ID " << id << " and name " << processName << ".\n";
-		if (MemoryManagement->dodaj(id, commands) == false)
+		flag_writing_to_memory = MemoryManagement->dodaj(id, commands);
+		if (flag_writing_to_memory == 1)
 		{
-			memory_is_available = false;
+			flag_writing_to_memory = 0;
 			KillProcess(processName);
 			std::cout << "There's no enough memory to create process " << processName << std::endl;
+			return;
+		}
+		else if (flag_writing_to_memory == 2)	
+		{
+			flag_writing_to_memory = 0;
+			KillProcess(processName);
+			std::cout << "There's nothing in file with commands " << processName << std::endl;
+			return;
+		}
+		else if (flag_writing_to_memory == 3)
+		{
+			flag_writing_to_memory = 0;
+			KillProcess(processName);
+			std::cout << "There's no file like that " << processName << std::endl;
 			return;
 		}
 		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
@@ -117,14 +132,14 @@ void ProcessManagement::KillProcess(std::string name)
 		{
 			scheduler->DeleteProcess(temp);// to dodaje marcin!!
 			temp->parent->children.erase(it);
-			if (memory_is_available == true)
+			if (flag_writing_to_memory == true)
 			{
 				
 				MemoryManagement->usun(temp->PID);
 			}
 			else
 			{
-				memory_is_available = true;
+				flag_writing_to_memory = true;
 			}
 			std::cout << "Process " << name << " has been deleted!" << std::endl;
 			return;

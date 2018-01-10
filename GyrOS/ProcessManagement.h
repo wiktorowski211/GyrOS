@@ -19,7 +19,7 @@ public:
 	Process* init; //proces, który wytwarza się przy startowaniu systemu
 	int freeID = 0; //nastepny wolny numer ID do wykorzystania
 
-	bool memory_is_available = true;
+	int flag_writing_to_memory = 0;
 
 	// prosze nie tworzyc innych konstruktorow!!!
 	ProcessManagement(Pamiec* P, Enterpreter* inter) : MemoryManagement{ P } {
