@@ -151,7 +151,7 @@ bool Shell::echo_przekaz(string &s) //trzeba co nieco usprawnić
 }
 void Shell::nadpisz(string &s, string &p)
 {
-	if (!test /*dysk.plikexist(p)*/)
+	if (dysk.exists(p))
 	{
 		dysk.writeFile(p, s);
 	}
@@ -164,14 +164,7 @@ void Shell::nadpisz(string &s, string &p)
 }
 void Shell::dopisz(string &s, string &p)
 {
-	if (dysk.appendFile(p, s))
-	{
-		//cout << "\nDopisano: " << s << " do pliku: " << p << endl;
-	}
-	else
-	{
-		cout << "\nBlad otwarcia pliku" << endl;
-	}
+	dysk.appendFile(p, s);
 }
 void Shell::cls() {
 	system("cls");
@@ -181,10 +174,6 @@ void Shell::del(string &s)
 	if (dysk.deleteFile(s))
 	{
 		cout << "\nPlik: " << s << " usunieto" << endl;
-	}
-	else
-	{
-		cout << "\nNie udalo sie usunac pliku: " << s << endl;
 	}
 }
 void Shell::ext() {
@@ -202,9 +191,7 @@ void Shell::type(string &s)
 				plik += s[i];
 		}
 		if (dysk.readFile(s, tresc))
-			cout << "\nZawartosc pliku " << plik << ": " << tresc << endl;
-		else
-			cout << "\nBlad otwarcia pliku" << endl;
+			cout << "\nZawartosc pliku " << plik << ":\n" << tresc << endl;
 	}
 	else
 		cout << "\tNiepoprawna komenda.\n";
