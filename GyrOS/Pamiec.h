@@ -60,5 +60,5 @@ public:
 	void zawartosc();
 	void laczenie();
 	void fragmentacja();
-	void odczyt(int PID);
+	string odczyt(int PID);
 };
