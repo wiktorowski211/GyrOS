@@ -179,7 +179,7 @@ int Pamiec::dodaj(int PID, string FileName)
 			return 0;
 		}
 	}
-	catch (int) { cout << "\n\tBrak pamieci!" << endl; };
+	catch (int) { return 1; };
 	//FSBSEM.SIGNAL();
 }
 void Pamiec::usun(int pid)
