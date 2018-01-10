@@ -1,37 +1,16 @@
 #include "ProcessManagement.h"
 
-void Process::set_A(int a)
-{
-	regA = a;		
-}
-void Process::set_B(int b)
-{
-	regA = a;		
-}
-void Process::set_C(int c)
-{
-	regA = a;		
-}
-void Process::set_D(int d)	
-{
-	regA = a;		
-}
-int Process::get_A()	
-{
-	return regA;		
-}
-int Process::get_B()	
-{
-	return regB;		
-}
-int Process::get_C()	
-{
-	return regC;		
-}
-int Process::get_D()	
-{
-	return regD;		
-}
+void Process::set_A(int a){ regA = a; }
+void Process::set_B(int b){ regB = b; }
+void Process::set_C(int c){ regC = c; }
+void Process::set_D(int d){ regD = d; }
+int Process::get_A(){ return regA; }
+int Process::get_B(){ return regB; }
+int Process::get_C(){ return regC; }
+int Process::get_D(){ return regD; }
+
+void Process::set_counter(int counter){ programCounter = counter; }
+int Process::get_counter(){ return programCounter; }
 
 Process* ProcessManagement::FindProcess(int ID, Process* init)
 {
