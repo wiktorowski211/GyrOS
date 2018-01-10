@@ -28,11 +28,14 @@ public:
 	void set_B(int b);
 	void set_C(int c);
 	void set_D(int d);
-	int get_A(int a);
-	int get_B(int b);
-	int get_C(int c);
-	int get_D(int d);	
-
+	int get_A();
+	int get_B();
+	int get_C();
+	int get_D();	
+	
+	void set_counter(int counter);
+	int get_counter();
+	
 	
 	Process(int ID, Process* father, std::string processName, std::string txt)
 	{
