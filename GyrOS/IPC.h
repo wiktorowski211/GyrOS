@@ -1,30 +1,51 @@
 #pragma once
 #include "Process.h"
 
+
 #include <string>
 #include <iostream>
 #include <vector>
-#include <fstream>
+
 
 using namespace std;
 
-struct Socket {
+class Socket {
+private: 
+	int SockID, ConnectedSock, BindFlag, ConnectionFlag, msgSize;
+	Buffer buff; // 0 - otrzymabe
 
-	string temporary, pathfile, data;
-	ofstream file;
-	int sockID, connectedProcess, connectedProcess1, isConnected;
-
-	Socket() {
-		pathfile = "socket.txt";
-		isConnected = 0;
-		connectedProcess = -1;
-		connectedProcess1 = -1;
-	}
-	void CreateConnection(Process p1, Process p2);
-
-	void CloseConnection();
-
+public: 
+	Socket();
+	void Bind(Process p1);
+	void Connect(Socket sock); //argument to socket z którym chcesz siê po³¹czyæ, musi byæ zbindowany
+	void CloseConnection(Socket sock);
+	int GetSockID();
+	void SetMsgSize(int msg);
 	void Write(string msg);
+	string Read();
+	~Socket() {};
+	
+};
+class Buffer {
+private:
+		 char tab[32];
 
-	void Read();
+public:
+
+	Buffer() {};
+	void BufferWrite(string msg);
+	string BufferRead(int msgSize);
+	
+};
+
+class IPC {
+private:
+	Socket SocketDomain[2]; //maksymalnie 2 sockety jednoczeœnie
+public:
+	IPC() {};
+	
+	void SocketPair(Process p1, Process p2);
+	void Send(Process sender, string msg);
+	string Recv(Process receiver);
+
 };
