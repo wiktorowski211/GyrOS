@@ -1,5 +1,6 @@
 #include "Enterpreter.h"
 
 void Enterpreter::InterpretLine(Process* proc) {//counter jeszcze 
-	memory->odczyt(proc->GetPID());
+	cout<< memory->odczyt(proc->GetPID(),proc->programCounter)<<endl;
+	proc->programCounter++;
 }

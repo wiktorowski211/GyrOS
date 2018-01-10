@@ -1,4 +1,4 @@
-CF
-MI A 1
-PF A
-EX
+CF;
+MI A 1;
+PF A;
+EX;
