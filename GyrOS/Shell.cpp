@@ -375,7 +375,7 @@ void Shell::check()
 }
 void Shell::dir()
 {
-	//metoda z dysku
+	dysk.print_directory();
 }
 void Shell::czytaj_skrypt(string s)
 {

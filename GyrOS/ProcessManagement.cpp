@@ -67,7 +67,7 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 		}
 
 		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
-		P.dodaj(id, commands);
+		MemoryManagement->dodaj(id, commands);
 		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
 	}
 }
@@ -94,7 +94,7 @@ void ProcessManagement::KillProcess(std::string name)
 		{
 			//scheduler->DeleteProcess(temp);// to dodaje marcin!!
 			temp->parent->children.erase(it);
-			P.usun(temp->PID);
+			MemoryManagement->usun(temp->PID);
 			return;
 		}
 	}
@@ -143,6 +143,6 @@ void ProcessManagement::PrintAllProcesses()
 			}
 		}
 	}
-	P.zawartosc();
+	MemoryManagement->zawartosc();
 }
 
