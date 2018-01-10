@@ -19,6 +19,8 @@ public:
 	Process* init; //proces, który wytwarza się przy startowaniu systemu
 	int freeID = 0; //nastepny wolny numer ID do wykorzystania
 
+	bool memory_is_available = true;
+
 	// prosze nie tworzyc innych konstruktorow!!!
 	ProcessManagement(Pamiec* P) : MemoryManagement{ P } {
 		init = new Process(FindFreeID(), nullptr, "init", "comm");

@@ -9,7 +9,7 @@ bool comp(const wolne_miejsca &a, const wolne_miejsca &b)
 }
 
 //void Pamiec::dodaj(int PID, int w, string commands)
-void Pamiec::dodaj(int PID, string FileName)
+bool Pamiec::dodaj(int PID, string FileName)
 {
 
 	fstream plik;
@@ -57,6 +57,7 @@ void Pamiec::dodaj(int PID, string FileName)
 	try {
 		if (wolne < w || wolne <=2)
 		{
+			return false;
 			//MemSem.Wait();
 			throw 0;
 		}
@@ -151,6 +152,8 @@ void Pamiec::dodaj(int PID, string FileName)
 			} while (po_fragmentacji);
 
 			laczenie();
+
+			return true;
 		}
 	}
 	catch (int) { cout << "\n\tBrak pamieci!" << endl; };
@@ -185,6 +188,7 @@ void Pamiec::usun(int pid)
 		l_wolne.push_front(pom);
 
 		l_procesow.erase(it);
+
 	}
 	catch (int) { cout << "\n\tBrak wybranego procesu w pamieci!"; };
 
