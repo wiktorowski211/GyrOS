@@ -82,7 +82,7 @@ void Shell::help(string &s)
 		cout << "\nTASKKILL nazwa_procesu			Wstrzymuje wskazany proces.";
 		cout << "\nTASKLIST				Wyswietla liste procesow.";
 		cout << "\nMKLINK nazwa_pliku alias_pliku		Tworzy Alias do wskazanego pliku.";
-		cout << "\nGO					Wywoluje kolejny 'krok' systemu (jeden rozkaz asemblerowy).";
+		cout << "\nGO n					Wywoluje n-kolejnych 'krokow' systemu";
 		cout << "\nCHECK					Wyswietla biezacy stan dysku/ramu.";
 		cout << "\nREG					Podglad rejestrow biezacego procesu.\n";
 	}
