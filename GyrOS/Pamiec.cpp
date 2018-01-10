@@ -9,7 +9,7 @@ bool comp(const wolne_miejsca &a, const wolne_miejsca &b)
 }
 
 //void Pamiec::dodaj(int PID, int w, string commands)
-bool Pamiec::dodaj(int PID, string FileName)
+int Pamiec::dodaj(int PID, string FileName)
 {
 
 	fstream plik;
@@ -36,6 +36,29 @@ bool Pamiec::dodaj(int PID, string FileName)
 			commands += '\n';
 		}
 	}
+	else
+	{
+		cout << "\n\tBlad! Brak podanego pliku.";
+		return 2;
+	}
+
+	cout << "kom:" << commands << "k";
+
+	bool pusty = true;
+	for (int i = 0; i < commands.length(); i++)
+	{
+		if (commands[i] != ' ' && commands[i]!='\n')
+		{
+			pusty = false;
+			break;
+		}	
+	}
+
+	if (pusty)
+	{
+		cout << "\tPlik jest pusty.";
+		return 3;
+	} 
 
 
 	//FSBEM.WAIT();
@@ -57,9 +80,10 @@ bool Pamiec::dodaj(int PID, string FileName)
 	try {
 		if (wolne < w || wolne <=2)
 		{
-			return false;
+			
 			//MemSem.Wait();
 			throw 0;
+			return 1;
 		}
 
 		else {
@@ -134,7 +158,6 @@ bool Pamiec::dodaj(int PID, string FileName)
 					p.start = wm.poczatek - w;
 					l_procesow.push_back(p);
 
-					cout << "Dodano proces:  " << PID << "  o wielkosci:  " << w << endl;
 
 					wolne -= w;
 
@@ -153,7 +176,7 @@ bool Pamiec::dodaj(int PID, string FileName)
 
 			laczenie();
 
-			return true;
+			return 0;
 		}
 	}
 	catch (int) { cout << "\n\tBrak pamieci!" << endl; };
