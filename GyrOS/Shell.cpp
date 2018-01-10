@@ -100,12 +100,6 @@ bool Shell::echo_przekaz(string &s) //trzeba co nieco usprawnić
 	int pos;
 	for (int i = 0; i < s.size(); i++)
 	{
-		/*if (s[i] == '\'' || s[i] == '\"')
-		{
-		continue;
-		}
-		if (s[i] != '>')
-		txt += s[i];*/
 		if (s[0] == '\"')
 		{
 			txt = cudzy(s);
@@ -259,9 +253,9 @@ void Shell::start(string &s)
 	{
 		if (s.size() != 0)
 		{
-			string nazwa = "", kod = ""; // roz = "";
+			string nazwa = "", kod = "";
 			bool ok = true;
-			int /*rozmiar,*/ e = 0;
+			int e = 0;
 			for (int i = 0; i < s.size(); i++)
 			{
 				if (s[i] == separator)
@@ -273,19 +267,9 @@ void Shell::start(string &s)
 				{
 					nazwa += s[i];
 				}
-				/*if (e == 1)
-				{
-				if(nazwa!="")
-				roz += s[i];
-				else
-				{
-				ok = false;
-				break;
-				}
-				}*/
 				if (e == 1)//bylo 2
 				{
-					if (nazwa != "")//byl roz
+					if (nazwa != "")
 						kod += s[i];
 					else
 					{
@@ -296,17 +280,8 @@ void Shell::start(string &s)
 			}
 			if (kod == "")
 				ok = false;
-			/*for (int j = 0; j < roz.size(); j++)
-			{
-			if (int(roz[j])< 48 || int(roz[j])>57)
-			{
-			ok = false;
-			break;
-			}
-			}*/
 			if (ok)
 			{
-				//rozmiar = stoi(roz);
 				procesy.AddProcess(nazwa, kod, 0);
 				cout << "Stworzono proces: " << nazwa << " o kodzie zrodlowym z pliku: " << kod;
 			}
@@ -535,7 +510,7 @@ string Shell::end(string &s)
 {
 	string kom = "";
 	bool pom = true;
-	int z = s.size();//nie moze byc size_t bo program wysypie w okreslonych przypadkach
+	int z = (int)s.size();//nie moze byc size_t bo program wysypie w okreslonych przypadkach
 	if ((z - 1) >= 0)
 	{
 		if (s[s.size() - 1] == separator)
