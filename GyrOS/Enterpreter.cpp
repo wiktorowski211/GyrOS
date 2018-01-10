@@ -2,9 +2,9 @@
 #include "ProcessManagement.h"
 
 void Enterpreter::InterpretLine(Process* proc) {//counter jeszcze 
-	std::string currentCommand = memory->odczyt(proc->GetPID(), proc->programCounter);
+	std::string currentCommand = memory->odczyt(proc->GetPID(), proc->get_counter());
 	cout<< currentCommand <<endl;
-	proc->programCounter++;
+	proc->set_counter(proc->get_counter()+1);
 	runCommand(currentCommand, proc);
 }
 
