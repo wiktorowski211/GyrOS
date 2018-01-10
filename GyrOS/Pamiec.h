@@ -34,6 +34,15 @@ public:
 	int wolne = 128;
 	list<proces> l_procesow;
 	list<wolne_miejsca> l_wolne;
+	
+	Pamiec()
+	{
+		wolne_miejsca wm;
+		wm.poczatek = 1;
+		wm.k = 128;
+		wm.wielkosc = wm.k - wm.poczatek;
+		l_wolne.push_back(wm);
+	}
 	//Semaphore Mem;
 	/*Semaphore FullMemmory;
 	Semaphore FSBEM;
@@ -53,12 +62,12 @@ public:
 	spełnia wymagań, zachodzi fragmentacja pamięci a wraz z nią łączenie nowo powstałych bloków wolnej pamięci. Jeśli 'wolne' jest mniejsze od wielkości procesu,
 	wtedy proces nie może zostać dołączony do pamięci.*/
 	//void dodaj(int PID, int w, string commands);
-	void dodaj(int PID, string FileName);
+	bool dodaj(int PID, string FileName);
 	/*Usuwa proces z listy procesów po czym tworzy blok wolnej pamięci w miejscu usuniętego procesu. Po tym zabiegu następuje łączenie wolnych bloków pamięci w całość.*/
 	void usun(int pid);
 
 	void zawartosc();
 	void laczenie();
 	void fragmentacja();
-	void odczyt(int PID);
+	string odczyt(int PID, int counter);
 };

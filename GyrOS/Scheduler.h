@@ -3,21 +3,24 @@
 #include <deque>
 #include <algorithm>
 #include "Process.h"
-#include "Interpreter.h"
+#include "Enterpreter.h"
 
 using namespace std;
 
 class Scheduler {
 public:
-	Scheduler();
+	Scheduler(Enterpreter* inter, Process* init);
 	void AddProcess(Process* proc);
 	void DeleteProcess();
 	void DeleteProcess(Process* proc);
+	void SetNext();
 	Process* GetProcess();
 	void Step(int steps);
 	int quantum;
+	Enterpreter* interpreter;
 private:
 	deque<Process*> processes;
 	void ResetQuantum();
 	Process* process;
+	Process* init; //process bezczynnosci
 };

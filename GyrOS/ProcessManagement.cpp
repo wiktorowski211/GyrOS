@@ -1,5 +1,16 @@
 #include "ProcessManagement.h"
-#include "Pamiec.h"
+
+void Process::set_A(int a){ regA = a; }
+void Process::set_B(int b){ regB = b; }
+void Process::set_C(int c){ regC = c; }
+void Process::set_D(int d){ regD = d; }
+int Process::get_A(){ return regA; }
+int Process::get_B(){ return regB; }
+int Process::get_C(){ return regC; }
+int Process::get_D(){ return regD; }
+
+void Process::set_counter(int counter){ programCounter = counter; }
+int Process::get_counter(){ return programCounter; }
 
 Process* ProcessManagement::FindProcess(int ID, Process* init)
 {
@@ -67,9 +78,13 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 		}
 
 		std::cout << "Stworzenie procesu o id: " << id << " o nazwie " << processName << ".\n";
-		MemoryManagement->dodaj(id, commands);
+		if (MemoryManagement->dodaj(id, commands) == false)
+		{
+			memory_is_available = false;
+			KillProcess(processName);
+		}
 		temp->children.emplace_back(new Process(id, temp, processName, commands)); //dodawanie do listy potomków dla rodzimego procesu
-		ChangeState(processName, 1);
+		ChangeState(processName, READY);
 	}
 }
 
@@ -83,6 +98,11 @@ void ProcessManagement::KillProcess(std::string name)
 		return;
 	}
 
+	if (temp == init) {
+		std::cout << "Nie mozna usunac procesu init" << std::endl;
+		return;
+	}
+
 	for each (Process* process in temp->children)
 	{
 		process->parent = init;
@@ -93,9 +113,18 @@ void ProcessManagement::KillProcess(std::string name)
 	{
 		if ((*it)->name == name)
 		{
-			//scheduler->DeleteProcess(temp);// to dodaje marcin!!
+			scheduler->DeleteProcess(temp);// to dodaje marcin!!
 			temp->parent->children.erase(it);
-			MemoryManagement->usun(temp->PID);
+			if (memory_is_available == true)
+			{
+				
+				MemoryManagement->usun(temp->PID);
+			}
+			else
+			{
+				memory_is_available = true;
+			}
+			cout << "Zabicie procesu o nazwie: " << name;
 			return;
 		}
 	}
@@ -108,24 +137,34 @@ void ProcessManagement::ChangeState(std::string name, int newstate)
 	if (!temp)
 		std::cout << "ChangeState: Brak procesu?\n";
 	temp->processState = newstate; //szukanie w drzewie procesu i zmiana jego stanu
-	if (newstate == 1) //je¿eli stan procesu ustawiany jest na ready to:
+	if (newstate == READY) //je¿eli stan procesu ustawiany jest na ready to:
 	{
 		scheduler->AddProcess(temp); //dodawanie procesu do kolejki gotowych procesów
 	}
-	else if (newstate == 4) //je¿eli stan procesu ustawiany jest na ready to:
+	else if (newstate == TERMINATED) //je¿eli stan procesu ustawiany jest na ready to:
 	{
 		KillProcess(name);
 	}
-	else if (newstate == 3)
+	else if (newstate == WAITING)
 	{
 		scheduler->DeleteProcess();
+		int counter = temp->get_counter();
+		if (counter > 0)
+		{
+			counter--;
+			temp->set_counter(counter);
+		}
 	}
 }
 
 void ProcessManagement::PrintProcess(std::string name)
 {
 	Process* temp = FindProcess(name, init);
-	std::cout << "Process " << temp->PID << ": with parent ID " << temp->parent->PID << std::endl;
+	std::cout << "Process " << temp->PID << ": with parent ID " << temp->parent->PID << ", state: "<< temp->GetProcessState() << ", with registers:\n";
+	std::cout << "Registery A: " << temp->get_A() << std::endl;
+	std::cout << "Registery B: " << temp->get_B() << std::endl;
+	std::cout << "Registery C: " << temp->get_C() << std::endl;
+	std::cout << "Registery D: " << temp->get_D() << std::endl;
 }
 
 void ProcessManagement::PrintAllProcesses()

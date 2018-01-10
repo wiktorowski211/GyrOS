@@ -5,9 +5,12 @@
 #include <fstream>
 #include <map>
 #include <Windows.h>
+
 #include "Filesystem.h"
 #include "ProcessManagement.h"
 #include "Pamiec.h"
+#include "Enterpreter.h"
+
 using namespace std;
 
 class Shell {
@@ -18,9 +21,11 @@ public:
 	Pamiec ram;
 	ProcessManagement procesy;
 	Filesystem dysk;
+	Enterpreter interpreter;
 	map<string, int> rozkaz;
-	bool work;
-	Shell(): ram{}, procesy{&ram}
+	map<string, int> chk;
+	bool work; //(Pamiec* pam, ProcessManagement* processManager, Filesystem* dysk)
+	Shell() : ram{}, procesy{ &ram, &interpreter}, dysk{}, interpreter{ram, procesy, dysk}
 	{
 		rozkaz.insert(pair<string, int>("help", 1)); //wyświetla dostępne komendy
 		rozkaz.insert(pair<string, int>("cls", 2)); //czyści konsole
@@ -33,43 +38,42 @@ public:
 		rozkaz.insert(pair<string, int>("taskkill", 9));//kończy proces
 		rozkaz.insert(pair<string, int>("tasklist", 10));//lista procesów
 		rozkaz.insert(pair<string, int>("go", 11));//wykonuje rozkaz asemblerowy - krok systemu
-		rozkaz.insert(pair<string, int>("check", 12));//pokazuje stan systemu
+		rozkaz.insert(pair<string, int>("check", 12));//pokazuje stan dysku/ramu
 		rozkaz.insert(pair<string, int>("mklink", 13));//dopisuje alias do wskazanego pliku
 		rozkaz.insert(pair<string, int>("dir", 14));//wyswietla liste plikow
+		rozkaz.insert(pair<string, int>("reg", 15));//stan rejestrow aktualnego procesu
+		
+		chk.insert(pair<string, int>("disc", 1));
+		chk.insert(pair<string, int>("ram", 2));
 		work = true;
-	//	ram = Pamiec();
-	//	procesy = ProcessManagement(&ram);
-		dysk = Filesystem();
-		/*
-		wywołanie konstruktorów dla pozostałych modułów
-		*/
 	}
 	void wydziel_rozkaz(string &kom);
 	string begin(string &s);
 private:
 	void rozpoznaj_rozkaz(string s1, string s2);
 	bool echo_przekaz(string &s);
-	void help();
-	void cls();
+	void help(string &s);
+	void cls(string &s);
 	void del(string &s);
 	void echo(string &s);
-	void ext();
+	void ext(string &s);
 	void type(string &s);
 	void rename(string &s);
 	void start(string &s);
 	void taskkill(string &s);
 	void tasklist();
-	void go();
+	void go(string &s);
 	void mklink(string &s);
+	void reg(string &s);
 	void nadpisz(string &s, string &p);
 	void dopisz(string &s, string &p);
 	void czytaj_skrypt(string s);
-	void check();
-	void dir();
+	void check(string &s);
+	void dir(string &s);
 	string standard(string &s);
 	string namale(string &s);
 	string end(string &s);
 	void kropki(string s);
 	string cudzy(string &s);
-	bool compare(string &s1, string &s2);
+	int ilsep(string &s);
 };

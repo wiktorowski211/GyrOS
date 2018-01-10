@@ -2,29 +2,36 @@
 
 using namespace std;
 
-Scheduler::Scheduler() {
+Scheduler::Scheduler(Enterpreter* inter, Process* init) {
+	this->interpreter = inter;
+	this->init = init;
+	process = init;
 	ResetQuantum();
 };
 
 void Scheduler::AddProcess(Process* proc)
 {
 	processes.push_back(proc);
+	if (process == init) {
+		process = processes.front();
+	}
 }
 
 void Scheduler::DeleteProcess()
 {
 	processes.pop_front();
-	ResetQuantum();
-	process = processes.front();
+	SetNext();
 }
 
 void Scheduler::DeleteProcess(Process* proc)//wywolac jesli proces zmieni stan na terminated
 {
+	if (proc == init)
+		return;
 	if (proc == process) {
 		DeleteProcess();
 	}
 	else {
-		processes.erase(std::remove(processes.begin(), processes.end(), proc), processes.end()); // TRZEBA PRZESTOWAC
+		processes.erase(std::remove(processes.begin(), processes.end(), proc), processes.end());
 	}
 }
 
@@ -42,27 +49,36 @@ void Scheduler::Step(int steps)
 {
 	for (int i = 0; i < steps; i++)
 	{
-		if (processes.size() > 0) 
+		if (quantum > 0 && (process->processState == READY || process->processState == RUNNING))
 		{
-			if (quantum > 0 && process->processState == 1) 
-			{
-				process->processState = 2;
+			process->processState = 2;
+			std::cout << "Actual process: " << process->name << " ID: " << process->GetPID() << " Quantum: " << quantum << endl;
+			quantum--;
+			interpreter->InterpretLine(process);
+		}
+		else if (process->processState != READY && process->processState != RUNNING) {
+			std::cout << "Zly stan procesu!!! Actual process: " << process->name << " ID: " << process->GetPID() << endl;
+		}
 
-				//wywo³aj jedna linie kodu;
-
-				//std::cout << "Actual process: " << process->name<<" ID: "<<process->GetPID()<<endl;	//to wrzucimy w interpreterze
-				quantum--;
-			}
-
-			if (quantum <= 0 && process->processState == 2)
-			{
-				DeleteProcess();
-
+		if (quantum <= 0 && process->processState == 2)
+		{
+			if (processes.size() > 0) {
 				process->processState = 1;
+				processes.pop_front();
 				processes.push_back(process);
-
-				process = processes.front();
+				SetNext();
+			}
+			else if (process == init) {
+				ResetQuantum();
 			}
 		}
 	}
+}
+
+void Scheduler::SetNext() {
+	ResetQuantum();
+	if (processes.size() > 0)
+		process = processes.front();
+	else
+		process = init;
 }

@@ -2,30 +2,33 @@
 #include "Process.h"
 #include "Scheduler.h"
 #include "Pamiec.h"
-
+#include "Enterpreter.h"
 #include <iostream>
 #include <vector>
 #include <string>
 
 class Pamiec;
 
-struct ProcessManagement
+class ProcessManagement
 {
 public:
-	Scheduler* scheduler;
+	Scheduler* scheduler = nullptr;
 	Pamiec* MemoryManagement = nullptr;
-
+	Enterpreter* interpreter = nullptr;
 
 	Process* init; //proces, który wytwarza się przy startowaniu systemu
 	int freeID = 0; //nastepny wolny numer ID do wykorzystania
 
-	// prosze nie tworzyc innych konstruktorow!!!
-	ProcessManagement(Pamiec* P) : MemoryManagement{ P } {
-		init = new Process(FindFreeID(), nullptr, "init", "comm");
-		scheduler = new Scheduler();
-	}
+	bool memory_is_available = true;
 
-	std::vector<Process*> readyProcesses;
+	// prosze nie tworzyc innych konstruktorow!!!
+	ProcessManagement(Pamiec* P, Enterpreter* inter) : MemoryManagement{ P } {
+		init = new Process(FindFreeID(), nullptr, "init", "comm");
+		interpreter = inter;
+		scheduler = new Scheduler(interpreter,init);
+		MemoryManagement->dodaj(0, "init.txt");
+		init->processState = READY;
+	}
 
 	Process* FindProcess(int ID, Process* init);
 
@@ -42,6 +45,5 @@ public:
 	void PrintProcess(std::string name);
 
 	void PrintAllProcesses();
-
 
 };
