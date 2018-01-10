@@ -8,6 +8,11 @@ bool comp(const wolne_miejsca &a, const wolne_miejsca &b)
 	return a.poczatek < b.poczatek;
 }
 
+bool comp2(const proces &a, const proces &b)
+{
+	return a.start < b.start;
+}
+
 //void Pamiec::dodaj(int PID, int w, string commands)
 int Pamiec::dodaj(int PID, string FileName)
 {
