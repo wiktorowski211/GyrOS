@@ -402,20 +402,25 @@ string Shell::standard(string &s)
 {
 	int pom = 0;
 	string s2 = "";
-	for (int i = 0; i < s.size(); i++)
+	if (s.size() == 1)
+		s2 = s;
+	else
 	{
-		if (s[i] != ' ')
+		for (int i = 0; i < s.size(); i++)
 		{
-			pom = 0;
-			s2 += s[i];
-		}
-		else
-		{
-			pom++;
-		}
-		if (pom == 1)
-		{
-			s2 += separator;
+			if (s[i] != ' ')
+			{
+				pom = 0;
+				s2 += s[i];
+			}
+			else
+			{
+				pom++;
+			}
+			if (pom == 1)
+			{
+				s2 += separator;
+			}
 		}
 	}
 	//cout << endl << "Standard: \"" << s2 << "\"";
@@ -450,7 +455,7 @@ string Shell::end(string &s)
 	string kom = "";
 	bool pom = true;
 	size_t z = s.size();
-	if ((z - 1) > 0)
+	if ((z - 1) >= 0)
 	{
 		if (s[s.size() - 1] == separator)
 		{
@@ -468,9 +473,8 @@ string Shell::end(string &s)
 		}
 		else
 			kom = s;
-		/*cout << endl << "END: \"" << kom << "\"";*/
+		//cout << endl << "END: \"" << kom << "\"";
 	}
-
 	return kom;
 }
 void Shell::kropki(string s)

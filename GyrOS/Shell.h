@@ -20,7 +20,7 @@ public:
 	Filesystem dysk;
 	map<string, int> rozkaz;
 	bool work;
-	Shell(): ram{}, procesy{&ram}
+	Shell() : ram{}, procesy{ &ram }, dysk{}
 	{
 		rozkaz.insert(pair<string, int>("help", 1)); //wyświetla dostępne komendy
 		rozkaz.insert(pair<string, int>("cls", 2)); //czyści konsole
@@ -37,12 +37,6 @@ public:
 		rozkaz.insert(pair<string, int>("mklink", 13));//dopisuje alias do wskazanego pliku
 		rozkaz.insert(pair<string, int>("dir", 14));//wyswietla liste plikow
 		work = true;
-	//	ram = Pamiec();
-	//	procesy = ProcessManagement(&ram);
-		dysk = Filesystem();
-		/*
-		wywołanie konstruktorów dla pozostałych modułów
-		*/
 	}
 	void wydziel_rozkaz(string &kom);
 	string begin(string &s);
