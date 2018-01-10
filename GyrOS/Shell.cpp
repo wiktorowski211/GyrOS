@@ -334,7 +334,6 @@ void Shell::taskkill(string &s)
 					nazwa += s[i];
 			}
 			procesy.KillProcess(nazwa);
-			cout << "Zabicie procesu o nazwie: " << nazwa;
 		}
 		else
 			cout << "\tNiepoprawna komenda.\n";
