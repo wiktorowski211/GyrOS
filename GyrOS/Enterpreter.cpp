@@ -324,7 +324,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		//otworzplik(commandLine[1]);
 	}
 	else {
-
+		parseError(reg);
 	}
 	return;
 }

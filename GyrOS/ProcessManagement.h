@@ -9,7 +9,7 @@
 
 class Pamiec;
 
-struct ProcessManagement
+class ProcessManagement
 {
 public:
 	Scheduler* scheduler;
