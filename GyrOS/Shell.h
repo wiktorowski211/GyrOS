@@ -5,9 +5,12 @@
 #include <fstream>
 #include <map>
 #include <Windows.h>
+
 #include "Filesystem.h"
 #include "ProcessManagement.h"
 #include "Pamiec.h"
+#include "Enterpreter.h"
+
 using namespace std;
 
 class Shell {
@@ -18,10 +21,11 @@ public:
 	Pamiec ram;
 	ProcessManagement procesy;
 	Filesystem dysk;
+	Enterpreter interpreter;
 	map<string, int> rozkaz;
 	map<string, int> chk;
-	bool work;
-	Shell() : ram{}, procesy{ &ram }, dysk{}
+	bool work; //(Pamiec* pam, ProcessManagement* processManager, Filesystem* dysk)
+	Shell() : ram{}, procesy{ &ram, &interpreter}, dysk{}, interpreter{&ram, &procesy, &dysk}
 	{
 		rozkaz.insert(pair<string, int>("help", 1)); //wyświetla dostępne komendy
 		rozkaz.insert(pair<string, int>("cls", 2)); //czyści konsole

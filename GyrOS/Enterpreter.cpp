@@ -4,10 +4,11 @@
 #include "Process.h"
 
 
-Enterpreter::Enterpreter(Pamiec* pam, ProcessManagement* processManager)
+Enterpreter::Enterpreter(Pamiec* pam, ProcessManagement* processManager, Filesystem* dysk)
 { 
 	this->memory = pam;
 	this->processes = processManager;
+	this->dysk = dysk;
 }
 
 void Enterpreter::InterpretLine(Process* proc) {//counter jeszcze 
@@ -72,7 +73,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 			}
 		}
 	}
-	// wpisz wartosc do rejestru [1] (z konsoli)
+	// wpisz wartosc do rejestru [1] (z konsoli) WYRZUCIC
 	else if (commandLine[0] == "RD")
 	{
 		if (commandLine[1] == "A")
@@ -228,7 +229,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 			plik.close();
 		}
 	}
-	// wypisz plik - TODO: dodaj z dysku (writeFile)
+	// wypisz plik - TODO: dodaj z dysku (writeFile), to co teraz tu mamy bedzie APPEND
 	else if (commandLine[0] == "PF")
 	{
 		if (commandLine[1] == "A")
@@ -259,6 +260,11 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 			plik << (char)stoi(commandLine[1]);
 			plik.close();
 		}
+	}
+	// append file nazwa pliku, tresc
+	else if (commandLine[0] == "AF")
+	{
+
 	}
 	// inkrementuj rejestr
 	else if (commandLine[0] == "IC")
@@ -318,10 +324,15 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		std::cout << "Koniec programu z procesu " << reg.PID << std::endl;
 		processes->ChangeState(reg.name, TERMINATED);
 	}
-	// TODO Otwieranie pliku
-	else if (commandLine[0] == "OF")
+	// TODO Otwieranie pliku FO = FILE OPEN
+	else if (commandLine[0] == "FO")
 	{
 		//otworzplik(commandLine[1]);
+	}
+	// TODO Zamykanie pliku FC = FILE CLOSE
+	else if (commandLine[0] == "FC")
+	{
+
 	}
 	else {
 		parseError(reg);
@@ -334,7 +345,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 
 void Enterpreter::parseError(Process& p)
 {
-	std:cout << "Blad parsowania. Proces " << p.GetPID() << " zostal przerwany.\n";
+	std::cout << "Blad parsowania. Proces " << p.GetPID() << " zostal przerwany.\n";
 	processes->ChangeState(p.name, TERMINATED);
 	return;
 

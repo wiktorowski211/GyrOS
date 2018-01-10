@@ -12,9 +12,9 @@ class Pamiec;
 class ProcessManagement
 {
 public:
-	Scheduler* scheduler;
+	Scheduler* scheduler = nullptr;
 	Pamiec* MemoryManagement = nullptr;
-	Enterpreter* interpreter;
+	Enterpreter* interpreter = nullptr;
 
 	Process* init; //proces, który wytwarza się przy startowaniu systemu
 	int freeID = 0; //nastepny wolny numer ID do wykorzystania
@@ -22,9 +22,9 @@ public:
 	bool memory_is_available = true;
 
 	// prosze nie tworzyc innych konstruktorow!!!
-	ProcessManagement(Pamiec* P) : MemoryManagement{ P } {
+	ProcessManagement(Pamiec* P, Enterpreter* inter) : MemoryManagement{ P } {
 		init = new Process(FindFreeID(), nullptr, "init", "comm");
-		interpreter = new Enterpreter(MemoryManagement, this);
+		interpreter = inter;
 		scheduler = new Scheduler(interpreter,init);
 		MemoryManagement->dodaj(0, "init.txt");
 		init->processState = READY;
