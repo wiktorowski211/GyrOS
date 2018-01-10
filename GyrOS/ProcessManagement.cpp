@@ -132,7 +132,7 @@ void ProcessManagement::KillProcess(std::string name)
 		{
 			scheduler->DeleteProcess(temp);// to dodaje marcin!!
 			temp->parent->children.erase(it);
-			if (flag_writing_to_memory == 1 || flag_writing_to_memory == 2 || flag_writing_to_memory == 3)
+			if (flag_writing_to_memory != 0)
 			{
 				
 				MemoryManagement->usun(temp->PID);
