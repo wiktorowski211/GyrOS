@@ -223,28 +223,30 @@ void Pamiec::usun(int pid)
 
 	laczenie();
 }
+
 void Pamiec::zawartosc()
 {
 	list<proces>::iterator it;
 	int i = 0, ilosc_w = 0;
-	cout << "\nZawartosc pamieci:  " << endl << "[ID]\t[Rozmiar]\t[Adres]\t[Licznik Rozkazu]" << endl;
+	cout << "\nZawartosc pamieci:  " << endl << "[ID]\t[Rozmiar]\t[Adres]\t[Koniec]\t[Licznik Rozkazu]" << endl;
 	for (it = l_procesow.begin(); it != l_procesow.end(); ++it)
 	{
-		cout << it->PID << "\t " << it->wielkosc << "\t\t " << it->start << "\t " << it->processCounter << endl;
+		cout << it->PID << "\t " << it->wielkosc << "\t\t " << it->start << "\t " << it->start+it->wielkosc << "\t\t " << it->processCounter << endl;
 		i++;
 	}
 	if (i == 0)
 		cout << "Brak procesow w pamieci" << endl;
-	cout << ">>>>>>>>>>>>>\nPozostalo wolnej pamieci:  " << endl;
+	cout << "\nPozostalo wolnej pamieci:  " << endl;
 	for (auto e : l_wolne)
 	{
-		cout << "\tPUSTE: " << e.poczatek << " --> K: " << e.k << "  =  W: " << e.wielkosc << endl;
+		cout << "\tStart: " << e.poczatek << " --> End: " << e.k << "  =  Size: " << e.wielkosc << endl;
 		ilosc_w += e.wielkosc;
 	}
 	cout << "Razem:  " << ilosc_w << endl;
-	cout << "<<<<<<<<<<<<<" << endl;
+	cout << "" << endl;
 
 }
+
 void Pamiec::laczenie()
 {
 	list<wolne_miejsca>::iterator it, it2, it3;
