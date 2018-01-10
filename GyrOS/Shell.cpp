@@ -37,21 +37,21 @@ void Shell::wydziel_rozkaz(string &kom) {
 void Shell::rozpoznaj_rozkaz(string s1, string s2) {
 	switch (rozkaz[s1])
 	{
-	case 1: {help(); }; break;
-	case 2: {cls();  }; break;
+	case 1: {help(s2); }; break;
+	case 2: {cls(s2);  }; break;
 	case 3: {del(s2); }; break;
 	case 4: {echo(s2); }; break;
-	case 5: {ext(); }; break;
+	case 5: {ext(s2); }; break;
 	case 6: {type(s2); }; break;
 	case 7: {rename(s2); }; break;
 	case 8: {start(s2); }; break;
 	case 9: {taskkill(s2); }; break;
 	case 10: {tasklist(); }; break;
-	case 11: {go(); }; break;
+	case 11: {go(s2); }; break;
 	case 12: {check(s2); }; break;
 	case 13: {mklink(s2); }; break;
-	case 14: {dir(); }; break;
-	case 15: {reg(); }; break;
+	case 14: {dir(s2); }; break;
+	case 15: {reg(s2); }; break;
 	default: {
 		if (s1.size()>4 && s1[s1.size() - 4] == '.' && s1[s1.size() - 3] == 'b' && s1[s1.size() - 2] == 'a' && s1[s1.size() - 1] == 't')
 		{
@@ -64,25 +64,30 @@ void Shell::rozpoznaj_rozkaz(string s1, string s2) {
 	}; break;
 	}
 }
-void Shell::help()
+void Shell::help(string &s)
 {
-	cout << "\nHELP					Wyswietla na ekranie wszystkie dostepne komendy.";
-	cout << "\nCLS					Czysci bufor ekranu.";
-	cout << "\nDEL nazwa_pliku				Usuwa plik o wskazanej nazwie.";
-	cout << "\nDIR					Wyswietla liste plikow.";
-	cout << "\nECHO tekst				Przekzuje na ekran wpisany tekst.";
-	cout << "\nECHO tekst>nazwa_pliku			Umozliwia przekazanie(nadpisanie) tekstu do wskazanego pliku.";
-	cout << "\nECHO tekst>>nazwa_pliku			Umozliwia dopisanie tekstu na koniec wskazanego pliku.";
-	cout << "\nEXIT					Zamyka system.";
-	cout << "\nTYPE nazwa_pliku			Wyswietla zawartosc wskazanego pliku.";
-	cout << "\nRENAME stara_nazwa nowa_nazwa		Zmienia nazwe wskazanego pliku.";
-	cout << "\nSTART nazwa_procesu plik_procesu	Uruchamia proces o wskazanych parametrach.";
-	cout << "\nTASKKILL nazwa_procesu			Wstrzymuje wskazany proces.";
-	cout << "\nTASKLIST				Wyswietla liste procesow.";
-	cout << "\nMKLINK nazwa_pliku alias_pliku		Tworzy Alias do wskazanego pliku.";
-	cout << "\nGO					Wywoluje kolejny 'krok' systemu (jeden rozkaz asemblerowy).";
-	cout << "\nCHECK					Wyswietla biezacy stan dysku/ramu.";
-	cout << "\nREG					Podglad rejestrow biezacego procesu.\n";
+	if (s.size() == 0)
+	{
+		cout << "\nHELP					Wyswietla na ekranie wszystkie dostepne komendy.";
+		cout << "\nCLS					Czysci bufor ekranu.";
+		cout << "\nDEL nazwa_pliku				Usuwa plik o wskazanej nazwie.";
+		cout << "\nDIR					Wyswietla liste plikow.";
+		cout << "\nECHO tekst				Przekzuje na ekran wpisany tekst.";
+		cout << "\nECHO tekst>nazwa_pliku			Umozliwia przekazanie(nadpisanie) tekstu do wskazanego pliku.";
+		cout << "\nECHO tekst>>nazwa_pliku			Umozliwia dopisanie tekstu na koniec wskazanego pliku.";
+		cout << "\nEXIT					Zamyka system.";
+		cout << "\nTYPE nazwa_pliku			Wyswietla zawartosc wskazanego pliku.";
+		cout << "\nRENAME stara_nazwa nowa_nazwa		Zmienia nazwe wskazanego pliku.";
+		cout << "\nSTART nazwa_procesu plik_procesu	Uruchamia proces o wskazanych parametrach.";
+		cout << "\nTASKKILL nazwa_procesu			Wstrzymuje wskazany proces.";
+		cout << "\nTASKLIST				Wyswietla liste procesow.";
+		cout << "\nMKLINK nazwa_pliku alias_pliku		Tworzy Alias do wskazanego pliku.";
+		cout << "\nGO					Wywoluje kolejny 'krok' systemu (jeden rozkaz asemblerowy).";
+		cout << "\nCHECK					Wyswietla biezacy stan dysku/ramu.";
+		cout << "\nREG					Podglad rejestrow biezacego procesu.\n";
+	}
+	else
+		cout << "\tNiepoprawna komenda.\n";
 }
 void Shell::echo(string &s) {
 	if (echo_przekaz(s))
@@ -167,8 +172,11 @@ void Shell::dopisz(string &s, string &p)
 {
 	dysk.appendFile(p, s);
 }
-void Shell::cls() {
-	system("cls");
+void Shell::cls(string &s) {
+	if(s.size()==0)
+		system("cls");
+	else
+		cout << "\tNiepoprawna komenda.\n";
 }
 void Shell::del(string &s)
 {
@@ -182,9 +190,14 @@ void Shell::del(string &s)
 	else
 		cout << "\tNiepoprawna komenda.\n";
 }
-void Shell::ext() {
-	kropki("Zamykanie systemu");
-	work = false;
+void Shell::ext(string &s) {
+	if (s.size() == 0)
+	{
+		kropki("Zamykanie systemu");
+		work = false;
+	}
+	else
+		cout << "\tNiepoprawna komenda.\n";
 }
 void Shell::type(string &s)
 {
@@ -334,13 +347,21 @@ void Shell::tasklist()
 	procesy.PrintAllProcesses();
 	//PrintAllProcess();
 }
-void Shell::go()
+void Shell::go(string &s)
 {
-	procesy.scheduler->Step(1);
+	if(s.size()==0)
+		procesy.scheduler->Step(1);
+	else
+		cout << "\tNiepoprawna komenda.\n";
 }
-void Shell::reg()
+void Shell::reg(string &s)
 {
-	//funkcja od rejestrow
+	if(s.size()==0)
+	{ 
+		//funkcja od rejestrow
+	}
+	else
+		cout << "\tNiepoprawna komenda.\n";
 }
 void Shell::mklink(string &s)
 {
@@ -392,9 +413,14 @@ void Shell::check(string &s)
 	else
 		cout << "\tNiepoprawna komenda.\n";
 }
-void Shell::dir()
+void Shell::dir(string &s)
 {
-	dysk.print_directory();
+	if (s.size() == 0)
+	{
+		dysk.print_directory();
+	}
+	else
+		cout << "\tNiepoprawna komenda.\n";
 }
 void Shell::czytaj_skrypt(string s)
 {
@@ -488,7 +514,7 @@ string Shell::end(string &s)
 {
 	string kom = "";
 	bool pom = true;
-	size_t z = s.size();
+	int z = s.size();//nie moze byc size_t bo program wysypie w okreslonych przypadkach
 	if ((z - 1) >= 0)
 	{
 		if (s[s.size() - 1] == separator)
