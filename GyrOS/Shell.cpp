@@ -349,10 +349,32 @@ void Shell::tasklist()
 }
 void Shell::go(string &s)
 {
+	bool ok = true;
 	if(s.size()==0)
 		procesy.scheduler->Step(1);
 	else
-		cout << "\tNiepoprawna komenda.\n";
+	{
+		if (ilsep(s) == 0)
+		{
+			for (int i = 0; i < s.size(); i++)
+			{
+				if (s[i]<'0' || s[i]>'9')
+				{
+					ok = false;
+					break;
+				}
+			}
+			if (ok)
+			{
+				int ile = stoi(s);
+				procesy.scheduler->Step(ile);
+			}
+			else
+				cout << "\tNiepoprawna komenda.\n";
+		}
+		else
+			cout << "\tNiepoprawna komenda.\n";
+	}
 }
 void Shell::reg(string &s)
 {

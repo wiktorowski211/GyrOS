@@ -6,6 +6,7 @@ using namespace std;
 int main()
 {
 	Shell powloka = Shell();
+	system("cls");
 	cout << "Symulacja systemu operacyjnego GyrOS\n";
 	while (powloka.work)
 	{
