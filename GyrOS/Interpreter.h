@@ -32,6 +32,7 @@ public:
 	void set_counter(int);
 };
 
+//z tego poni¿ej utworzyc klase interpeter, ktora bedzie zawierala instancje registry
 void readFile(string myArray[]);
 
 void readFile(string myArray[], string fileName);

@@ -3,6 +3,8 @@
 #include <deque>
 #include <algorithm>
 #include "Process.h"
+#include "Interpreter.h"
+
 using namespace std;
 
 class Scheduler {

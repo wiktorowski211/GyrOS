@@ -45,8 +45,8 @@ void Registry::set_counter(int v)
 void readFile(string myArray[])
 {
 	using namespace std;
-
-	ifstream file("silnia.txt");
+	
+	ifstream file("interpreter kod i silnia\silnia.txt");
 	if (file.is_open())
 	{
 
