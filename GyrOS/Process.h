@@ -22,10 +22,10 @@ public:
 	Process* parent; //procesy przedstawiaj¹ drzewo, gdzie rodzic jest procesem macierzystym
 	std::vector<Process*> children; //a dzieci jego procesami potomnymi
 private:
-	int regA;    // 4 wartoœci rejestrów procesora
-	int regB;
-	int regC;
-	int regD;
+	int regA=0;    // 4 wartoœci rejestrów procesora
+	int regB=0;
+	int regC=0;
+	int regD=0;
 	int programCounter = 0; //wskazuje nastêpn¹ instrukcjê do wykonania
 public:
 	int programPosition;
