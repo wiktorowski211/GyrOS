@@ -43,7 +43,7 @@ int Pamiec::dodaj(int PID, string FileName)
 	}
 	else
 	{
-		cout << "\n\tBlad! Brak podanego pliku.";
+		//cout << "\n\tBlad! Brak podanego pliku.";
 		return 2;
 	}
 
@@ -61,7 +61,7 @@ int Pamiec::dodaj(int PID, string FileName)
 
 	if (pusty)
 	{
-		cout << "\tPlik jest pusty.";
+		//cout << "\tPlik jest pusty.";
 		return 3;
 	} 
 
