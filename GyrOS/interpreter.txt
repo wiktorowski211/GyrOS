@@ -24,4 +24,6 @@ AR nazwa rejestr		APPEND REGISTER			Pisz do pliku o nazwie nazwa wartosc rejestr
 IC rejestr 				INCREMENT REGISTER		Inkrementuj rejestr
 DC rejestr				DECREMENT REGISTER		Dekrementuj rejestr
 
+NP						NOP						Nic nie robi
+
 nazwa lub "nazwa dluga"

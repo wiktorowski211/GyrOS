@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "Filesystem.h"
-
+#include "IPC.h"
 
 class Pamiec;
 struct Process;
@@ -14,6 +14,7 @@ public:
 	Pamiec& memory;
 	ProcessManagement&  processes;
 	Filesystem& dysk;
+	IPC communication;
 
 	void InterpretLine(Process* proc);
 
