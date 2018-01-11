@@ -17,7 +17,7 @@ struct proces
 	int wielkosc;
 	int start;
 	string commands;
-	int processCounter = 0;
+	int MemoryPointer = 0;
 };
 struct wolne_miejsca
 {
@@ -61,8 +61,9 @@ public:
 	/*Sposób dodania procesu do pamięci opiera się na wartości zmiennej 'wolne'. Jeśli 'wolne' jest wieksze niz wielkosc procesu, ale żaden z bloków wolnej pamięci nie
 	spełnia wymagań, zachodzi fragmentacja pamięci a wraz z nią łączenie nowo powstałych bloków wolnej pamięci. Jeśli 'wolne' jest mniejsze od wielkości procesu,
 	wtedy proces nie może zostać dołączony do pamięci.*/
-	//void dodaj(int PID, int w, string commands);
+	//void dodaj(int PID, string commands);
 	int dodaj(int PID, string FileName);
+	//bool dodajS(int PID, const string& commands);
 	/*Usuwa proces z listy procesów po czym tworzy blok wolnej pamięci w miejscu usuniętego procesu. Po tym zabiegu następuje łączenie wolnych bloków pamięci w całość.*/
 	void usun(int pid);
 
@@ -72,3 +73,4 @@ public:
 	string odczyt(int PID, int counter);
 	char odczytznaku(int PID, int place);
 };
+
