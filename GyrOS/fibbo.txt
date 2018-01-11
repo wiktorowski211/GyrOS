@@ -1,0 +1,12 @@
+MI C 7;
+MI B 1;
+MI A 1;
+DC C;
+JZ 9;
+AD D;
+MV A B;
+MV B D;
+JM 3;
+MV D B;
+PR D;
+Ex;
