@@ -47,7 +47,7 @@ int Pamiec::dodaj(int PID, string FileName)
 		return 2;
 	}
 
-	cout << "kom:" << commands << "k";
+	cout << "kom:" << commands << "k\n";
 
 	bool pusty = true;
 	for (int i = 0; i < commands.length(); i++)
