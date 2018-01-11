@@ -1,0 +1,8 @@
+CF SO;
+FO SO;
+WF SO Test;
+NP;
+NP;
+NP;
+FC SO;
+EX;

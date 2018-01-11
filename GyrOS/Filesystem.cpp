@@ -5,7 +5,11 @@ Filesystem::Filesystem(ProcessManagement& ProcessManager):
  	ProcessManager{ProcessManager},
 	freeBlockCount{ Dysk::blockCount }, freeInodeCount{ Filesystem::inodeCount }
 {
-
+	for (int i = 0; i < inodeCount; ++i)
+	{
+		dostep[i].first = 0;
+		dostep[i].second = Semaphore(1, &ProcessManager);
+	}
 }
 
 
@@ -120,6 +124,49 @@ int Filesystem::create_index_block()
 	return newIndexB;
 }
 
+bool Filesystem::openFile(const std::string& name)
+{
+	// plik nie istnieje wiec jest to niepoprawna operacja
+	if (!katalog.count(name))
+	{
+		printf_s("Nie mozna otworzyc nieistniejacego pliku %s.\n", name.data());
+		return false;
+	}
+
+	auto value = katalog.find(name)->second;
+	if (dostep[value].first == ProcessManager.scheduler->GetProcess()->GetPID())
+	{
+		printf_s("Plik zostal juz otwarty przez ten sam proces. Operacja nieprawidlowa.\n");
+		return false;
+	}
+	if (dostep[value].second.Wait())
+	{
+		dostep[value].first = ProcessManager.scheduler->GetProcess()->GetPID();
+		return true;
+	}
+
+	return false;
+}
+
+bool Filesystem::closeFile(const std::string& name)
+{
+	// plik nie istnieje wiec jest to niepoprawna operacja
+	if (!katalog.count(name))
+	{
+		printf_s("Nie mozna otworzyc nieistniejacego pliku %s.\n", name.data());
+		return false;
+	}
+	auto value = katalog.find(name)->second;
+	if (dostep[value].first == ProcessManager.scheduler->GetProcess()->GetPID())
+	{
+		dostep[value].first = 0;
+		dostep[value].second.Signal();
+		return true;
+	}
+	printf_s("Plik nie jest otwarty przez ten proces.\n");
+	return false;
+}
+
 bool Filesystem::createFile(const std::string& name)
 {
 	// brak wolnych i wezlow
@@ -155,6 +202,11 @@ bool Filesystem::deleteFile(const std::string& name)
 		return false;
 	}
 
+	if (dostep[katalog.find(name)->second].first != ProcessManager.scheduler->GetProcess()->GetPID())
+	{
+		printf_s("Plik zostal juz otwarty przez ten sam proces. Operacja nieprawidlowa.\n");
+		return false;
+	}
 	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
 
 	int toFree = katalog[name];

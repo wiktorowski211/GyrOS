@@ -235,6 +235,16 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 			std::cout << num << std::endl;
 
 	}
+	// FILE OPEN
+	else if (commandLine[0] == "FO")
+	{
+		dysk.openFile(commandLine[1]);
+	}
+	// FILE CLOSE
+	else if (commandLine[0] == "FC")
+	{
+		dysk.closeFile(commandLine[1]);
+	}
 	// stworz plik - TODO: dodaj z dysku (createFile)
 	else if (commandLine[0] == "CF")
 	{

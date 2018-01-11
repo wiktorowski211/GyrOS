@@ -30,6 +30,7 @@ void Semaphore::Signal()
 		string procesName = que.front();
 		ProcessM->ChangeState(procesName, 1);
 		que.pop();
+		value++;
 	}
 	else
 	{

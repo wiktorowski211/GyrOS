@@ -58,6 +58,7 @@ private:
 	int allocate_block();
 	int create_index_block();
 	bool resize(inode& node, int size);
+	std::pair<int, Semaphore> dostep[inodeCount];
 
 	ProcessManagement& ProcessManager;
 };
