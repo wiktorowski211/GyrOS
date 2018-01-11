@@ -342,20 +342,22 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	}
 	else if (commandLine[0] == "CC")
 	{
+		reg.set_counter(reg.get_counter() + 1);
 		processes.ChangeState(reg.name, WAITING);
-		processes.AddProcess("dziecko", "silnia.txt", reg.PID);
+		processes.AddProcess("dziecko", "send.txt", reg.PID);
 		Process* proc = reg.children[reg.children.size() - 1];
 		communication.SocketPair(reg, *proc);
 	}
 	//wyslij wiadomosc
 	else if (commandLine[0] == "SM")
 	{
-
+		communication.Send(*reg.parent, "test");
+		processes.ChangeState(reg.parent->name, READY);
 	}
 	//odbierz wiadomosc
 	else if (commandLine[0] == "RM")
 	{
-
+		string msg = communication.Recv(reg);
 	}
 	else if (commandLine[0] == "NP")
 	{

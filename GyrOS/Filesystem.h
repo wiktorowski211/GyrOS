@@ -8,12 +8,18 @@
 
 #include "dysk.h"
 #include "inode.h"
+#include "Semaphoree.h"
 
+class ProcessManagement;
 
 class Filesystem
 {
 public:
-	Filesystem();
+	Filesystem(ProcessManagement& ProcessManager);
+
+	bool openFile(const std::string& name);
+	bool closeFile(const std::string& name);
+
 	// stworz plik name
 	bool createFile(const std::string& name);
 	// usun plik name
@@ -52,6 +58,8 @@ private:
 	int allocate_block();
 	int create_index_block();
 	bool resize(inode& node, int size);
+
+	ProcessManagement& ProcessManager;
 };
 
 template <int num>

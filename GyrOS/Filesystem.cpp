@@ -1,4 +1,14 @@
 #include "Filesystem.h"
+#include "ProcessManagement.h"
+
+Filesystem::Filesystem(ProcessManagement& ProcessManager):
+ 	ProcessManager{ProcessManager},
+	freeBlockCount{ Dysk::blockCount }, freeInodeCount{ Filesystem::inodeCount }
+{
+
+}
+
+
 
 template <int num>
 int find_free(std::bitset<num>& b)
@@ -108,11 +118,6 @@ int Filesystem::create_index_block()
 	memset(dysk.block(newIndexB), -1, Dysk::blockSize);
 	i = 5;
 	return newIndexB;
-}
-
-Filesystem::Filesystem(): freeBlockCount{Dysk::blockCount}, freeInodeCount{Filesystem::inodeCount}
-{
-
 }
 
 bool Filesystem::createFile(const std::string& name)
