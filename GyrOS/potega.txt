@@ -1,0 +1,10 @@
+MI B 2 ;
+MI C 3 ;
+JL 1 ;
+MI A 1 ;
+JZ 8 ;
+MP B ;
+DC C ;
+JP 4 ;
+PR A ;
+EX ;
