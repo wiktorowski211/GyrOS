@@ -166,6 +166,10 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		{
 			reg.set_A(reg.get_A() * reg.get_C());
 		}
+		else if (commandLine[1] == "D")
+		{
+			reg.set_A(reg.get_A() * reg.get_D());
+		}
 		else
 		{
 			if (commandLine[1] != "" && isdigit(commandLine[1][0]))
@@ -177,24 +181,30 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	// jesli C nie jest zero skocz
 	else if (commandLine[0] == "JC")
 	{
-		if (reg.get_C() != 0 && commandLine[1] != "" && isdigit(commandLine[1][0]))
-			reg.set_counter(std::stoi(commandLine[1]));
+		if(commandLine[1] != "" && isdigit(commandLine[1][0]))
+			if (reg.get_C() != 0)
+				reg.set_counter(std::stoi(commandLine[1]));
+			else;
 		else
 			parseError(reg);
 	}
 	// jesli C jest zero skocz
 	else if (commandLine[0] == "JZ")
 	{
-		if (reg.get_C() == 0 && commandLine[1] != "" && isdigit(commandLine[1][0]))
-			reg.set_counter(std::stoi(commandLine[1]));
+		if (commandLine[1] != "" && isdigit(commandLine[1][0]))
+			if (reg.get_C() == 0)
+				reg.set_counter(std::stoi(commandLine[1]));
+			else;
 		else
-			parseError(reg);
+				parseError(reg);
 	}
 	// jesli C jest ujemne skocz
 	else if (commandLine[0] == "JL")
 	{
-		if (reg.get_C() < 0 && commandLine[1] != "" && isdigit(commandLine[1][0]))
-			reg.set_counter(std::stoi(commandLine[1]));
+		if (commandLine[1] != "" && isdigit(commandLine[1][0]))
+			if((reg.get_C() < 0))
+				reg.set_counter(std::stoi(commandLine[1]));
+			else;
 		else
 			parseError(reg);
 	}
@@ -209,8 +219,10 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	// jesli C jest dodatnie
 	else if (commandLine[0] == "JM")
 	{
-		if (reg.get_C() > 0 && commandLine[1] != "" && isdigit(commandLine[1][0]))
-			reg.set_counter(std::stoi(commandLine[1]));
+		if (commandLine[1] != "" && isdigit(commandLine[1][0]))
+			if(reg.get_C() > 0)
+				reg.set_counter(std::stoi(commandLine[1]));
+			else;
 		else
 			parseError(reg);
 	}
@@ -220,7 +232,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		bool test;
 		int num = getRegister(reg, commandLine[1], test);
 		if (test)
-			std::cout << num;
+			std::cout << num << std::endl;
 
 	}
 	// stworz plik - TODO: dodaj z dysku (createFile)
