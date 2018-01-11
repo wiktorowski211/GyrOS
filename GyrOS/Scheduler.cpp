@@ -58,7 +58,7 @@ void Scheduler::Step(int steps)
 			interpreter->InterpretLine(process);
 		}
 		else if (process->processState != READY && process->processState != RUNNING) {
-			std::cout << "Zly stan procesu!!! Actual process: " << process->name << " ID: " << process->GetPID() << endl;
+			std::cout << "Wrong process state!!! Actual process: " << process->name << " ID: " << process->GetPID() << endl;
 		}
 
 		if (quantum <= 0 && process->processState == 2)

@@ -8,6 +8,11 @@ bool comp(const wolne_miejsca &a, const wolne_miejsca &b)
 	return a.poczatek < b.poczatek;
 }
 
+bool comp2(const proces &a, const proces &b)
+{
+	return a.start < b.start;
+}
+
 //void Pamiec::dodaj(int PID, int w, string commands)
 int Pamiec::dodaj(int PID, string FileName)
 {
@@ -38,7 +43,7 @@ int Pamiec::dodaj(int PID, string FileName)
 	}
 	else
 	{
-		cout << "\n\tBlad! Brak podanego pliku.";
+		//cout << "\n\tBlad! Brak podanego pliku.";
 		return 2;
 	}
 
@@ -56,7 +61,7 @@ int Pamiec::dodaj(int PID, string FileName)
 
 	if (pusty)
 	{
-		cout << "\tPlik jest pusty.";
+		//cout << "\tPlik jest pusty.";
 		return 3;
 	} 
 
@@ -179,7 +184,7 @@ int Pamiec::dodaj(int PID, string FileName)
 			return 0;
 		}
 	}
-	catch (int) { cout << "\n\tBrak pamieci!" << endl; };
+	catch (int) { return 1; };
 	//FSBSEM.SIGNAL();
 }
 void Pamiec::usun(int pid)
@@ -218,28 +223,30 @@ void Pamiec::usun(int pid)
 
 	laczenie();
 }
+
 void Pamiec::zawartosc()
 {
 	list<proces>::iterator it;
 	int i = 0, ilosc_w = 0;
-	cout << "\nZawartosc pamieci:  " << endl << "[ID]\t[Rozmiar]\t[Adres]\t[Licznik Rozkazu]" << endl;
+	cout << "\nZawartosc pamieci:  " << endl << "[ID]\t[Rozmiar]\t[Adres]\t[Koniec]\t[Licznik Rozkazu]" << endl;
 	for (it = l_procesow.begin(); it != l_procesow.end(); ++it)
 	{
-		cout << it->PID << "\t " << it->wielkosc << "\t\t " << it->start << "\t " << it->processCounter << endl;
+		cout << it->PID << "\t " << it->wielkosc << "\t\t " << it->start << "\t " << it->start+it->wielkosc << "\t\t " << it->processCounter << endl;
 		i++;
 	}
 	if (i == 0)
 		cout << "Brak procesow w pamieci" << endl;
-	cout << ">>>>>>>>>>>>>\nPozostalo wolnej pamieci:  " << endl;
+	cout << "\nPozostalo wolnej pamieci:  " << endl;
 	for (auto e : l_wolne)
 	{
-		cout << "\tPUSTE: " << e.poczatek << " --> K: " << e.k << "  =  W: " << e.wielkosc << endl;
+		cout << "\tStart: " << e.poczatek << " --> End: " << e.k << "  =  Size: " << e.wielkosc << endl;
 		ilosc_w += e.wielkosc;
 	}
 	cout << "Razem:  " << ilosc_w << endl;
-	cout << "<<<<<<<<<<<<<" << endl;
+	cout << "" << endl;
 
 }
+
 void Pamiec::laczenie()
 {
 	list<wolne_miejsca>::iterator it, it2, it3;
@@ -287,90 +294,36 @@ void Pamiec::laczenie()
 }
 void Pamiec::fragmentacja()
 {
-	cout << "Fragmentacja" << endl;
-	list<proces>::iterator it, it2;
+	list<proces>::iterator it;
 	list<wolne_miejsca>::iterator iwm;
-	int p = 0, startp = 0;
-	bool war = false;
-	do {
-		p = 0;
-		war = false;
-		for (it = l_procesow.begin(); it != l_procesow.end(); it++)
+	int petla = 0;
+	proces pp;
+
+	l_procesow.sort(comp2);
+
+	for (it = l_procesow.begin(); it != l_procesow.end(); ++it)
+	{
+		if (petla == 0)
 		{
-			if (p == 0)
-			{
-				if (it->start != 0)
-				{
-					proces np;
-
-					np.PID = it->PID;
-					np.wielkosc = it->wielkosc;
-					np.start = 1;
-					np.commands = it->commands;
-					startp = 1;
-					l_procesow.emplace(it, np);
-					war = true;
-
-
-					wolne_miejsca wm;
-					wm.poczatek = np.start + np.wielkosc;
-					wm.wielkosc = it->start - np.start;
-					wm.k = wm.poczatek + wm.wielkosc;
-					l_wolne.push_back(wm);
-					it->start = 1;
-				}
-
-			}
-
-			if (p >= 1)
-			{
-				proces np;
-				np.PID = it->PID;
-				np.wielkosc = it->wielkosc;
-				np.start = it2->start + it2->wielkosc + 1;
-				np.commands = it->commands;
-				l_procesow.emplace(it, np);
-				war = true;
-
-				wolne_miejsca wm;
-				wm.poczatek = np.start + np.wielkosc;
-				wm.wielkosc = it->start - np.start;
-				wm.k = wm.poczatek + wm.wielkosc;
-				l_wolne.push_back(wm);
-				it->start = np.start;
-
-			}
-			if (war)
-				break;
-			cout << "\t\t" << it->PID;
-			it2 = it;
-			p++;
+			it->start = 1;
 		}
-		if (war)
+		else
 		{
-			l_procesow.erase(it);
-			l_wolne.sort(comp);
-
-			bool ui = false;
-
-
-			for (iwm = l_wolne.begin(); iwm != l_wolne.end(); iwm++)
-			{
-				if (iwm->poczatek == startp)
-				{
-					ui = true;
-					break;
-				}
-			}
-
-			if (ui)
-				l_wolne.erase(iwm);
-
-			laczenie();
+			it->start = pp.start + pp.wielkosc + 1;
 		}
 
-	} while (!war);
+		pp = *it;
 
+		petla++;
+	}
+
+	l_wolne.clear();
+	wolne_miejsca wm;
+	wm.poczatek = pp.start + pp.wielkosc + 1;
+	wm.k = 128;
+	wm.wielkosc = wm.k - wm.poczatek;
+
+	l_wolne.push_back(wm);
 }
 string Pamiec::odczyt(int PID, int counter)
 {
