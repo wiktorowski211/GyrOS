@@ -5,8 +5,6 @@
 #include<list>
 #include<algorithm>
 #include<fstream>
-//#include "Semaphoree.h"
-//#include "ProcesorManager.h"
 using namespace std;
 
 
@@ -43,16 +41,6 @@ public:
 		wm.wielkosc = wm.k - wm.poczatek;
 		l_wolne.push_back(wm);
 	}
-	//Semaphore Mem;
-	/*Semaphore FullMemmory;
-	Semaphore FSBEM;
-	ProcessManagement * p;
-	Pamiec(ProcessManagement *h)
-	{
-	p = h;
-	FullMemmory.SetArg(1, h);
-	FSBEM.SetArg(1, h);
-	}*/
 private:
 	int ostatni = 0;
 
@@ -61,9 +49,9 @@ public:
 	/*Sposób dodania procesu do pamięci opiera się na wartości zmiennej 'wolne'. Jeśli 'wolne' jest wieksze niz wielkosc procesu, ale żaden z bloków wolnej pamięci nie
 	spełnia wymagań, zachodzi fragmentacja pamięci a wraz z nią łączenie nowo powstałych bloków wolnej pamięci. Jeśli 'wolne' jest mniejsze od wielkości procesu,
 	wtedy proces nie może zostać dołączony do pamięci.*/
-	//void dodaj(int PID, string commands);
+	
 	int dodaj(int PID, string FileName);
-	//bool dodajS(int PID, const string& commands);
+	
 	/*Usuwa proces z listy procesów po czym tworzy blok wolnej pamięci w miejscu usuniętego procesu. Po tym zabiegu następuje łączenie wolnych bloków pamięci w całość.*/
 	void usun(int pid);
 
