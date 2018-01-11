@@ -53,7 +53,7 @@ void Scheduler::Step(int steps)
 		if (quantum > 0 && (process->processState == READY || process->processState == RUNNING))
 		{
 			process->processState = 2;
-			std::cout << "Actual process: " << process->name << " ID: " << process->GetPID() << " Quantum: " << quantum << endl;
+			std::cout << "Current process: " << process->name << " ID: " << process->GetPID() << " Quantum: " << quantum << endl;
 			quantum--;
 			interpreter->InterpretLine(process);
 		}
