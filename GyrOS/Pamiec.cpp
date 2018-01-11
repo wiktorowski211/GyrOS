@@ -13,7 +13,7 @@ bool comp2(const proces &a, const proces &b)
 	return a.start < b.start;
 }
 
-//void Pamiec::dodaj(int PID, int w, string commands)
+
 int Pamiec::dodaj(int PID, string FileName)
 {
 
@@ -43,7 +43,6 @@ int Pamiec::dodaj(int PID, string FileName)
 	}
 	else
 	{
-		//cout << "\n\tBlad! Brak podanego pliku.";
 		return 2;
 	}
 
@@ -61,23 +60,8 @@ int Pamiec::dodaj(int PID, string FileName)
 
 	if (pusty)
 	{
-		//cout << "\tPlik jest pusty.";
 		return 3;
 	} 
-
-
-	//FSBEM.WAIT();
-	/*int linie = 1;
-	for (int i = 0; i < commands.length(); i++)
-	{
-		if (commands[i] == '\n')
-		{
-			linie++;
-		}
-	}*/
-	//int w = linie; 
-	//w = linie;
-	
 
 
 	bool szukaj_miejsca = false, po_fragmentacji = false;
@@ -185,7 +169,6 @@ int Pamiec::dodaj(int PID, string FileName)
 		}
 	}
 	catch (int) { return 1; };
-	//FSBSEM.SIGNAL();
 }
 void Pamiec::usun(int pid)
 {
@@ -207,7 +190,6 @@ void Pamiec::usun(int pid)
 		wolne += it->wielkosc;
 		s = it->wielkosc;
 		int sp = it->start;
-		//	cout << "\nUsunieto proces:  " << pid << endl;
 
 		wolne_miejsca pom;
 		pom.poczatek = sp;
@@ -253,7 +235,7 @@ void Pamiec::laczenie()
 	int petla = 0;
 	bool war = false;
 
-	l_wolne.sort(comp);  // dziala
+	l_wolne.sort(comp); 
 
 	do {
 		war = false;
@@ -327,7 +309,6 @@ void Pamiec::fragmentacja()
 }
 string Pamiec::odczyt(int PID, int counter)
 {
-	//cout << "Odczytywanie: " << endl;
 	list<proces>::iterator it;
 	string komendy, zwrot;
 	for (it = l_procesow.begin(); it != l_procesow.end(); it++)
@@ -335,13 +316,7 @@ string Pamiec::odczyt(int PID, int counter)
 		if (it->PID == PID)
 		{
 			int licz = 0, i, linie = 1;
-			/*for (i = 0; i < it->commands.length(); i++)
-			{
-				if (it->commands[i] == '\n')
-				{
-					linie++;
-				}
-			}*/	
+			
 			for (i = 0; i < it->commands.length(); i++)
 			{
 				if (it->commands[i] == '\n')
@@ -371,8 +346,6 @@ string Pamiec::odczyt(int PID, int counter)
 					break;
 
 			}
-			/*if (it->processCounter == linie - 1)
-				it->processCounter = 0;*/
 			}
 		}
 		return zwrot;
