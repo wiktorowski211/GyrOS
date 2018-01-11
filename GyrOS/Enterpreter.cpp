@@ -238,6 +238,11 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	// stworz plik - TODO: dodaj z dysku (createFile)
 	else if (commandLine[0] == "CF")
 	{
+		if (commandLine[1] == "")
+		{
+			parseError(reg);
+			return;
+		}
 		if (!dysk.createFile(commandLine[1]))
 			parseError(reg);
 	} // DELETE FILE
@@ -248,11 +253,21 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	} // ANOTHER ALIAS 
 	else if (commandLine[0] == "AA")
 	{
+		if (commandLine[1] == "" || commandLine[2] == "")
+		{
+			parseError(reg);
+			return;
+		}
 		if (!dysk.addFilename(commandLine[1], commandLine[2]))
 			parseError(reg);
 	} // SWITCH FILENAME
 	else if (commandLine[0] == "SF")
 	{
+		if (commandLine[1] == "" || commandLine[2] == "")
+		{
+			parseError(reg);
+			return;
+		}
 		if (!dysk.changeFilename(commandLine[1], commandLine[2]))
 			parseError(reg);
 	} // WRITE FILE
