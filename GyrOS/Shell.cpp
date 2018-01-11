@@ -84,7 +84,7 @@ void Shell::help(string &s)
 		cout << "\nMKLINK nazwa_pliku alias_pliku		Tworzy Alias do wskazanego pliku.";
 		cout << "\nGO n					Wywoluje n-kolejnych 'krokow' systemu";
 		cout << "\nCHECK					Wyswietla biezacy stan dysku/ramu.";
-		cout << "\nREG					Podglad rejestrow biezacego procesu.\n";
+		cout << "\nREG nazwa				Podglad rejestrow wskazanego procesu.\n";
 	}
 	else
 		cout << "\tNiepoprawna komenda.\n";
