@@ -118,6 +118,10 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 		{
 			reg.set_A(reg.get_A() + reg.get_C());
 		}
+		else if (commandLine[1] == "D")
+		{
+			reg.set_A(reg.get_A() + reg.get_D());
+		}
 		else if (commandLine[1] != "" && isdigit(commandLine[1][0]))
 		{
 			reg.set_A(reg.get_A() + std::stoi(commandLine[1]));
