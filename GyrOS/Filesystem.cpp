@@ -136,7 +136,7 @@ bool Filesystem::openFile(const std::string& name)
 	auto value = katalog.find(name)->second;
 	if (dostep[value].first == ProcessManager.scheduler->GetProcess()->GetPID())
 	{
-		printf_s("Plik zostal juz otwarty przez ten sam proces. Operacja nieprawidlowa.\n");
+		printf_s("Plik jest juz otwarty przez obecny proces.\n");
 		return false;
 	}
 	if (dostep[value].second.Wait())
@@ -192,8 +192,12 @@ bool Filesystem::createFile(const std::string& name)
 	katalog.emplace(name, newInode);
 	return true;
 }
-
 bool Filesystem::deleteFile(const std::string& name)
+{
+	return deleteFile(name, ProcessManager.scheduler->GetProcess()->GetPID());
+}
+
+bool Filesystem::deleteFile(const std::string& name, int PID)
 {
 	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
@@ -202,12 +206,11 @@ bool Filesystem::deleteFile(const std::string& name)
 		return false;
 	}
 
-	if (dostep[katalog.find(name)->second].first != ProcessManager.scheduler->GetProcess()->GetPID())
+	if (dostep[katalog.find(name)->second].first != PID)
 	{
-		printf_s("Plik zostal juz otwarty przez ten sam proces. Operacja nieprawidlowa.\n");
+		printf_s("Plik nie jest otwarty przez obecny proces.\n");
 		return false;
 	}
-	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
 
 	int toFree = katalog[name];
 	--wezly[toFree].hardlinks;
@@ -237,13 +240,20 @@ bool Filesystem::addFilename(const std::string& name, const std::string& name2)
 		return false;
 	}
 
-	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
+
+
 	auto value = katalog.find(name)->second;
 	katalog.emplace(name2, value);
 	++wezly[value].hardlinks;
 	return true;
 }
+
 bool Filesystem::changeFilename(const std::string& name, const std::string& newname)
+{
+	return changeFilename(name, newname, ProcessManager.scheduler->GetProcess()->GetPID());
+}
+
+bool Filesystem::changeFilename(const std::string& name, const std::string& newname, int PID)
 {
 	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
@@ -259,7 +269,12 @@ bool Filesystem::changeFilename(const std::string& name, const std::string& newn
 		return false;
 	}
 
-	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
+	if (dostep[katalog.find(name)->second].first != PID)
+	{
+		printf_s("Plik nie jest otwarty przez obecny proces.\n");
+		return false;
+	}
+
 
 	auto value = katalog.find(name)->second;
 	katalog.erase(name);
@@ -268,6 +283,11 @@ bool Filesystem::changeFilename(const std::string& name, const std::string& newn
 }
 
 bool Filesystem::writeFile(const std::string& name, const std::string& tresc)
+{
+	return writeFile(name, tresc, ProcessManager.scheduler->GetProcess()->GetPID());
+}
+
+bool Filesystem::writeFile(const std::string& name, const std::string& tresc, int PID)
 {
 	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
@@ -282,7 +302,11 @@ bool Filesystem::writeFile(const std::string& name, const std::string& tresc)
 		return false;
 	}
 
-	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
+	if (dostep[katalog.find(name)->second].first != PID)
+	{
+		printf_s("Plik nie jest otwarty przez obecny proces.\n");
+		return false;
+	}
 
 	// jesli brak miejsca na dysku
 	if (!resize(wezly[katalog[name]], (int)tresc.size()))
@@ -339,6 +363,10 @@ bool Filesystem::writeFile(const std::string& name, const std::string& tresc)
 
 bool Filesystem::appendFile(const std::string& name, const std::string& tresc)
 {
+	return appendFile(name, tresc, ProcessManager.scheduler->GetProcess()->GetPID());
+}
+bool Filesystem::appendFile(const std::string& name, const std::string& tresc, int PID)
+{
 
 	// plik nie istnieje wiec jest to niepoprawna operacja
 	if (!katalog.count(name))
@@ -358,7 +386,11 @@ bool Filesystem::appendFile(const std::string& name, const std::string& tresc)
 		return false;
 	}
 
-	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc FALSE
+	if (dostep[katalog.find(name)->second].first != PID)
+	{
+		printf_s("Plik nie jest otwarty przez obecny proces.\n");
+		return false;
+	}
 
 	auto& node = wezly[katalog[name]];
 	// od ktorego bloku
@@ -461,7 +493,11 @@ bool Filesystem::exists(const std::string& name)
 
 bool Filesystem::readFile(const std::string& name, std::string& output) const
 {
-	/// WARUNEK: jesli plik nie jest otwarty przez ten proces - zwroc false
+	return readFile(name, output, ProcessManager.scheduler->GetProcess()->GetPID());
+}
+
+bool Filesystem::readFile(const std::string& name, std::string& output, int PID) const
+{
 	
 	auto it = katalog.find(name);
 	if (it == katalog.end())
@@ -469,6 +505,13 @@ bool Filesystem::readFile(const std::string& name, std::string& output) const
 		printf_s("Brak pliku o nazwie %s w katalogu.\n", name.data());
 		return false;
 	}
+
+	if (dostep[katalog.find(name)->second].first != PID)
+	{
+		printf_s("Plik nie jest otwarty przez obecny proces.\n");
+		return false;
+	}
+
 	output.clear();
 	int inode = it->second;
 	std::string& s = output;

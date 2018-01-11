@@ -76,4 +76,6 @@ private:
 	void kropki(string s);
 	string cudzy(string &s);
 	int ilsep(string &s);
+
+
 };

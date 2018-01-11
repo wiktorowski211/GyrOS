@@ -11,6 +11,7 @@
 #include "Semaphoree.h"
 
 class ProcessManagement;
+class Shell;
 
 class Filesystem
 {
@@ -53,7 +54,7 @@ private:
 
 	Dysk dysk;
 	inode wezly[inodeCount];
-
+	friend Shell;
 	void free_block(int block);
 	int allocate_block();
 	int create_index_block();
@@ -61,6 +62,12 @@ private:
 	std::pair<int, Semaphore> dostep[inodeCount];
 
 	ProcessManagement& ProcessManager;
+
+	bool deleteFile(const std::string& name, int PID);
+	bool changeFilename(const std::string& name, const std::string& newname, int PID);
+	bool writeFile(const std::string& name, const std::string& tresc, int PID);
+	bool appendFile(const std::string& name, const std::string& tresc, int PID);
+	bool readFile(const std::string& name, std::string& output, int PID) const;
 };
 
 template <int num>

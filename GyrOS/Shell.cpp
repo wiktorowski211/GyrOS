@@ -159,18 +159,18 @@ void Shell::nadpisz(string &s, string &p)
 {
 	if (dysk.exists(p))
 	{
-		dysk.writeFile(p, s);
+		dysk.writeFile(p, s, 0);
 	}
 	else
 	{
 		if(dysk.createFile(p))
-			dysk.writeFile(p, s);
+			dysk.writeFile(p, s, 0);
 	}
 
 }
 void Shell::dopisz(string &s, string &p)
 {
-	dysk.appendFile(p, s);
+	dysk.appendFile(p, s, 0);
 }
 void Shell::cls(string &s) {
 	if(s.size()==0)
@@ -182,7 +182,7 @@ void Shell::del(string &s)
 {
 	if (ilsep(s) == 0)
 	{
-		if (dysk.deleteFile(s))
+		if (dysk.deleteFile(s, 0))
 		{
 			cout << "\nPlik: " << s << " usunieto" << endl;
 		}
@@ -212,7 +212,7 @@ void Shell::type(string &s)
 					if (plik[i] == separator)
 						plik[i] = ' ';
 				}
-				if (dysk.readFile(plik, tresc))
+				if (dysk.readFile(plik, tresc, 0))
 					cout << "\nZawartosc pliku " << plik << ":\n" << tresc << endl;
 			}
 			else
@@ -222,7 +222,7 @@ void Shell::type(string &s)
 					if (s[i] != separator)
 						plik += s[i];
 				}
-				if (dysk.readFile(plik, tresc))
+				if (dysk.readFile(plik, tresc, 0))
 					cout << "\nZawartosc pliku " << plik << ":\n" << tresc << endl;
 			}
 	}
@@ -253,7 +253,7 @@ void Shell::rename(string &s)
 					nowa += s[i];
 				}
 			}
-			if (dysk.changeFilename(stara, nowa))
+			if (dysk.changeFilename(stara, nowa, 0))
 				cout << "\nZmiana nazwy pliku: " << stara << " na: " << nowa << endl;
 		}
 		else
