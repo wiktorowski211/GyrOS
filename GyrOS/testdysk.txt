@@ -1,4 +1,4 @@
-CF SO ;
+CF SO;
 WF SO "Super przedmiot! ";
 AF SO "Naprawde! ";
 AF SO "OK!";
