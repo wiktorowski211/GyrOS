@@ -352,7 +352,7 @@ void Enterpreter::runCommand(const std::string& command, Process* proc)
 	}
 	else if (commandLine[0] == "CC")
 	{
-		reg.set_counter(reg.get_counter() + 1);
+		reg.set_counter(reg.get_counter() + 1);//zeby zostalo na tej samej linii
 		processes.ChangeState(reg.name, WAITING);
 		processes.AddProcess("dziecko", "send.txt", reg.PID);
 		Process* proc = reg.children[reg.children.size() - 1];

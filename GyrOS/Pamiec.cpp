@@ -231,7 +231,7 @@ void Pamiec::zawartosc()
 	cout << "\nZawartosc pamieci:  " << endl << "[ID]\t[Rozmiar]\t[Adres]\t[Koniec]\t[Licznik Rozkazu]" << endl;
 	for (it = l_procesow.begin(); it != l_procesow.end(); ++it)
 	{
-		cout << it->PID << "\t " << it->wielkosc << "\t\t " << it->start << "\t " << it->start+it->wielkosc << "\t\t " << it->processCounter << endl;
+		cout << it->PID << "\t " << it->wielkosc << "\t\t " << it->start << "\t " << it->start+it->wielkosc << "\t\t " << it->MemoryPointer << endl;
 		i++;
 	}
 	if (i == 0)
@@ -364,15 +364,15 @@ string Pamiec::odczyt(int PID, int counter)
 
 				if (it->commands[j] != ';')
 				{
-					it->processCounter++;
+					it->MemoryPointer++;
 					zwrot += it->commands[j];
 				}
 				else
 					break;
 
 			}
-			if (it->processCounter == linie - 1)
-				it->processCounter = 0;
+			/*if (it->processCounter == linie - 1)
+				it->processCounter = 0;*/
 			}
 		}
 		return zwrot;
