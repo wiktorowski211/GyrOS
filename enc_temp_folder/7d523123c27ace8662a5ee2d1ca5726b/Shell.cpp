@@ -283,7 +283,7 @@ void Shell::start(string &s)
 			if (ok)
 			{
 				procesy.AddProcess(nazwa, kod, 0);
-				//cout << "Stworzono proces: " << nazwa << " o kodzie zrodlowym z pliku: " << kod;
+				cout << "Stworzono proces: " << nazwa << " o kodzie zrodlowym z pliku: " << kod;
 			}
 			else
 			{
