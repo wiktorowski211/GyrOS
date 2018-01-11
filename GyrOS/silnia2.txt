@@ -1,8 +1,9 @@
 MI C 4 ;
-MI A 1 ; 
-JZ 6 ; 
-MP C ; 
-DC C ; 
-JP 2 ; 
-PR A ; 
+MI A 1 ;
+JZ 6 ;
+MP C ;
+DC C ;
+JP 2 ;
+MV D A ;
+PR D ;
 EX;
