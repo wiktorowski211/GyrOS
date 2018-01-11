@@ -218,7 +218,7 @@ void Pamiec::usun(int pid)
 		l_procesow.erase(it);
 
 	}
-	catch (int) { cout << "\n\tBrak wybranego procesu w pamieci!"; };
+	catch (int) { /*cout << "\n\tBrak wybranego procesu w pamieci!"; */};
 
 
 	laczenie();
