@@ -90,7 +90,7 @@ void ProcessManagement::AddProcess(std::string processName, std::string commands
 		{
 			flag_writing_to_memory = 0;
 			KillProcess(processName);
-			std::cout << "There's no any command in file for process " << processName << std::endl;
+			std::cout << "There are no commands in a file for process " << processName << std::endl;
 			return;
 		}
 		else if (flag_writing_to_memory == 3)
