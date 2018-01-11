@@ -212,6 +212,8 @@ void Shell::type(string &s)
 					if (plik[i] == separator)
 						plik[i] = ' ';
 				}
+				if (dysk.readFile(plik, tresc))
+					cout << "\nZawartosc pliku " << plik << ":\n" << tresc << endl;
 			}
 			else
 			{
