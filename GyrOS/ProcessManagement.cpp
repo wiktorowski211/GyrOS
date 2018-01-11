@@ -141,6 +141,7 @@ void ProcessManagement::KillProcess(std::string name)
 			{
 				flag_writing_to_memory = 0;
 			}
+			MemoryManagement->usun(temp->PID);
 			std::cout << "Process " << name << " has been deleted!" << std::endl;
 			return;
 		}
