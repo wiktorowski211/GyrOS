@@ -115,7 +115,7 @@ bool Shell::echo_przekaz(string &s) //trzeba co nieco usprawnić
 		{
 			pos = i;
 			tn = false;
-			if (s[i + 1] == '>')
+			/*if (s[i + 1] == '>')
 			{
 				if (s[i + 2] == '\"')
 					tn = true;
@@ -124,7 +124,7 @@ bool Shell::echo_przekaz(string &s) //trzeba co nieco usprawnić
 			{
 				if (s[i + 1] == '\"')
 					tn = true;
-			}
+			}*/
 			break;
 		}
 	}
@@ -133,15 +133,21 @@ bool Shell::echo_przekaz(string &s) //trzeba co nieco usprawnić
 		if (s[pos + 1] == '>')
 		{
 			plik = s.substr(pos + 2, s.size() - pos - 2);
-			if (plik[0] == ' ')
-				plik = plik.substr(1, plik.size() - 1);
+			/*if (plik[0] == ' ')
+			plik = plik.substr(1, plik.size() - 1);*/
+			plik = begin(plik);
+			if(plik[0]=='\"')
+				plik = cudzy(plik);
 			dopisz(txt, plik);
 		}
 		else
 		{
 			plik = s.substr(pos + 1, s.size() - pos - 1);
-			if (plik[0] == ' ')
-				plik = plik.substr(1, plik.size() - 1);
+			/*if (plik[0] == ' ')
+			plik = plik.substr(1, plik.size() - 1);*/
+			plik = begin(plik);
+			if (plik[0] == '\"')
+				plik = cudzy(plik);
 			nadpisz(txt, plik);
 		}
 	}
@@ -195,21 +201,28 @@ void Shell::ext(string &s) {
 }
 void Shell::type(string &s)
 {
-	if (ilsep(s) == 0)
+	string plik = "", tresc;
+	if (s.size() != 0)
 	{
-		if (s.size() != 0)
-		{
-			string plik = "", tresc;
-			for (int i = 0; i < s.size(); i++)
+			if (s[0] == '\"')
 			{
-				if (s[i] != separator)
-					plik += s[i];
+				plik = cudzy(s);
+				for (int i = 0; i < plik.size(); i++)
+				{
+					if (plik[i] == separator)
+						plik[i] = ' ';
+				}
 			}
-			if (dysk.readFile(s, tresc))
-				cout << "\nZawartosc pliku " << plik << ":\n" << tresc << endl;
-		}
-		else
-			cout << "\tNiepoprawna komenda.\n";
+			else
+			{
+				for (int i = 0; i < s.size(); i++)
+				{
+					if (s[i] != separator)
+						plik += s[i];
+				}
+				if (dysk.readFile(plik, tresc))
+					cout << "\nZawartosc pliku " << plik << ":\n" << tresc << endl;
+			}
 	}
 	else
 		cout << "\tNiepoprawna komenda.\n";
@@ -402,7 +415,7 @@ void Shell::check(string &s)
 		switch (chk[s1])
 		{
 		case 1: {dysk.statistics(); }; break;
-		case 2: {/*funkcja od ramu*/}; break;
+		case 2: {ram.zawartosc(); }; break;
 		default: cout << "\tNiepoprawna komenda.\n"; break;
 		}
 	}
