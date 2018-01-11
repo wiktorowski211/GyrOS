@@ -83,7 +83,7 @@ void Shell::help(string &s)
 		cout << "\nTASKLIST				Wyswietla liste procesow.";
 		cout << "\nMKLINK nazwa_pliku alias_pliku		Tworzy Alias do wskazanego pliku.";
 		cout << "\nGO n					Wywoluje n-kolejnych 'krokow' systemu";
-		cout << "\nCHECK					Wyswietla biezacy stan dysku/ramu.";
+		cout << "\nCHECK disc/ram				Wyswietla biezacy stan dysu/ramu.";
 		cout << "\nREG nazwa				Podglad rejestrow wskazanego procesu.\n";
 	}
 	else
