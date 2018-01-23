@@ -1,7 +1,8 @@
 CF SO;
+FO SO;
 WF SO "Super przedmiot! ";
 AF SO "Naprawde! ";
-AF SO "OK!";
+AA SO Systemy;
 AF SO " OK!!!";
-
+FC Systemy;
 EX;

@@ -24,6 +24,6 @@ private:
 	// str = rejestr, val = wartosc do wpisania
 	void setRegister(Process& p, const std::string& str, int val);
 	// str = rejestr
-	int Enterpreter::getRegister(Process& p, const std::string& str, bool& error);
+	int getRegister(Process& p, const std::string& str, bool& error);
 
 };
